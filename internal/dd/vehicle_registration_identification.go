@@ -39,10 +39,12 @@ func (opts UnmarshalOptions) UnmarshalVehicleRegistrationIdentification(data []b
 		lenNumber = 14
 	)
 
-	// Parse nation (1 byte)
-	nationValue := int32(data[idxNation])
-	nation := ddv1.NationNumeric(nationValue)
-	vrn.SetNation(nation)
+	// Parse nation (1 byte) through its protocol value annotation.
+	if nation, err := UnmarshalEnum[ddv1.NationNumeric](data[idxNation]); err == nil {
+		vrn.SetNation(nation)
+	} else {
+		vrn.SetNation(ddv1.NationNumeric_NATION_NUMERIC_UNRECOGNIZED)
+	}
 
 	// Parse registration number (14 bytes)
 	number, err := opts.UnmarshalStringValue(data[idxNumber : idxNumber+lenNumber])
@@ -67,8 +69,16 @@ func (opts MarshalOptions) MarshalVehicleRegistrationIdentification(vrn *ddv1.Ve
 
 	offset := 0
 
-	// Marshal nation (1 byte)
-	canvas[offset] = byte(vrn.GetNation())
+	// Marshal nation (1 byte) through its protocol value annotation.
+	nation := vrn.GetNation()
+	if nation == ddv1.NationNumeric_NATION_NUMERIC_UNRECOGNIZED {
+		return nil, fmt.Errorf("cannot marshal UNRECOGNIZED nation")
+	}
+	nationByte, err := MarshalEnum(nation)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal vehicle registration nation: %w", err)
+	}
+	canvas[offset] = nationByte
 	offset += 1
 
 	// Marshal registration number (14 bytes)
