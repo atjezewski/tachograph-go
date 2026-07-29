@@ -116,10 +116,10 @@ func sizeOfOverviewGen2V1(data []byte) (totalSize, signatureSize int, err error)
 	}
 	offset += size
 
-	// VehicleRegistrationIdentificationRecordArray
+	// VehicleRegistrationNumberRecordArray
 	size, sizeErr = sizeOfRecordArray(data, offset)
 	if sizeErr != nil {
-		return 0, 0, fmt.Errorf("VehicleRegistrationIdentificationRecordArray: %w", sizeErr)
+		return 0, 0, fmt.Errorf("VehicleRegistrationNumberRecordArray: %w", sizeErr)
 	}
 	offset += size
 

@@ -17,7 +17,7 @@ import (
 //	    memberStateCertificateRecordArray                MemberStateCertificateRecordArray,
 //	    vuCertificateRecordArray                         VuCertificateRecordArray,
 //	    vehicleIdentificationNumberRecordArray           VehicleIdentificationNumberRecordArray,
-//	    vehicleRegistrationIdentificationRecordArray     VehicleRegistrationIdentificationRecordArray,
+//	    vehicleRegistrationNumberRecordArray             VehicleRegistrationNumberRecordArray,
 //	    currentDateTimeRecordArray                       CurrentDateTimeRecordArray,
 //	    vuDownloadablePeriodRecordArray                  VuDownloadablePeriodRecordArray,
 //	    cardSlotsStatusRecordArray                       CardSlotsStatusRecordArray,
@@ -67,10 +67,10 @@ func unmarshalOverviewGen2V1(value []byte) (*vuv1.OverviewGen2V1, error) {
 	overview.SetVehicleIdentificationNumber(vin)
 	offset += bytesRead
 
-	// VehicleRegistrationIdentificationRecordArray
-	vrn, bytesRead, err := parseVehicleRegistrationIdentificationRecordArray(data, offset)
+	// VehicleRegistrationNumberRecordArray
+	vrn, bytesRead, err := parseVehicleRegistrationNumberRecordArrayGen2V1(data, offset)
 	if err != nil {
-		return nil, fmt.Errorf("parse VehicleRegistrationIdentificationRecordArray: %w", err)
+		return nil, fmt.Errorf("parse VehicleRegistrationNumberRecordArray: %w", err)
 	}
 	overview.SetVehicleRegistrationWithNation(vrn)
 	offset += bytesRead
@@ -163,10 +163,13 @@ func (opts MarshalOptions) MarshalOverviewGen2V1(overview *vuv1.OverviewGen2V1) 
 	result = appendRecordArrayHeader(result, 0x03, uint16(len(vinData)), 1)
 	result = append(result, vinData...)
 
-	// VehicleRegistrationIdentificationRecordArray (15 bytes)
-	vrnData, err := marshalOpts.MarshalVehicleRegistrationIdentification(overview.GetVehicleRegistrationWithNation())
+	// VehicleRegistrationNumberRecordArray (14 bytes: code page + 13-byte VRN)
+	vrnData, err := marshalOpts.MarshalStringValue(overview.GetVehicleRegistrationWithNation().GetNumber())
 	if err != nil {
 		return nil, fmt.Errorf("marshal VRN: %w", err)
+	}
+	if len(vrnData) != 14 {
+		return nil, fmt.Errorf("marshal VRN: got %d bytes, want 14", len(vrnData))
 	}
 	result = appendRecordArrayHeader(result, 0x04, uint16(len(vrnData)), 1)
 	result = append(result, vrnData...)
@@ -345,26 +348,32 @@ func parseVehicleIdentificationNumberRecordArray(data []byte, offset int) (*ddv1
 	return vin, totalSize, nil
 }
 
-// parseVehicleRegistrationIdentificationRecordArray parses a VehicleRegistrationIdentificationRecordArray.
-// Expected: 1 record × 15 bytes (1 nation + 14 StringValue).
-func parseVehicleRegistrationIdentificationRecordArray(data []byte, offset int) (*ddv1.VehicleRegistrationIdentification, int, error) {
+// parseVehicleRegistrationNumberRecordArrayGen2V1 parses the 14-byte
+// VehicleRegistrationNumberRecordArray used by Gen2 V1 Overview transfers.
+func parseVehicleRegistrationNumberRecordArrayGen2V1(data []byte, offset int) (*ddv1.VehicleRegistrationIdentification, int, error) {
 	_, recordSize, noOfRecords, headerSize, err := parseRecordArrayHeader(data, offset)
 	if err != nil {
 		return nil, 0, err
 	}
 	if noOfRecords != 1 {
-		return nil, 0, fmt.Errorf("expected 1 VRI record, got %d", noOfRecords)
+		return nil, 0, fmt.Errorf("expected 1 VRN record, got %d", noOfRecords)
+	}
+	const lenVehicleRegistrationNumber = 14
+	if recordSize != lenVehicleRegistrationNumber {
+		return nil, 0, fmt.Errorf("unexpected VRN record size: got %d, want %d", recordSize, lenVehicleRegistrationNumber)
 	}
 	recordStart := offset + headerSize
 	recordEnd := recordStart + int(recordSize)
 	if recordEnd > len(data) {
-		return nil, 0, fmt.Errorf("insufficient data for VRI record")
+		return nil, 0, fmt.Errorf("insufficient data for VRN record")
 	}
 	var unmarshalOpts dd.UnmarshalOptions
-	vrn, err := unmarshalOpts.UnmarshalVehicleRegistrationIdentification(data[recordStart:recordEnd])
+	number, err := unmarshalOpts.UnmarshalStringValue(data[recordStart:recordEnd])
 	if err != nil {
-		return nil, 0, fmt.Errorf("unmarshal VRI: %w", err)
+		return nil, 0, fmt.Errorf("unmarshal VRN: %w", err)
 	}
+	vrn := &ddv1.VehicleRegistrationIdentification{}
+	vrn.SetNumber(number)
 	totalSize := headerSize + int(recordSize)
 	return vrn, totalSize, nil
 }
