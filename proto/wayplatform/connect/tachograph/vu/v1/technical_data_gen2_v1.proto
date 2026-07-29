@@ -6,6 +6,9 @@ import "google/protobuf/timestamp.proto";
 import "wayplatform/connect/tachograph/dd/v1/calibration_purpose.proto";
 import "wayplatform/connect/tachograph/dd/v1/card_structure_version.proto";
 import "wayplatform/connect/tachograph/dd/v1/driver_identification.proto";
+import "wayplatform/connect/tachograph/dd/v1/equipment_type.proto";
+import "wayplatform/connect/tachograph/dd/v1/event_fault_record_purpose.proto";
+import "wayplatform/connect/tachograph/dd/v1/event_fault_type.proto";
 import "wayplatform/connect/tachograph/dd/v1/extended_serial_number.proto";
 import "wayplatform/connect/tachograph/dd/v1/full_card_number.proto";
 import "wayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto";
@@ -201,6 +204,17 @@ message TechnicalDataGen2V1 {
     //
     // See Data Dictionary, Section 2.162, `TimeReal`.
     google.protobuf.Timestamp next_calibration_date = 18;
+
+    // Seals attached to vehicle components at calibration time.
+    repeated SealRecord seal_records = 19;
+  }
+
+  // A seal record from the SealDataVu structure.
+  message SealRecord {
+    dd.v1.EquipmentType equipment_type = 1;
+    int32 unrecognized_equipment_type = 2;
+    string manufacturer_code = 3;
+    string seal_identifier = 4;
   }
 
   // Represents a record of a card used in the VU.
@@ -227,6 +241,8 @@ message TechnicalDataGen2V1 {
     // See Data Dictionary, Section 2.26.
     dd.v1.DriverIdentification driver_identification = 4;
     dd.v1.OwnerIdentification owner_identification = 5;
+
+    bytes raw_data = 99;
   }
 
   // Represents a record of ITS consent status for a card (Gen2 only).
@@ -238,6 +254,26 @@ message TechnicalDataGen2V1 {
 
     // The consent status for ITS data provision.
     bool consent_status = 2;
+
+    bytes raw_data = 99;
+  }
+
+  // Represents a power supply interruption event stored by the VU.
+  //
+  // See Data Dictionary, Section 2.240, `VuPowerSupplyInterruptionRecord`.
+  message PowerSupplyInterruptionRecord {
+    dd.v1.EventFaultType event_type = 1;
+    int32 unrecognized_event_type = 2;
+    dd.v1.EventFaultRecordPurpose event_record_purpose = 3;
+    int32 unrecognized_event_record_purpose = 4;
+    google.protobuf.Timestamp event_begin_time = 5;
+    google.protobuf.Timestamp event_end_time = 6;
+    dd.v1.FullCardNumberAndGeneration card_number_and_generation_driver_slot_begin = 7;
+    dd.v1.FullCardNumberAndGeneration card_number_and_generation_driver_slot_end = 8;
+    dd.v1.FullCardNumberAndGeneration card_number_and_generation_codriver_slot_begin = 9;
+    dd.v1.FullCardNumberAndGeneration card_number_and_generation_codriver_slot_end = 10;
+    int32 similar_events_number = 11;
+    bytes raw_data = 99;
   }
 
   // Vehicle unit identification data.
@@ -269,6 +305,9 @@ message TechnicalDataGen2V1 {
   //
   // See Data Dictionary, Section 2.208, `VuITSConsentRecordArray`.
   repeated ItsConsentRecord its_consent_records = 6;
+
+  // Power supply interruption events stored by the VU.
+  repeated PowerSupplyInterruptionRecord power_supply_interruptions = 9;
 
   // Signature for Gen2 data (ECC, variable length in SignatureRecordArray).
   //

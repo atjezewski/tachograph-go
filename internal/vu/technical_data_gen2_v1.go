@@ -1,14 +1,25 @@
 package vu
 
 import (
+	"bytes"
 	"encoding/binary"
 	"fmt"
 
 	"github.com/way-platform/tachograph-go/internal/dd"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
-	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/known/timestamppb"
+)
+
+const (
+	recordTypeSignature                 = 0x08
+	recordTypeVuCalibrationRecord       = 0x0c
+	recordTypeVuCardRecord              = 0x0e
+	recordTypeVuITSConsentRecord        = 0x17
+	recordTypeVuIdentification          = 0x19
+	recordTypeVuPowerSupplyInterruption = 0x1f
+	recordTypeSensorPairedRecord        = 0x20
+	recordTypeSensorExternalGNSSCoupled = 0x21
 )
 
 // unmarshalTechnicalDataGen2V1 parses Gen2 V1 Technical Data from the complete transfer value.
@@ -18,7 +29,11 @@ import (
 //	VuTechnicalDataSecondGenV1 ::= SEQUENCE {
 //	    vuIdentificationRecordArray  VuIdentificationRecordArray,
 //	    vuSensorPairedRecordArray    VuSensorPairedRecordArray,
+//	    vuSensorExternalGNSSCoupledRecordArray VuSensorExternalGNSSCoupledRecordArray,
 //	    vuCalibrationRecordArray     VuCalibrationRecordArray,
+//	    vuCardRecordArray            VuCardRecordArray,
+//	    vuITSConsentRecordArray      VuITSConsentRecordArray,
+//	    vuPowerSupplyInterruptionRecordArray VuPowerSupplyInterruptionRecordArray,
 //	    signatureRecordArray         SignatureRecordArray
 //	}
 func unmarshalTechnicalDataGen2V1(value []byte) (*vuv1.TechnicalDataGen2V1, error) {
@@ -58,12 +73,44 @@ func unmarshalTechnicalDataGen2V1(value []byte) (*vuv1.TechnicalDataGen2V1, erro
 	td.SetPairedSensors(pairedSensors)
 	offset += bytesRead
 
+	// SensorExternalGNSSCoupledRecordArray
+	gnssRecords, bytesRead, err := parseSensorExternalGNSSCoupledRecordArrayGen2V1(data, offset)
+	if err != nil {
+		return nil, fmt.Errorf("parse SensorExternalGNSSCoupledRecordArray: %w", err)
+	}
+	td.SetCoupledGnssFacilities(gnssRecords)
+	offset += bytesRead
+
 	// VuCalibrationRecordArray
 	calRecords, bytesRead, err := parseCalibrationRecordArrayGen2V1(data, offset)
 	if err != nil {
 		return nil, fmt.Errorf("parse VuCalibrationRecordArray: %w", err)
 	}
 	td.SetCalibrationRecords(calRecords)
+	offset += bytesRead
+
+	// VuCardRecordArray
+	cardRecords, bytesRead, err := parseCardRecordArrayGen2V1(data, offset)
+	if err != nil {
+		return nil, fmt.Errorf("parse VuCardRecordArray: %w", err)
+	}
+	td.SetCardRecords(cardRecords)
+	offset += bytesRead
+
+	// VuITSConsentRecordArray
+	consentRecords, bytesRead, err := parseItsConsentRecordArrayGen2V1(data, offset)
+	if err != nil {
+		return nil, fmt.Errorf("parse VuITSConsentRecordArray: %w", err)
+	}
+	td.SetItsConsentRecords(consentRecords)
+	offset += bytesRead
+
+	// VuPowerSupplyInterruptionRecordArray
+	powerRecords, bytesRead, err := parsePowerSupplyInterruptionRecordArrayGen2V1(data, offset)
+	if err != nil {
+		return nil, fmt.Errorf("parse VuPowerSupplyInterruptionRecordArray: %w", err)
+	}
+	td.SetPowerSupplyInterruptions(powerRecords)
 	offset += bytesRead
 
 	td.SetSignature(signature)
@@ -94,7 +141,7 @@ func (opts MarshalOptions) MarshalTechnicalDataGen2V1(td *vuv1.TechnicalDataGen2
 	if err != nil {
 		return nil, fmt.Errorf("marshal VuIdentificationRecordArray: %w", err)
 	}
-	result = appendRecordArrayHeader(result, 0x01, 124, 1)
+	result = appendRecordArrayHeader(result, recordTypeVuIdentification, 124, 1)
 	result = append(result, vuIdentData...)
 
 	// SensorPairedRecordArray (N records × 28 bytes)
@@ -103,24 +150,56 @@ func (opts MarshalOptions) MarshalTechnicalDataGen2V1(td *vuv1.TechnicalDataGen2
 	if err != nil {
 		return nil, fmt.Errorf("marshal SensorPairedRecordArray: %w", err)
 	}
-	result = appendRecordArrayHeader(result, 0x02, 28, uint16(len(sensors)))
+	result = appendRecordArrayHeader(result, recordTypeSensorPairedRecord, 28, uint16(len(sensors)))
 	result = append(result, sensorData...)
 
-	// VuCalibrationRecordArray (N records × 168 bytes)
+	gnss := td.GetCoupledGnssFacilities()
+	gnssData, err := marshalSensorExternalGNSSCoupledRecordsGen2V1(marshalOpts, gnss)
+	if err != nil {
+		return nil, fmt.Errorf("marshal SensorExternalGNSSCoupledRecordArray: %w", err)
+	}
+	result = appendRecordArrayHeader(result, recordTypeSensorExternalGNSSCoupled, 28, uint16(len(gnss)))
+	result = append(result, gnssData...)
+
+	// VuCalibrationRecordArray
 	calRecords := td.GetCalibrationRecords()
-	calData, err := marshalCalibrationRecordsGen2V1(marshalOpts, calRecords)
+	calData, calRecordSize, err := marshalCalibrationRecordsGen2V1(marshalOpts, calRecords)
 	if err != nil {
 		return nil, fmt.Errorf("marshal VuCalibrationRecordArray: %w", err)
 	}
-	result = appendRecordArrayHeader(result, 0x03, 168, uint16(len(calRecords)))
+	result = appendRecordArrayHeader(result, recordTypeVuCalibrationRecord, calRecordSize, uint16(len(calRecords)))
 	result = append(result, calData...)
+
+	cardRecords := td.GetCardRecords()
+	cardData, err := marshalCardRecordsGen2V1(marshalOpts, cardRecords)
+	if err != nil {
+		return nil, fmt.Errorf("marshal VuCardRecordArray: %w", err)
+	}
+	result = appendRecordArrayHeader(result, recordTypeVuCardRecord, 45, uint16(len(cardRecords)))
+	result = append(result, cardData...)
+
+	consentRecords := td.GetItsConsentRecords()
+	consentData, err := marshalItsConsentRecordsGen2V1(marshalOpts, consentRecords)
+	if err != nil {
+		return nil, fmt.Errorf("marshal VuITSConsentRecordArray: %w", err)
+	}
+	result = appendRecordArrayHeader(result, recordTypeVuITSConsentRecord, 20, uint16(len(consentRecords)))
+	result = append(result, consentData...)
+
+	powerRecords := td.GetPowerSupplyInterruptions()
+	powerData, err := marshalPowerSupplyInterruptionRecordsGen2V1(marshalOpts, powerRecords)
+	if err != nil {
+		return nil, fmt.Errorf("marshal VuPowerSupplyInterruptionRecordArray: %w", err)
+	}
+	result = appendRecordArrayHeader(result, recordTypeVuPowerSupplyInterruption, 87, uint16(len(powerRecords)))
+	result = append(result, powerData...)
 
 	// Signature: stored as complete SignatureRecordArray bytes (header + sig bytes).
 	// When empty (anonymized data), include a placeholder header so sizeOf can parse the output.
 	if sig := td.GetSignature(); len(sig) > 0 {
 		result = append(result, sig...)
 	} else {
-		result = appendRecordArrayHeader(result, 0x04, 0, 0)
+		result = appendRecordArrayHeader(result, recordTypeSignature, 0, 0)
 	}
 	return result, nil
 }
@@ -196,9 +275,62 @@ func (opts AnonymizeOptions) anonymizeTechnicalDataGen2V1(td *vuv1.TechnicalData
 		anon.SetOldTimeValue(ddOpts.AnonymizeTimestamp(cal.GetOldTimeValue()))
 		anon.SetNewTimeValue(ddOpts.AnonymizeTimestamp(cal.GetNewTimeValue()))
 		anon.SetNextCalibrationDate(ddOpts.AnonymizeTimestamp(cal.GetNextCalibrationDate()))
+		anon.SetSealRecords(cal.GetSealRecords())
 		anonCals[i] = anon
 	}
 	result.SetCalibrationRecords(anonCals)
+
+	anonGnss := make([]*vuv1.TechnicalDataGen2V1_CoupledGnss, len(td.GetCoupledGnssFacilities()))
+	for i, gnss := range td.GetCoupledGnssFacilities() {
+		anon := &vuv1.TechnicalDataGen2V1_CoupledGnss{}
+		anon.SetSerialNumber(anonymizeExtendedSerialNumber(gnss.GetSerialNumber()))
+		anon.SetApprovalNumber(dd.NewIa5StringValue(16, "GNSS0001"))
+		anon.SetCouplingDate(ddOpts.AnonymizeTimestamp(gnss.GetCouplingDate()))
+		anonGnss[i] = anon
+	}
+	result.SetCoupledGnssFacilities(anonGnss)
+
+	anonCards := make([]*vuv1.TechnicalDataGen2V1_CardRecord, len(td.GetCardRecords()))
+	for i, card := range td.GetCardRecords() {
+		anon := &vuv1.TechnicalDataGen2V1_CardRecord{}
+		anonCardNumber := ddOpts.AnonymizeFullCardNumberAndGeneration(card.GetCardNumberAndGeneration())
+		anon.SetCardNumberAndGeneration(anonCardNumber)
+		anon.SetCardExtendedSerialNumber(anonymizeExtendedSerialNumber(card.GetCardExtendedSerialNumber()))
+		anon.SetCardStructureVersion(card.GetCardStructureVersion())
+		if fullCardNumber := anonCardNumber.GetFullCardNumber(); fullCardNumber != nil {
+			anon.SetDriverIdentification(fullCardNumber.GetDriverIdentification())
+			anon.SetOwnerIdentification(fullCardNumber.GetOwnerIdentification())
+		}
+		anonCards[i] = anon
+	}
+	result.SetCardRecords(anonCards)
+
+	anonConsents := make([]*vuv1.TechnicalDataGen2V1_ItsConsentRecord, len(td.GetItsConsentRecords()))
+	for i, consent := range td.GetItsConsentRecords() {
+		anon := &vuv1.TechnicalDataGen2V1_ItsConsentRecord{}
+		anon.SetFullCardNumberAndGeneration(ddOpts.AnonymizeFullCardNumberAndGeneration(consent.GetFullCardNumberAndGeneration()))
+		anon.SetConsentStatus(consent.GetConsentStatus())
+		anonConsents[i] = anon
+	}
+	result.SetItsConsentRecords(anonConsents)
+
+	anonPower := make([]*vuv1.TechnicalDataGen2V1_PowerSupplyInterruptionRecord, len(td.GetPowerSupplyInterruptions()))
+	for i, power := range td.GetPowerSupplyInterruptions() {
+		anon := &vuv1.TechnicalDataGen2V1_PowerSupplyInterruptionRecord{}
+		anon.SetEventType(power.GetEventType())
+		anon.SetUnrecognizedEventType(power.GetUnrecognizedEventType())
+		anon.SetEventRecordPurpose(power.GetEventRecordPurpose())
+		anon.SetUnrecognizedEventRecordPurpose(power.GetUnrecognizedEventRecordPurpose())
+		anon.SetEventBeginTime(ddOpts.AnonymizeTimestamp(power.GetEventBeginTime()))
+		anon.SetEventEndTime(ddOpts.AnonymizeTimestamp(power.GetEventEndTime()))
+		anon.SetCardNumberAndGenerationDriverSlotBegin(ddOpts.AnonymizeFullCardNumberAndGeneration(power.GetCardNumberAndGenerationDriverSlotBegin()))
+		anon.SetCardNumberAndGenerationDriverSlotEnd(ddOpts.AnonymizeFullCardNumberAndGeneration(power.GetCardNumberAndGenerationDriverSlotEnd()))
+		anon.SetCardNumberAndGenerationCodriverSlotBegin(ddOpts.AnonymizeFullCardNumberAndGeneration(power.GetCardNumberAndGenerationCodriverSlotBegin()))
+		anon.SetCardNumberAndGenerationCodriverSlotEnd(ddOpts.AnonymizeFullCardNumberAndGeneration(power.GetCardNumberAndGenerationCodriverSlotEnd()))
+		anon.SetSimilarEventsNumber(power.GetSimilarEventsNumber())
+		anonPower[i] = anon
+	}
+	result.SetPowerSupplyInterruptions(anonPower)
 
 	result.SetSignature([]byte{})
 	return result
@@ -211,9 +343,14 @@ func (opts AnonymizeOptions) anonymizeTechnicalDataGen2V1(td *vuv1.TechnicalData
 // Gen2V1 sends 124 bytes; Gen2V2 sends 138 bytes (additional certification fields).
 // UnmarshalVuIdentification handles variable-length records; extra bytes are preserved in raw_data.
 func parseVuIdentificationRecordArrayGen2(data []byte, offset int) (*ddv1.VuIdentification, int, error) {
-	_, recordSize, noOfRecords, headerSize, err := parseRecordArrayHeader(data, offset)
+	recordType, recordSize, noOfRecords, headerSize, err := parseRecordArrayHeader(data, offset)
 	if err != nil {
 		return nil, 0, err
+	}
+	// 0x01 is accepted for files produced by older tachograph-go versions,
+	// which incorrectly encoded array position instead of RecordType.
+	if recordType != recordTypeVuIdentification && recordType != 0x01 {
+		return nil, 0, fmt.Errorf("expected VuIdentification type 0x%02x, got 0x%02x", recordTypeVuIdentification, recordType)
 	}
 
 	const minRecordSize = 124 // Gen2V1; Gen2V2 is 138
@@ -243,9 +380,13 @@ func parseVuIdentificationRecordArrayGen2(data []byte, offset int) (*ddv1.VuIden
 //
 // Expects N records × 28 bytes (Gen2).
 func parseSensorPairedRecordArrayGen2(data []byte, offset int) ([]*ddv1.SensorPaired, int, error) {
-	_, recordSize, noOfRecords, headerSize, err := parseRecordArrayHeader(data, offset)
+	recordType, recordSize, noOfRecords, headerSize, err := parseRecordArrayHeader(data, offset)
 	if err != nil {
 		return nil, 0, err
+	}
+	// 0x02 is the corresponding legacy tachograph-go array-position value.
+	if recordType != recordTypeSensorPairedRecord && recordType != 0x02 {
+		return nil, 0, fmt.Errorf("expected SensorPairedRecord type 0x%02x, got 0x%02x", recordTypeSensorPairedRecord, recordType)
 	}
 
 	const expectedRecordSize = 28
@@ -275,14 +416,16 @@ func parseSensorPairedRecordArrayGen2(data []byte, offset int) ([]*ddv1.SensorPa
 
 // parseCalibrationRecordArrayGen2V1 parses a VuCalibrationRecordArray for Gen2 V1.
 func parseCalibrationRecordArrayGen2V1(data []byte, offset int) ([]*vuv1.TechnicalDataGen2V1_CalibrationRecord, int, error) {
-	_, recordSize, noOfRecords, headerSize, err := parseRecordArrayHeader(data, offset)
+	recordType, recordSize, noOfRecords, headerSize, err := parseRecordArrayHeader(data, offset)
 	if err != nil {
 		return nil, 0, err
 	}
 
-	const expectedRecordSize = 168
-	if recordSize != expectedRecordSize {
-		return nil, 0, fmt.Errorf("expected Gen2 CalibrationRecord size %d, got %d", expectedRecordSize, recordSize)
+	if recordType != recordTypeVuCalibrationRecord {
+		return nil, 0, fmt.Errorf("expected VuCalibrationRecord type 0x%02x, got 0x%02x", recordTypeVuCalibrationRecord, recordType)
+	}
+	if recordSize != 167 && recordSize != 168 && recordSize != 222 {
+		return nil, 0, fmt.Errorf("expected Gen2 V1 CalibrationRecord size 167, legacy-padded 168, or 222, got %d", recordSize)
 	}
 
 	var unmarshalOpts dd.UnmarshalOptions
@@ -309,30 +452,32 @@ func parseCalibrationRecordArrayGen2V1(data []byte, offset int) ([]*vuv1.Technic
 
 // gen2CalibrationRecord holds the parsed fields of a Gen2 VuCalibrationRecord.
 type gen2CalibrationRecord struct {
-	purpose                  ddv1.CalibrationPurpose
-	unrecognizedPurpose      int32
-	workshopName             *ddv1.StringValue
-	workshopAddress          *ddv1.StringValue
-	workshopCardNumber       *ddv1.FullCardNumber
-	workshopCardExpiryDate   *timestamppb.Timestamp
-	vin                      *ddv1.Ia5StringValue
-	vehicleRegistration      *ddv1.VehicleRegistrationIdentification
-	wVehicleCharConst        int32
-	kConstantRecordEquip     int32
-	lTyreCircumference       int32
-	tyreSize                 *ddv1.Ia5StringValue
-	authorisedSpeedKmh       int32
-	oldOdometerValueKm       int32
-	newOdometerValueKm       int32
-	oldTimeValue             *timestamppb.Timestamp
-	newTimeValue             *timestamppb.Timestamp
-	nextCalibrationDate      *timestamppb.Timestamp
+	purpose                ddv1.CalibrationPurpose
+	unrecognizedPurpose    int32
+	workshopName           *ddv1.StringValue
+	workshopAddress        *ddv1.StringValue
+	workshopCardNumber     *ddv1.FullCardNumber
+	workshopCardExpiryDate *timestamppb.Timestamp
+	vin                    *ddv1.Ia5StringValue
+	vehicleRegistration    *ddv1.VehicleRegistrationIdentification
+	wVehicleCharConst      int32
+	kConstantRecordEquip   int32
+	lTyreCircumference     int32
+	tyreSize               *ddv1.Ia5StringValue
+	authorisedSpeedKmh     int32
+	oldOdometerValueKm     int32
+	newOdometerValueKm     int32
+	oldTimeValue           *timestamppb.Timestamp
+	newTimeValue           *timestamppb.Timestamp
+	nextCalibrationDate    *timestamppb.Timestamp
+	sealRecords            []*vuv1.TechnicalDataGen2V1_SealRecord
 }
 
-// parseOneCalibrationRecordGen2 parses a single 168-byte Gen2 VuCalibrationRecord.
+// parseOneCalibrationRecordGen2 parses a Gen2 V1 VuCalibrationRecord.
 //
-// Gen2 layout (168 bytes) — identical to Gen1 except workshopCardNumber
-// is FullCardNumberAndGeneration (19 bytes) instead of FullCardNumber (18 bytes):
+// The 167-byte base is the Gen1 layout. Gen2 V1 appends SealDataVu
+// (5 x 11 bytes), producing the 222-byte form. A legacy 168-byte form is
+// accepted for compatibility; its final padding byte has no semantic meaning.
 //
 //	calibrationPurpose CalibrationPurpose                          -- 1 byte (offset 0)
 //	workshopName Name                                              -- 36 bytes (offset 1)
@@ -352,9 +497,8 @@ type gen2CalibrationRecord struct {
 //	newTimeValue TimeReal                                          -- 4 bytes (offset 160)
 //	nextCalibrationDate TimeReal                                   -- 4 bytes (offset 164)
 func parseOneCalibrationRecordGen2(opts dd.UnmarshalOptions, data []byte) (gen2CalibrationRecord, error) {
-	const lenRecord = 168
-	if len(data) != lenRecord {
-		return gen2CalibrationRecord{}, fmt.Errorf("invalid Gen2 CalibrationRecord size: got %d, want %d", len(data), lenRecord)
+	if len(data) != 167 && len(data) != 168 && len(data) != 222 {
+		return gen2CalibrationRecord{}, fmt.Errorf("invalid Gen2 V1 CalibrationRecord size: got %d, want 167, 168, or 222", len(data))
 	}
 
 	const (
@@ -388,11 +532,10 @@ func parseOneCalibrationRecordGen2(opts dd.UnmarshalOptions, data []byte) (gen2C
 	var r gen2CalibrationRecord
 
 	// calibrationPurpose (1 byte)
-	purposeValue := int32(data[idxCalibrationPurpose])
-	purpose := ddv1.CalibrationPurpose(purposeValue)
-	valueDesc := purpose.Descriptor().Values().ByNumber(protoreflect.EnumNumber(purposeValue))
-	if valueDesc == nil {
-		r.unrecognizedPurpose = purposeValue
+	purposeValue := data[idxCalibrationPurpose]
+	purpose, purposeErr := dd.UnmarshalEnum[ddv1.CalibrationPurpose](purposeValue)
+	if purposeErr != nil {
+		r.unrecognizedPurpose = int32(purposeValue)
 		r.purpose = ddv1.CalibrationPurpose_CALIBRATION_PURPOSE_UNSPECIFIED
 	} else {
 		r.purpose = purpose
@@ -482,13 +625,38 @@ func parseOneCalibrationRecordGen2(opts dd.UnmarshalOptions, data []byte) (gen2C
 		return gen2CalibrationRecord{}, fmt.Errorf("next calibration date: %w", err)
 	}
 
+	if len(data) == 222 {
+		const (
+			idxSealData    = 167
+			lenSealRecord  = 11
+			numSealRecords = 5
+		)
+		r.sealRecords = make([]*vuv1.TechnicalDataGen2V1_SealRecord, numSealRecords)
+		for i := range numSealRecords {
+			start := idxSealData + i*lenSealRecord
+			seal := &vuv1.TechnicalDataGen2V1_SealRecord{}
+			equipmentType, enumErr := dd.UnmarshalEnum[ddv1.EquipmentType](data[start])
+			if enumErr != nil {
+				seal.SetUnrecognizedEquipmentType(int32(data[start]))
+			} else {
+				seal.SetEquipmentType(equipmentType)
+			}
+			seal.SetManufacturerCode(string(bytes.Trim(data[start+1:start+3], "\x00\xff ")))
+			seal.SetSealIdentifier(string(bytes.Trim(data[start+3:start+11], "\x00\xff ")))
+			r.sealRecords[i] = seal
+		}
+	}
+
 	return r, nil
 }
 
-// marshalOneCalibrationRecordGen2 marshals a gen2CalibrationRecord to 168 bytes.
+// marshalOneCalibrationRecordGen2 marshals a Gen2 V1 calibration record.
 func marshalOneCalibrationRecordGen2(opts dd.MarshalOptions, r gen2CalibrationRecord) ([]byte, error) {
-	const size = 168
-	var canvas [size]byte
+	size := 167
+	if len(r.sealRecords) > 0 {
+		size = 222
+	}
+	canvas := make([]byte, size)
 
 	const (
 		idxCalibrationPurpose = 0
@@ -514,7 +682,11 @@ func marshalOneCalibrationRecordGen2(opts dd.MarshalOptions, r gen2CalibrationRe
 	if r.unrecognizedPurpose != 0 {
 		canvas[idxCalibrationPurpose] = byte(r.unrecognizedPurpose)
 	} else {
-		canvas[idxCalibrationPurpose] = byte(r.purpose)
+		purpose, err := dd.MarshalEnum(r.purpose)
+		if err != nil {
+			return nil, fmt.Errorf("calibration purpose: %w", err)
+		}
+		canvas[idxCalibrationPurpose] = purpose
 	}
 
 	// workshopName (36 bytes)
@@ -630,7 +802,25 @@ func marshalOneCalibrationRecordGen2(opts dd.MarshalOptions, r gen2CalibrationRe
 	}
 	copy(canvas[idxNextCalDate:idxNextCalDate+4], nextCalBytes)
 
-	return canvas[:], nil
+	for i, seal := range r.sealRecords {
+		if i >= 5 {
+			break
+		}
+		offset := 167 + i*11
+		if seal.GetUnrecognizedEquipmentType() != 0 {
+			canvas[offset] = byte(seal.GetUnrecognizedEquipmentType())
+		} else {
+			equipmentType, err := dd.MarshalEnum(seal.GetEquipmentType())
+			if err != nil {
+				return nil, fmt.Errorf("seal record %d equipment type: %w", i, err)
+			}
+			canvas[offset] = equipmentType
+		}
+		copy(canvas[offset+1:offset+3], []byte(seal.GetManufacturerCode()))
+		copy(canvas[offset+3:offset+11], []byte(seal.GetSealIdentifier()))
+	}
+
+	return canvas, nil
 }
 
 // gen2CalibrationToV1 converts a parsed gen2CalibrationRecord to the V1 proto type.
@@ -654,6 +844,7 @@ func gen2CalibrationToV1(r gen2CalibrationRecord) *vuv1.TechnicalDataGen2V1_Cali
 	rec.SetOldTimeValue(r.oldTimeValue)
 	rec.SetNewTimeValue(r.newTimeValue)
 	rec.SetNextCalibrationDate(r.nextCalibrationDate)
+	rec.SetSealRecords(r.sealRecords)
 	return rec
 }
 
@@ -663,24 +854,25 @@ func gen2CalibrationFromV1(rec *vuv1.TechnicalDataGen2V1_CalibrationRecord) gen2
 		return gen2CalibrationRecord{}
 	}
 	return gen2CalibrationRecord{
-		purpose:                  rec.GetPurpose(),
-		unrecognizedPurpose:      rec.GetUnrecognizedPurpose(),
-		workshopName:             rec.GetWorkshopName(),
-		workshopAddress:          rec.GetWorkshopAddress(),
-		workshopCardNumber:       rec.GetWorkshopCardNumber(),
-		workshopCardExpiryDate:   rec.GetWorkshopCardExpiryDate(),
-		vin:                      rec.GetVin(),
-		vehicleRegistration:      rec.GetVehicleRegistration(),
-		wVehicleCharConst:        rec.GetWVehicleCharacteristicConstant(),
-		kConstantRecordEquip:     rec.GetKConstantOfRecordingEquipment(),
-		lTyreCircumference:       rec.GetLTyreCircumferenceEighthsMm(),
-		tyreSize:                 rec.GetTyreSize(),
-		authorisedSpeedKmh:       rec.GetAuthorisedSpeedKmh(),
-		oldOdometerValueKm:       rec.GetOldOdometerValueKm(),
-		newOdometerValueKm:       rec.GetNewOdometerValueKm(),
-		oldTimeValue:             rec.GetOldTimeValue(),
-		newTimeValue:             rec.GetNewTimeValue(),
-		nextCalibrationDate:      rec.GetNextCalibrationDate(),
+		purpose:                rec.GetPurpose(),
+		unrecognizedPurpose:    rec.GetUnrecognizedPurpose(),
+		workshopName:           rec.GetWorkshopName(),
+		workshopAddress:        rec.GetWorkshopAddress(),
+		workshopCardNumber:     rec.GetWorkshopCardNumber(),
+		workshopCardExpiryDate: rec.GetWorkshopCardExpiryDate(),
+		vin:                    rec.GetVin(),
+		vehicleRegistration:    rec.GetVehicleRegistration(),
+		wVehicleCharConst:      rec.GetWVehicleCharacteristicConstant(),
+		kConstantRecordEquip:   rec.GetKConstantOfRecordingEquipment(),
+		lTyreCircumference:     rec.GetLTyreCircumferenceEighthsMm(),
+		tyreSize:               rec.GetTyreSize(),
+		authorisedSpeedKmh:     rec.GetAuthorisedSpeedKmh(),
+		oldOdometerValueKm:     rec.GetOldOdometerValueKm(),
+		newOdometerValueKm:     rec.GetNewOdometerValueKm(),
+		oldTimeValue:           rec.GetOldTimeValue(),
+		newTimeValue:           rec.GetNewTimeValue(),
+		nextCalibrationDate:    rec.GetNextCalibrationDate(),
+		sealRecords:            rec.GetSealRecords(),
 	}
 }
 
@@ -720,16 +912,22 @@ func marshalSensorPairedRecordsGen2V1(opts dd.MarshalOptions, sensors []*vuv1.Te
 }
 
 // marshalCalibrationRecordsGen2V1 marshals V1 calibration records to binary.
-func marshalCalibrationRecordsGen2V1(opts dd.MarshalOptions, records []*vuv1.TechnicalDataGen2V1_CalibrationRecord) ([]byte, error) {
-	result := make([]byte, 0, len(records)*168)
+func marshalCalibrationRecordsGen2V1(opts dd.MarshalOptions, records []*vuv1.TechnicalDataGen2V1_CalibrationRecord) ([]byte, uint16, error) {
+	var result []byte
+	recordSize := uint16(222)
 	for i, rec := range records {
 		b, err := marshalOneCalibrationRecordGen2(opts, gen2CalibrationFromV1(rec))
 		if err != nil {
-			return nil, fmt.Errorf("calibration record %d: %w", i, err)
+			return nil, 0, fmt.Errorf("calibration record %d: %w", i, err)
+		}
+		if i == 0 {
+			recordSize = uint16(len(b))
+		} else if len(b) != int(recordSize) {
+			return nil, 0, fmt.Errorf("calibration record %d has size %d, expected %d", i, len(b), recordSize)
 		}
 		result = append(result, b...)
 	}
-	return result, nil
+	return result, recordSize, nil
 }
 
 // ===== V1-specific conversion helpers =====

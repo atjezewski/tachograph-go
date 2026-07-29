@@ -419,9 +419,11 @@ type OverviewGen2V1_builder struct {
 	//
 	//	VehicleIdentificationNumber ::= IA5String(SIZE(17))
 	VehicleIdentificationNumber *v1.Ia5StringValue
-	// The vehicle registration, including nation.
+	// The vehicle registration number. Gen2 V1 Overview transfers do not carry
+	// the registration nation in this RecordArray.
 	//
-	// See Data Dictionary, Section 2.166, `VehicleRegistrationIdentification`.
+	// See Data Dictionary, Sections 2.167-2.168, `VehicleRegistrationNumber`
+	// and `VehicleRegistrationNumberRecordArray`.
 	VehicleRegistrationWithNation *v1.VehicleRegistrationIdentification
 	// Current date and time of the VU.
 	//

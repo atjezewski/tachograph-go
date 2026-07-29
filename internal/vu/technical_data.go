@@ -93,36 +93,22 @@ func sizeOfTechnicalDataGen1(data []byte) (totalSize, signatureSize int, err err
 func sizeOfTechnicalDataGen2V1(data []byte) (totalSize, signatureSize int, err error) {
 	offset := 0
 
-	// VuIdentificationRecordArray
-	size, sizeErr := sizeOfRecordArray(data, offset)
-	if sizeErr != nil {
-		return 0, 0, fmt.Errorf("VuIdentificationRecordArray: %w", sizeErr)
+	for offset < len(data) {
+		recordType, _, _, _, headerErr := parseRecordArrayHeader(data, offset)
+		if headerErr != nil {
+			return 0, 0, fmt.Errorf("RecordArray at offset %d: %w", offset, headerErr)
+		}
+		size, sizeErr := sizeOfRecordArray(data, offset)
+		if sizeErr != nil {
+			return 0, 0, fmt.Errorf("RecordArray type 0x%02x at offset %d: %w", recordType, offset, sizeErr)
+		}
+		offset += size
+		if recordType == recordTypeSignature {
+			return offset, size, nil
+		}
 	}
-	offset += size
 
-	// SensorPairedRecordArray
-	size, sizeErr = sizeOfRecordArray(data, offset)
-	if sizeErr != nil {
-		return 0, 0, fmt.Errorf("SensorPairedRecordArray: %w", sizeErr)
-	}
-	offset += size
-
-	// VuCalibrationRecordArray
-	size, sizeErr = sizeOfRecordArray(data, offset)
-	if sizeErr != nil {
-		return 0, 0, fmt.Errorf("VuCalibrationRecordArray: %w", sizeErr)
-	}
-	offset += size
-
-	// SignatureRecordArray (last)
-	size, sizeErr = sizeOfRecordArray(data, offset)
-	if sizeErr != nil {
-		return 0, 0, fmt.Errorf("SignatureRecordArray: %w", sizeErr)
-	}
-	signatureSizeGen2 := size
-	offset += size
-
-	return offset, signatureSizeGen2, nil
+	return 0, 0, fmt.Errorf("SignatureRecordArray not found")
 }
 
 // sizeOfTechnicalDataGen2V2 calculates size by parsing all Gen2 V2 RecordArrays.
