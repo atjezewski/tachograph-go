@@ -265,25 +265,78 @@ func (opts AuthenticateOptions) verifyGen2CertificateChain(ctx context.Context, 
 
 // verifyGen2DataSignature verifies the ECDSA signature on the data portion of a Gen2 record.
 func (opts AuthenticateOptions) verifyGen2DataSignature(record *vuv1.RawVehicleUnitFile_Record, vuCert *securityv1.EccCertificate, auth *securityv1.Authentication) error {
-	data, signature, err := splitTransferValue(record)
+	data, signatureRecordArray, err := splitTransferValue(record)
 	if err != nil {
 		auth.SetStatus(securityv1.Authentication_DATA_SIGNATURE_INVALID)
 		return fmt.Errorf("failed to split transfer value: %w", err)
 	}
 
-	if len(signature) == 0 {
+	if len(signatureRecordArray) == 0 {
 		auth.SetStatus(securityv1.Authentication_DATA_SIGNATURE_INVALID)
 		return fmt.Errorf("no signature present in Gen2 record")
 	}
+	signature, err := unwrapGen2SignatureRecordArray(signatureRecordArray)
+	if err != nil {
+		auth.SetStatus(securityv1.Authentication_DATA_SIGNATURE_INVALID)
+		return fmt.Errorf("invalid Gen2 signature RecordArray: %w", err)
+	}
+	signedData, err := signedDataForGen2Record(record.GetType(), data)
+	if err != nil {
+		auth.SetStatus(securityv1.Authentication_DATA_SIGNATURE_INVALID)
+		return fmt.Errorf("invalid Gen2 signed-data boundary: %w", err)
+	}
 
-	// For Gen2, the signature is over all the data in the transfer
 	// The signature format is plain ECDSA (R || S)
-	if err := security.VerifyEccDataSignature(data, signature, vuCert); err != nil {
+	if err := security.VerifyEccDataSignature(signedData, signature, vuCert); err != nil {
 		auth.SetStatus(securityv1.Authentication_DATA_SIGNATURE_INVALID)
 		return fmt.Errorf("data signature verification failed: %w", err)
 	}
 
 	return nil
+}
+
+func unwrapGen2SignatureRecordArray(data []byte) ([]byte, error) {
+	const headerSize = 5
+	if len(data) < headerSize {
+		return nil, fmt.Errorf("got %d bytes, need at least %d", len(data), headerSize)
+	}
+
+	recordType := data[0]
+	recordSize := int(binary.BigEndian.Uint16(data[1:3]))
+	noOfRecords := int(binary.BigEndian.Uint16(data[3:5]))
+	if recordType != recordTypeSignature {
+		return nil, fmt.Errorf("record type is 0x%02x, want 0x%02x", recordType, recordTypeSignature)
+	}
+	if noOfRecords != 1 {
+		return nil, fmt.Errorf("record count is %d, want 1", noOfRecords)
+	}
+	if len(data) != headerSize+recordSize {
+		return nil, fmt.Errorf("size is %d, header declares %d", len(data), headerSize+recordSize)
+	}
+
+	return data[headerSize:], nil
+}
+
+func signedDataForGen2Record(transferType vuv1.TransferType, data []byte) ([]byte, error) {
+	if transferType != vuv1.TransferType_OVERVIEW_GEN2_V1 &&
+		transferType != vuv1.TransferType_OVERVIEW_GEN2_V2 {
+		return data, nil
+	}
+
+	// The Overview signature covers all preceding RecordArrays except the
+	// Member State and VU certificate arrays at the start of the transfer.
+	offset := 0
+	for range 2 {
+		size, err := sizeOfRecordArray(data, offset)
+		if err != nil {
+			return nil, fmt.Errorf("certificate RecordArray at offset %d: %w", offset, err)
+		}
+		offset += size
+	}
+	if offset >= len(data) {
+		return nil, fmt.Errorf("no signed data after certificate RecordArrays")
+	}
+	return data[offset:], nil
 }
 
 // findOverviewRecord finds the first Gen1 Overview record in the file.
