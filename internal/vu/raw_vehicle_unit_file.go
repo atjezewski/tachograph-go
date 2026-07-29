@@ -54,9 +54,21 @@ func (opts UnmarshalOptions) UnmarshalRawVehicleUnitFile(data []byte) (*vuv1.Raw
 		tag := binary.BigEndian.Uint16(data[offset:])
 
 		// Tags must follow 0x76XX pattern (SID 0x76 + TREP byte).
-		// Non-matching bytes indicate end of transfer data section
-		// (e.g., trailing file-level signature in Gen2v2).
+		// A Gen2 V2 file-level signature is the only supported non-tagged suffix.
 		if tag>>8 != 0x76 {
+			trailing := data[offset:]
+			if isExpectedFileLevelSignature(trailing, &rawFile) {
+				rawFile.SetTrailingData(trailing)
+				break
+			}
+			if opts.Strict {
+				return nil, fmt.Errorf(
+					"unexpected non-tagged data at offset %d: %d bytes remain (starts 0x%04X)",
+					offset,
+					len(trailing),
+					tag,
+				)
+			}
 			rawFile.SetTrailingData(data[offset:])
 			break
 		}
@@ -99,6 +111,21 @@ func (opts UnmarshalOptions) UnmarshalRawVehicleUnitFile(data []byte) (*vuv1.Raw
 	}
 
 	return &rawFile, nil
+}
+
+func isExpectedFileLevelSignature(data []byte, rawFile *vuv1.RawVehicleUnitFile) bool {
+	const (
+		headerSize    = 5
+		signatureSize = 64
+		totalSize     = headerSize + signatureSize
+	)
+	if len(data) != totalSize ||
+		data[0] != recordTypeSignature ||
+		binary.BigEndian.Uint16(data[1:3]) != signatureSize ||
+		binary.BigEndian.Uint16(data[3:5]) != 1 {
+		return false
+	}
+	return hasGen2V2Transfers(rawFile)
 }
 
 // sizeOfTransferValue dispatches to type-specific sizeOf functions.
