@@ -203,7 +203,7 @@ func (opts MarshalOptions) MarshalActivitiesGen2V1(activities *vuv1.ActivitiesGe
 	result = appendRecordArrayHeader(result, 0x07, 5, uint16(len(activities.GetSpecificConditions())))
 	result = append(result, specificCondData...)
 
-	result = appendSignature(result, activities.GetSignature(), 0x09)
+	result = appendSignature(result, activities.GetSignature())
 
 	return result, nil
 }
@@ -477,11 +477,11 @@ func appendRecordArrayHeader(dst []byte, recordType byte, recordSize uint16, noO
 // The signature field stores the complete SignatureRecordArray (5-byte header + sig bytes).
 // When the signature is empty (anonymized data has no real signature), a placeholder 5-byte
 // empty RecordArray header is appended so that sizeOf* functions can still parse the output.
-func appendSignature(dst []byte, signature []byte, recordType byte) []byte {
+func appendSignature(dst []byte, signature []byte) []byte {
 	if len(signature) > 0 {
 		return append(dst, signature...)
 	}
-	return appendRecordArrayHeader(dst, recordType, 0, 0)
+	return appendRecordArrayHeader(dst, recordTypeSignature, 0, 0)
 }
 
 // marshalCardIWRecordsG2 marshals CardIWRecords for Gen2.

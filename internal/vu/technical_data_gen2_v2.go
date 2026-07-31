@@ -12,9 +12,6 @@ import (
 
 // unmarshalTechnicalDataGen2V2 parses Gen2 V2 Technical Data from the complete transfer value.
 //
-// Gen2 V2 adds SensorExternalGNSSCoupledRecordArray, VuITSConsentRecordArray,
-// and VuPowerSupplyInterruptionRecordArray to the V1 structure.
-//
 // Structure:
 //
 //	VuTechnicalDataSecondGenV2 ::= SEQUENCE {
@@ -22,6 +19,7 @@ import (
 //	    vuSensorPairedRecordArray                VuSensorPairedRecordArray,
 //	    vuSensorExternalGNSSCoupledRecordArray   VuSensorExternalGNSSCoupledRecordArray,
 //	    vuCalibrationRecordArray                 VuCalibrationRecordArray,
+//	    vuCardRecordArray                        VuCardRecordArray,
 //	    vuITSConsentRecordArray                  VuITSConsentRecordArray,
 //	    vuPowerSupplyInterruptionRecordArray      VuPowerSupplyInterruptionRecordArray,
 //	    signatureRecordArray                     SignatureRecordArray
@@ -79,6 +77,14 @@ func unmarshalTechnicalDataGen2V2(value []byte) (*vuv1.TechnicalDataGen2V2, erro
 	td.SetCalibrationRecords(calRecords)
 	offset += bytesRead
 
+	// VuCardRecordArray
+	cardRecords, bytesRead, err := parseCardRecordArrayGen2V2(data, offset)
+	if err != nil {
+		return nil, fmt.Errorf("parse VuCardRecordArray: %w", err)
+	}
+	td.SetCardRecords(cardRecords)
+	offset += bytesRead
+
 	// VuITSConsentRecordArray
 	itsConsents, bytesRead, err := parseItsConsentRecordArrayGen2V2(data, offset)
 	if err != nil {
@@ -123,7 +129,7 @@ func (opts MarshalOptions) MarshalTechnicalDataGen2V2(td *vuv1.TechnicalDataGen2
 	if err != nil {
 		return nil, fmt.Errorf("marshal VuIdentificationRecordArray: %w", err)
 	}
-	result = appendRecordArrayHeader(result, 0x01, 124, 1)
+	result = appendRecordArrayHeader(result, recordTypeVuIdentification, 124, 1)
 	result = append(result, vuIdentData...)
 
 	// SensorPairedRecordArray (N records × 28 bytes)
@@ -132,7 +138,7 @@ func (opts MarshalOptions) MarshalTechnicalDataGen2V2(td *vuv1.TechnicalDataGen2
 	if err != nil {
 		return nil, fmt.Errorf("marshal SensorPairedRecordArray: %w", err)
 	}
-	result = appendRecordArrayHeader(result, 0x02, 28, uint16(len(sensors)))
+	result = appendRecordArrayHeader(result, recordTypeSensorPairedRecord, 28, uint16(len(sensors)))
 	result = append(result, sensorData...)
 
 	// SensorExternalGNSSCoupledRecordArray (N records × 28 bytes)
@@ -141,7 +147,7 @@ func (opts MarshalOptions) MarshalTechnicalDataGen2V2(td *vuv1.TechnicalDataGen2
 	if err != nil {
 		return nil, fmt.Errorf("marshal SensorExternalGNSSCoupledRecordArray: %w", err)
 	}
-	result = appendRecordArrayHeader(result, 0x03, 28, uint16(len(gnss)))
+	result = appendRecordArrayHeader(result, recordTypeSensorExternalGNSSCoupled, 28, uint16(len(gnss)))
 	result = append(result, gnssData...)
 
 	// VuCalibrationRecordArray (N records × 252 bytes)
@@ -150,8 +156,17 @@ func (opts MarshalOptions) MarshalTechnicalDataGen2V2(td *vuv1.TechnicalDataGen2
 	if err != nil {
 		return nil, fmt.Errorf("marshal VuCalibrationRecordArray: %w", err)
 	}
-	result = appendRecordArrayHeader(result, 0x04, 252, uint16(len(calRecords)))
+	result = appendRecordArrayHeader(result, recordTypeVuCalibrationRecord, 252, uint16(len(calRecords)))
 	result = append(result, calData...)
+
+	// VuCardRecordArray (N records x 45 bytes)
+	cardRecords := td.GetCardRecords()
+	cardData, err := marshalCardRecordsGen2V2(marshalOpts, cardRecords)
+	if err != nil {
+		return nil, fmt.Errorf("marshal VuCardRecordArray: %w", err)
+	}
+	result = appendRecordArrayHeader(result, recordTypeVuCardRecord, 45, uint16(len(cardRecords)))
+	result = append(result, cardData...)
 
 	// VuITSConsentRecordArray (N records × 20 bytes)
 	itsConsents := td.GetItsConsentRecords()
@@ -159,16 +174,16 @@ func (opts MarshalOptions) MarshalTechnicalDataGen2V2(td *vuv1.TechnicalDataGen2
 	if err != nil {
 		return nil, fmt.Errorf("marshal VuITSConsentRecordArray: %w", err)
 	}
-	result = appendRecordArrayHeader(result, 0x05, 20, uint16(len(itsConsents)))
+	result = appendRecordArrayHeader(result, recordTypeVuITSConsentRecord, 20, uint16(len(itsConsents)))
 	result = append(result, itsData...)
 
-	// VuPowerSupplyInterruptionRecordArray (N records × 5 bytes)
+	// VuPowerSupplyInterruptionRecordArray (N records x 87 bytes)
 	powerInterruptions := td.GetPowerSupplyInterruptions()
 	powerData, err := marshalPowerSupplyInterruptionRecordsGen2V2(marshalOpts, powerInterruptions)
 	if err != nil {
 		return nil, fmt.Errorf("marshal VuPowerSupplyInterruptionRecordArray: %w", err)
 	}
-	result = appendRecordArrayHeader(result, 0x06, 5, uint16(len(powerInterruptions)))
+	result = appendRecordArrayHeader(result, recordTypeVuPowerSupplyInterruption, 87, uint16(len(powerInterruptions)))
 	result = append(result, powerData...)
 
 	// Signature: stored as complete SignatureRecordArray bytes (header + sig bytes).
@@ -176,7 +191,7 @@ func (opts MarshalOptions) MarshalTechnicalDataGen2V2(td *vuv1.TechnicalDataGen2
 	if sig := td.GetSignature(); len(sig) > 0 {
 		result = append(result, sig...)
 	} else {
-		result = appendRecordArrayHeader(result, 0x07, 0, 0)
+		result = appendRecordArrayHeader(result, recordTypeSignature, 0, 0)
 	}
 	return result, nil
 }
@@ -281,6 +296,22 @@ func (opts AnonymizeOptions) anonymizeTechnicalDataGen2V2(td *vuv1.TechnicalData
 	}
 	result.SetCalibrationRecords(anonCals)
 
+	// Anonymize card records.
+	anonCards := make([]*vuv1.TechnicalDataGen2V2_CardRecord, len(td.GetCardRecords()))
+	for i, card := range td.GetCardRecords() {
+		anon := &vuv1.TechnicalDataGen2V2_CardRecord{}
+		anonCardNumber := ddOpts.AnonymizeFullCardNumberAndGeneration(card.GetCardNumberAndGeneration())
+		anon.SetCardNumberAndGeneration(anonCardNumber)
+		anon.SetCardExtendedSerialNumber(anonymizeExtendedSerialNumber(card.GetCardExtendedSerialNumber()))
+		anon.SetCardStructureVersion(card.GetCardStructureVersion())
+		if fullCardNumber := anonCardNumber.GetFullCardNumber(); fullCardNumber != nil {
+			anon.SetDriverIdentification(fullCardNumber.GetDriverIdentification())
+			anon.SetOwnerIdentification(fullCardNumber.GetOwnerIdentification())
+		}
+		anonCards[i] = anon
+	}
+	result.SetCardRecords(anonCards)
+
 	// Anonymize ITS consent records (clear card numbers)
 	anonIts := make([]*vuv1.TechnicalDataGen2V2_ItsConsentRecord, len(td.GetItsConsentRecords()))
 	for i, its := range td.GetItsConsentRecords() {
@@ -291,8 +322,24 @@ func (opts AnonymizeOptions) anonymizeTechnicalDataGen2V2(td *vuv1.TechnicalData
 	}
 	result.SetItsConsentRecords(anonIts)
 
-	// Preserve power supply interruption records (no PII — just timestamps and slot numbers)
-	result.SetPowerSupplyInterruptions(td.GetPowerSupplyInterruptions())
+	// Anonymize the card numbers stored with power supply interruptions.
+	anonPower := make([]*vuv1.TechnicalDataGen2V2_PowerSupplyInterruptionRecord, len(td.GetPowerSupplyInterruptions()))
+	for i, power := range td.GetPowerSupplyInterruptions() {
+		anon := &vuv1.TechnicalDataGen2V2_PowerSupplyInterruptionRecord{}
+		anon.SetEventType(power.GetEventType())
+		anon.SetUnrecognizedEventType(power.GetUnrecognizedEventType())
+		anon.SetEventRecordPurpose(power.GetEventRecordPurpose())
+		anon.SetUnrecognizedEventRecordPurpose(power.GetUnrecognizedEventRecordPurpose())
+		anon.SetEventBeginTime(ddOpts.AnonymizeTimestamp(power.GetEventBeginTime()))
+		anon.SetEventEndTime(ddOpts.AnonymizeTimestamp(power.GetEventEndTime()))
+		anon.SetCardNumberAndGenerationDriverSlotBegin(ddOpts.AnonymizeFullCardNumberAndGeneration(power.GetCardNumberAndGenerationDriverSlotBegin()))
+		anon.SetCardNumberAndGenerationDriverSlotEnd(ddOpts.AnonymizeFullCardNumberAndGeneration(power.GetCardNumberAndGenerationDriverSlotEnd()))
+		anon.SetCardNumberAndGenerationCodriverSlotBegin(ddOpts.AnonymizeFullCardNumberAndGeneration(power.GetCardNumberAndGenerationCodriverSlotBegin()))
+		anon.SetCardNumberAndGenerationCodriverSlotEnd(ddOpts.AnonymizeFullCardNumberAndGeneration(power.GetCardNumberAndGenerationCodriverSlotEnd()))
+		anon.SetSimilarEventsNumber(power.GetSimilarEventsNumber())
+		anonPower[i] = anon
+	}
+	result.SetPowerSupplyInterruptions(anonPower)
 
 	result.SetSignature([]byte{})
 	return result
@@ -422,41 +469,41 @@ func parseCalibrationRecordArrayGen2V2(data []byte, offset int) ([]*vuv1.Technic
 //	calibrationCountryTimestamp TimeReal                              -- 4 bytes (offset 248)
 func parseOneCalibrationRecordGen2V2(opts dd.UnmarshalOptions, data []byte) (*vuv1.TechnicalDataGen2V2_CalibrationRecord, error) {
 	const (
-		idxPurpose          = 0
-		idxWorkshopName     = 1
-		lenWorkshopName     = 36
-		idxWorkshopAddress  = 37
-		lenWorkshopAddress  = 36
-		idxWorkshopCard     = 73
-		lenWorkshopCard     = 18
-		idxCardExpiry       = 91
-		lenCardExpiry       = 4
-		idxVIN              = 95
-		lenVIN              = 17
-		idxVehicleReg       = 112
-		lenVehicleReg       = 15
-		idxWVehicleChar     = 127
-		idxKConstant        = 129
-		idxLTyreCirc        = 131
-		idxTyreSize         = 133
-		lenTyreSize         = 15
-		idxAuthorisedSpeed  = 148
-		idxOldOdometer      = 149
-		idxNewOdometer      = 152
-		idxOldTimeValue     = 155
-		idxNewTimeValue     = 159
-		idxNextCalDate      = 163
-		idxSensorSerial     = 167
-		idxGNSSSerial       = 175
-		idxRCMSerial        = 183
-		idxSealData         = 191
-		lenSealRecord       = 11
-		numSealRecords      = 5
-		lenSealData         = numSealRecords * lenSealRecord // 55
-		idxLoadType         = idxSealData + lenSealData      // 246
-		idxCalCountry       = 247
-		idxCalCountryTs     = 248
-		lenRecord           = 252
+		idxPurpose         = 0
+		idxWorkshopName    = 1
+		lenWorkshopName    = 36
+		idxWorkshopAddress = 37
+		lenWorkshopAddress = 36
+		idxWorkshopCard    = 73
+		lenWorkshopCard    = 18
+		idxCardExpiry      = 91
+		lenCardExpiry      = 4
+		idxVIN             = 95
+		lenVIN             = 17
+		idxVehicleReg      = 112
+		lenVehicleReg      = 15
+		idxWVehicleChar    = 127
+		idxKConstant       = 129
+		idxLTyreCirc       = 131
+		idxTyreSize        = 133
+		lenTyreSize        = 15
+		idxAuthorisedSpeed = 148
+		idxOldOdometer     = 149
+		idxNewOdometer     = 152
+		idxOldTimeValue    = 155
+		idxNewTimeValue    = 159
+		idxNextCalDate     = 163
+		idxSensorSerial    = 167
+		idxGNSSSerial      = 175
+		idxRCMSerial       = 183
+		idxSealData        = 191
+		lenSealRecord      = 11
+		numSealRecords     = 5
+		lenSealData        = numSealRecords * lenSealRecord // 55
+		idxLoadType        = idxSealData + lenSealData      // 246
+		idxCalCountry      = 247
+		idxCalCountryTs    = 248
+		lenRecord          = 252
 	)
 
 	if len(data) < lenRecord {
@@ -627,102 +674,6 @@ func parseOneCalibrationRecordGen2V2(opts dd.UnmarshalOptions, data []byte) (*vu
 	rec.SetCalibrationCountryTimestamp(calCountryTs)
 
 	return rec, nil
-}
-
-// parseItsConsentRecordArrayGen2V2 parses a VuITSConsentRecordArray.
-//
-// VuITSConsentRecord (20 bytes):
-//
-//	fullCardNumberAndGeneration FullCardNumberAndGeneration  -- 19 bytes
-//	vuITSConsentGranted bool                                 -- 1 byte
-func parseItsConsentRecordArrayGen2V2(data []byte, offset int) ([]*vuv1.TechnicalDataGen2V2_ItsConsentRecord, int, error) {
-	_, recordSize, noOfRecords, headerSize, err := parseRecordArrayHeader(data, offset)
-	if err != nil {
-		return nil, 0, err
-	}
-
-	// Gen2V2 devices may send larger ItsConsentRecords (45 bytes observed vs spec 20).
-	// Parse the shared 20-byte prefix; extra bytes are preserved in the parent TV raw_data.
-	const minRecordSize = 20
-	if int(recordSize) < minRecordSize {
-		return nil, 0, fmt.Errorf("expected ItsConsentRecord size >= %d, got %d", minRecordSize, recordSize)
-	}
-
-	var unmarshalOpts dd.UnmarshalOptions
-	records := make([]*vuv1.TechnicalDataGen2V2_ItsConsentRecord, 0, noOfRecords)
-	recStart := offset + headerSize
-
-	for i := range noOfRecords {
-		recEnd := recStart + int(recordSize)
-		if recEnd > len(data) {
-			return nil, 0, fmt.Errorf("insufficient data for ItsConsentRecord %d", i)
-		}
-		rec := data[recStart : recStart+minRecordSize] // parse first 20 bytes only
-
-		const lenFullCardNumberAndGen = 19
-		cardNumber, err := unmarshalOpts.UnmarshalFullCardNumberAndGeneration(rec[:lenFullCardNumberAndGen])
-		if err != nil {
-			return nil, 0, fmt.Errorf("ItsConsentRecord %d card number: %w", i, err)
-		}
-
-		consent := &vuv1.TechnicalDataGen2V2_ItsConsentRecord{}
-		consent.SetFullCardNumberAndGeneration(cardNumber)
-		consent.SetConsentStatus(rec[lenFullCardNumberAndGen] != 0)
-		records = append(records, consent)
-		recStart = recEnd
-	}
-
-	return records, headerSize + int(recordSize)*int(noOfRecords), nil
-}
-
-// parsePowerSupplyInterruptionRecordArrayGen2V2 parses a VuPowerSupplyInterruptionRecordArray.
-//
-// VuPowerSupplyInterruptionRecord (5 bytes):
-//
-//	eventTimestamp TimeReal     -- 4 bytes
-//	cardSlotNumber CardSlotNumber -- 1 byte
-func parsePowerSupplyInterruptionRecordArrayGen2V2(data []byte, offset int) ([]*vuv1.TechnicalDataGen2V2_PowerSupplyInterruptionRecord, int, error) {
-	_, recordSize, noOfRecords, headerSize, err := parseRecordArrayHeader(data, offset)
-	if err != nil {
-		return nil, 0, err
-	}
-
-	// Gen2V2 devices may send larger PowerSupplyInterruptionRecords (20 bytes observed vs spec 5).
-	// Parse the shared 5-byte prefix; extra bytes are preserved in the parent TV raw_data.
-	const minRecordSize = 5
-	if int(recordSize) < minRecordSize {
-		return nil, 0, fmt.Errorf("expected PowerSupplyInterruptionRecord size >= %d, got %d", minRecordSize, recordSize)
-	}
-
-	var unmarshalOpts dd.UnmarshalOptions
-	records := make([]*vuv1.TechnicalDataGen2V2_PowerSupplyInterruptionRecord, 0, noOfRecords)
-	recStart := offset + headerSize
-
-	for i := range noOfRecords {
-		recEnd := recStart + int(recordSize)
-		if recEnd > len(data) {
-			return nil, 0, fmt.Errorf("insufficient data for PowerSupplyInterruptionRecord %d", i)
-		}
-		rec := data[recStart : recStart+minRecordSize] // parse first 5 bytes only
-
-		timestamp, err := unmarshalOpts.UnmarshalTimeReal(rec[:4])
-		if err != nil {
-			return nil, 0, fmt.Errorf("PowerSupplyInterruptionRecord %d timestamp: %w", i, err)
-		}
-
-		psi := &vuv1.TechnicalDataGen2V2_PowerSupplyInterruptionRecord{}
-		psi.SetTimestamp(timestamp)
-		slotNumber, err := dd.UnmarshalEnum[ddv1.CardSlotNumber](rec[4])
-		if err != nil {
-			psi.SetUnrecognizedCardSlotNumber(int32(rec[4]))
-		} else {
-			psi.SetCardSlotNumber(slotNumber)
-		}
-		records = append(records, psi)
-		recStart = recEnd
-	}
-
-	return records, headerSize + int(recordSize)*int(noOfRecords), nil
 }
 
 // ===== V2-specific marshal helpers =====
@@ -960,45 +911,6 @@ func marshalOneCalibrationRecordGen2V2(opts dd.MarshalOptions, rec *vuv1.Technic
 	copy(buf[248:252], calCountryTsBytes)
 
 	return buf, nil
-}
-
-// marshalItsConsentRecordsGen2V2 marshals V2 ITS consent records to binary.
-func marshalItsConsentRecordsGen2V2(opts dd.MarshalOptions, records []*vuv1.TechnicalDataGen2V2_ItsConsentRecord) ([]byte, error) {
-	result := make([]byte, 0, len(records)*20)
-	for i, rec := range records {
-		cardBytes, err := opts.MarshalFullCardNumberAndGeneration(rec.GetFullCardNumberAndGeneration())
-		if err != nil {
-			return nil, fmt.Errorf("ITS consent record %d card number: %w", i, err)
-		}
-		if len(cardBytes) != 19 {
-			return nil, fmt.Errorf("ITS consent record %d: expected 19 bytes for card number, got %d", i, len(cardBytes))
-		}
-		result = append(result, cardBytes...)
-		if rec.GetConsentStatus() {
-			result = append(result, 1)
-		} else {
-			result = append(result, 0)
-		}
-	}
-	return result, nil
-}
-
-// marshalPowerSupplyInterruptionRecordsGen2V2 marshals V2 power supply interruption records to binary.
-func marshalPowerSupplyInterruptionRecordsGen2V2(opts dd.MarshalOptions, records []*vuv1.TechnicalDataGen2V2_PowerSupplyInterruptionRecord) ([]byte, error) {
-	result := make([]byte, 0, len(records)*5)
-	for i, rec := range records {
-		tsBytes, err := opts.MarshalTimeReal(rec.GetTimestamp())
-		if err != nil {
-			return nil, fmt.Errorf("power supply interruption record %d timestamp: %w", i, err)
-		}
-		result = append(result, tsBytes...)
-		if rec.GetUnrecognizedCardSlotNumber() != 0 {
-			result = append(result, byte(rec.GetUnrecognizedCardSlotNumber()))
-		} else {
-			result = append(result, byte(rec.GetCardSlotNumber()))
-		}
-	}
-	return result, nil
 }
 
 // ===== V2-specific conversion helpers =====

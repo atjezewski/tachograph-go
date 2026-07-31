@@ -143,7 +143,7 @@ func (opts MarshalOptions) MarshalEventsAndFaultsGen2V1(ef *vuv1.EventsAndFaults
 	result = appendRecordArrayHeader(result, 0x05, 99, uint16(len(ef.GetTimeAdjustments())))
 	result = append(result, timeAdjData...)
 
-	result = appendSignature(result, ef.GetSignature(), 0x06)
+	result = appendSignature(result, ef.GetSignature())
 	return result, nil
 }
 
@@ -698,7 +698,7 @@ func marshalVuFaultRecordsGen2V1(opts dd.MarshalOptions, records []*vuv1.EventsA
 
 		// Pad to consistent record size
 		padded := 86 + len(firstMfrData)
-		currentSize := len(result) - (len(result) - padded - (len(result)-(86*i+len(mfrData)*i+86)))
+		currentSize := len(result) - (len(result) - padded - (len(result) - (86*i + len(mfrData)*i + 86)))
 		_ = currentSize
 		_ = padded
 	}
@@ -1447,4 +1447,3 @@ func marshalVuTimeAdjustmentRecordsGen2V2(opts dd.MarshalOptions, records []*vuv
 	}
 	return result, nil
 }
-

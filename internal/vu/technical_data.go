@@ -143,6 +143,13 @@ func sizeOfTechnicalDataGen2V2(data []byte) (totalSize, signatureSize int, err e
 	}
 	offset += size
 
+	// VuCardRecordArray
+	size, sizeErr = sizeOfRecordArray(data, offset)
+	if sizeErr != nil {
+		return 0, 0, fmt.Errorf("VuCardRecordArray: %w", sizeErr)
+	}
+	offset += size
+
 	// VuITSConsentRecordArray (Gen2 V2+)
 	size, sizeErr = sizeOfRecordArray(data, offset)
 	if sizeErr != nil {

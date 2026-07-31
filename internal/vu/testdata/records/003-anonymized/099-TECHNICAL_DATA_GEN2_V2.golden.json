@@ -18,16 +18,16 @@
       "serialNumber": "0",
       "monthYear": {},
       "type": "VEHICLE_UNIT",
-      "manufacturerCode": 161
+      "manufacturerCode": 162
     },
     "softwareIdentification": {
       "softwareVersion": {
         "length": 4,
-        "value": "4140"
+        "value": "1214"
       },
-      "softwareInstallationDate": "2025-09-10T13:10:18Z"
+      "softwareInstallationDate": "2023-11-12T00:00:00Z"
     },
-    "manufacturingDate": "2025-09-10T00:00:00Z",
+    "manufacturingDate": "2023-11-12T00:00:00Z",
     "approvalNumber": {
       "length": 16,
       "value": "TEST0001"
@@ -35,132 +35,7 @@
   },
   "calibrationRecords": [
     {
-      "purpose": "ACTIVATION",
-      "unrecognizedPurpose": 0,
-      "workshopName": {
-        "encoding": "ISO_8859_1",
-        "length": 35,
-        "value": "***********************************"
-      },
-      "workshopAddress": {
-        "encoding": "ISO_8859_1",
-        "length": 35,
-        "value": "***********************************"
-      },
-      "workshopCardNumber": {
-        "cardType": "WORKSHOP_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
-        "ownerIdentification": {
-          "ownerIdentification": {
-            "length": 13,
-            "value": "*************"
-          },
-          "consecutiveIndex": {
-            "length": 1,
-            "value": "*"
-          },
-          "replacementIndex": {
-            "length": 1,
-            "value": "*"
-          },
-          "renewalIndex": {
-            "length": 1,
-            "value": "*"
-          }
-        }
-      },
-      "workshopCardExpiryDate": "1970-02-08T05:25:57Z",
-      "vin": {
-        "length": 17,
-        "value": "W****************"
-      },
-      "vehicleRegistration": {
-        "nation": "SAN_MARINO",
-        "number": {
-          "encoding": "ISO_8859_15",
-          "length": 13,
-          "value": "************"
-        }
-      },
-      "wVehicleCharacteristicConstant": 10940,
-      "kConstantOfRecordingEquipment": 14780,
-      "lTyreCircumferenceEighthsMm": 24736,
-      "tyreSize": {
-        "length": 15,
-        "value": "3**************"
-      },
-      "authorisedSpeedKmh": 42,
-      "oldOdometerValueKm": 290417,
-      "newOdometerValueKm": 7405567,
-      "oldTimeValue": "1991-06-18T13:34:25Z",
-      "newTimeValue": "1970-03-13T08:03:45Z",
-      "nextCalibrationDate": "1970-03-13T08:03:45Z"
-    },
-    {
-      "purpose": "FIRST_INSTALLATION",
-      "unrecognizedPurpose": 0,
-      "workshopName": {
-        "encoding": "ISO_8859_1",
-        "length": 35,
-        "value": "***********************************"
-      },
-      "workshopAddress": {
-        "encoding": "ISO_8859_1",
-        "length": 35,
-        "value": "***********************************"
-      },
-      "workshopCardNumber": {
-        "cardType": "WORKSHOP_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
-        "ownerIdentification": {
-          "ownerIdentification": {
-            "length": 13,
-            "value": "*************"
-          },
-          "consecutiveIndex": {
-            "length": 1,
-            "value": "*"
-          },
-          "replacementIndex": {
-            "length": 1,
-            "value": "*"
-          },
-          "renewalIndex": {
-            "length": 1,
-            "value": "*"
-          }
-        }
-      },
-      "workshopCardExpiryDate": "1970-02-08T05:25:57Z",
-      "vin": {
-        "length": 17,
-        "value": "W****************"
-      },
-      "vehicleRegistration": {
-        "nation": "SAN_MARINO",
-        "number": {
-          "encoding": "ISO_8859_15",
-          "length": 13,
-          "value": "************"
-        }
-      },
-      "wVehicleCharacteristicConstant": 10940,
-      "kConstantOfRecordingEquipment": 14780,
-      "lTyreCircumferenceEighthsMm": 24736,
-      "tyreSize": {
-        "length": 15,
-        "value": "3**************"
-      },
-      "authorisedSpeedKmh": 42,
-      "oldOdometerValueKm": 290417,
-      "newOdometerValueKm": 7405567,
-      "oldTimeValue": "1991-06-18T13:34:25Z",
-      "newTimeValue": "1970-03-13T08:03:45Z",
-      "nextCalibrationDate": "1970-03-13T08:03:45Z"
-    },
-    {
       "purpose": "INSTALLATION",
-      "unrecognizedPurpose": 0,
       "workshopName": {
         "encoding": "ISO_8859_1",
         "length": 35,
@@ -193,36 +68,83 @@
           }
         }
       },
-      "workshopCardExpiryDate": "1970-02-08T05:25:57Z",
+      "workshopCardExpiryDate": "2025-03-31T23:59:59Z",
       "vin": {
         "length": 17,
-        "value": "W****************"
+        "value": "*****************"
       },
       "vehicleRegistration": {
-        "nation": "SAN_MARINO",
+        "nation": "UNITED_KINGDOM",
         "number": {
-          "encoding": "ISO_8859_15",
+          "encoding": "ISO_8859_1",
           "length": 13,
-          "value": "************"
+          "value": "*************"
         }
       },
-      "wVehicleCharacteristicConstant": 10940,
-      "kConstantOfRecordingEquipment": 14780,
-      "lTyreCircumferenceEighthsMm": 24736,
+      "wVehicleCharacteristicConstant": 5964,
+      "kConstantOfRecordingEquipment": 5964,
+      "lTyreCircumferenceEighthsMm": 24832,
       "tyreSize": {
         "length": 15,
-        "value": "3**************"
+        "value": "***************"
       },
-      "authorisedSpeedKmh": 42,
-      "oldOdometerValueKm": 290417,
-      "newOdometerValueKm": 7405567,
-      "oldTimeValue": "1991-06-18T13:34:25Z",
-      "newTimeValue": "1970-03-13T08:03:45Z",
-      "nextCalibrationDate": "1970-03-13T08:03:45Z"
+      "authorisedSpeedKmh": 90,
+      "oldOdometerValueKm": 156000,
+      "newOdometerValueKm": 156000,
+      "oldTimeValue": "2020-01-01T00:00:00Z",
+      "newTimeValue": "2020-01-01T00:00:00Z",
+      "nextCalibrationDate": "2020-01-01T00:00:00Z",
+      "sensorSerialNumber": {
+        "serialNumber": "0",
+        "monthYear": {},
+        "type": "MOTION_SENSOR",
+        "manufacturerCode": 161
+      },
+      "sensorGnssSerialNumber": {
+        "serialNumber": "0",
+        "monthYear": {},
+        "type": "RESERVED_MEMBER_STATE_OR_EUROPE",
+        "manufacturerCode": 0
+      },
+      "rcmSerialNumber": {
+        "serialNumber": "0",
+        "monthYear": {},
+        "type": "RESERVED_MEMBER_STATE_OR_EUROPE",
+        "manufacturerCode": 255
+      },
+      "sealRecords": [
+        {
+          "equipmentType": "WORKSHOP_CARD_SIGN",
+          "manufacturerCode": "",
+          "sealIdentifier": ""
+        },
+        {
+          "equipmentType": "WORKSHOP_CARD_SIGN",
+          "manufacturerCode": "",
+          "sealIdentifier": ""
+        },
+        {
+          "equipmentType": "WORKSHOP_CARD_SIGN",
+          "manufacturerCode": "",
+          "sealIdentifier": ""
+        },
+        {
+          "equipmentType": "WORKSHOP_CARD_SIGN",
+          "manufacturerCode": "",
+          "sealIdentifier": ""
+        },
+        {
+          "equipmentType": "WORKSHOP_CARD_SIGN",
+          "manufacturerCode": "",
+          "sealIdentifier": ""
+        }
+      ],
+      "loadType": 1,
+      "calibrationCountry": "NATION_NUMERIC_DEFAULT",
+      "calibrationCountryTimestamp": "2024-04-18T11:57:24Z"
     },
     {
-      "purpose": "CALIBRATION_PURPOSE_UNSPECIFIED",
-      "unrecognizedPurpose": 132,
+      "purpose": "PERIODIC_INSPECTION",
       "workshopName": {
         "encoding": "ISO_8859_1",
         "length": 35,
@@ -255,32 +177,189 @@
           }
         }
       },
-      "workshopCardExpiryDate": "1970-02-08T05:25:57Z",
+      "workshopCardExpiryDate": "2025-03-31T23:59:59Z",
       "vin": {
         "length": 17,
-        "value": "W****************"
+        "value": "*****************"
       },
       "vehicleRegistration": {
-        "nation": "SAN_MARINO",
+        "nation": "UNITED_KINGDOM",
         "number": {
-          "encoding": "ISO_8859_15",
+          "encoding": "ISO_8859_1",
           "length": 13,
-          "value": "************"
+          "value": "*************"
         }
       },
-      "wVehicleCharacteristicConstant": 10940,
-      "kConstantOfRecordingEquipment": 14780,
-      "lTyreCircumferenceEighthsMm": 24736,
+      "wVehicleCharacteristicConstant": 5964,
+      "kConstantOfRecordingEquipment": 5964,
+      "lTyreCircumferenceEighthsMm": 24832,
       "tyreSize": {
         "length": 15,
-        "value": "3**************"
+        "value": "***************"
       },
-      "authorisedSpeedKmh": 42,
-      "oldOdometerValueKm": 290417,
-      "newOdometerValueKm": 7405567,
-      "oldTimeValue": "1991-06-18T13:34:25Z",
-      "newTimeValue": "1970-03-13T08:03:45Z",
-      "nextCalibrationDate": "1970-03-13T08:03:45Z"
+      "authorisedSpeedKmh": 90,
+      "oldOdometerValueKm": 156000,
+      "newOdometerValueKm": 156000,
+      "oldTimeValue": "2020-01-01T00:00:00Z",
+      "newTimeValue": "2020-01-01T00:00:00Z",
+      "nextCalibrationDate": "2020-01-01T00:00:00Z",
+      "sensorSerialNumber": {
+        "serialNumber": "0",
+        "monthYear": {},
+        "type": "MOTION_SENSOR",
+        "manufacturerCode": 161
+      },
+      "sensorGnssSerialNumber": {
+        "serialNumber": "0",
+        "monthYear": {},
+        "type": "RESERVED_MEMBER_STATE_OR_EUROPE",
+        "manufacturerCode": 0
+      },
+      "rcmSerialNumber": {
+        "serialNumber": "0",
+        "monthYear": {},
+        "type": "REMOTE_COMMUNICATION_MODULE",
+        "manufacturerCode": 162
+      },
+      "sealRecords": [
+        {
+          "equipmentType": "WORKSHOP_CARD_SIGN",
+          "manufacturerCode": "",
+          "sealIdentifier": ""
+        },
+        {
+          "equipmentType": "WORKSHOP_CARD_SIGN",
+          "manufacturerCode": "",
+          "sealIdentifier": ""
+        },
+        {
+          "equipmentType": "WORKSHOP_CARD_SIGN",
+          "manufacturerCode": "",
+          "sealIdentifier": ""
+        },
+        {
+          "equipmentType": "WORKSHOP_CARD_SIGN",
+          "manufacturerCode": "",
+          "sealIdentifier": ""
+        },
+        {
+          "equipmentType": "WORKSHOP_CARD_SIGN",
+          "manufacturerCode": "",
+          "sealIdentifier": ""
+        }
+      ],
+      "loadType": 1,
+      "calibrationCountry": "UNITED_KINGDOM",
+      "calibrationCountryTimestamp": "2024-04-18T11:59:20Z"
+    },
+    {
+      "purpose": "TIME_ADJUSTMENT",
+      "workshopName": {
+        "encoding": "ISO_8859_1",
+        "length": 35,
+        "value": "***********************************"
+      },
+      "workshopAddress": {
+        "encoding": "ISO_8859_1",
+        "length": 35,
+        "value": "***********************************"
+      },
+      "workshopCardNumber": {
+        "cardType": "WORKSHOP_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+        "ownerIdentification": {
+          "ownerIdentification": {
+            "length": 13,
+            "value": "*************"
+          },
+          "consecutiveIndex": {
+            "length": 1,
+            "value": "*"
+          },
+          "replacementIndex": {
+            "length": 1,
+            "value": "*"
+          },
+          "renewalIndex": {
+            "length": 1,
+            "value": "*"
+          }
+        }
+      },
+      "workshopCardExpiryDate": "2025-03-31T23:59:59Z",
+      "vin": {
+        "length": 17,
+        "value": "*****************"
+      },
+      "vehicleRegistration": {
+        "nation": "UNITED_KINGDOM",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "*************"
+        }
+      },
+      "wVehicleCharacteristicConstant": 6083,
+      "kConstantOfRecordingEquipment": 6083,
+      "lTyreCircumferenceEighthsMm": 24768,
+      "tyreSize": {
+        "length": 15,
+        "value": "***************"
+      },
+      "authorisedSpeedKmh": 90,
+      "oldOdometerValueKm": 156000,
+      "newOdometerValueKm": 156000,
+      "oldTimeValue": "2020-01-01T00:00:00Z",
+      "newTimeValue": "2020-01-01T00:00:00Z",
+      "nextCalibrationDate": "2020-01-01T00:00:00Z",
+      "sensorSerialNumber": {
+        "serialNumber": "0",
+        "monthYear": {},
+        "type": "MOTION_SENSOR",
+        "manufacturerCode": 161
+      },
+      "sensorGnssSerialNumber": {
+        "serialNumber": "0",
+        "monthYear": {},
+        "type": "RESERVED_MEMBER_STATE_OR_EUROPE",
+        "manufacturerCode": 0
+      },
+      "rcmSerialNumber": {
+        "serialNumber": "0",
+        "monthYear": {},
+        "type": "REMOTE_COMMUNICATION_MODULE",
+        "manufacturerCode": 162
+      },
+      "sealRecords": [
+        {
+          "equipmentType": "REMOTE_COMMUNICATION_MODULE",
+          "manufacturerCode": "AS",
+          "sealIdentifier": "00148506"
+        },
+        {
+          "equipmentType": "WORKSHOP_CARD_SIGN",
+          "manufacturerCode": "",
+          "sealIdentifier": ""
+        },
+        {
+          "equipmentType": "WORKSHOP_CARD_SIGN",
+          "manufacturerCode": "",
+          "sealIdentifier": ""
+        },
+        {
+          "equipmentType": "WORKSHOP_CARD_SIGN",
+          "manufacturerCode": "",
+          "sealIdentifier": ""
+        },
+        {
+          "equipmentType": "WORKSHOP_CARD_SIGN",
+          "manufacturerCode": "",
+          "sealIdentifier": ""
+        }
+      ],
+      "loadType": 1,
+      "calibrationCountry": "UNITED_KINGDOM",
+      "calibrationCountryTimestamp": "2024-04-18T12:15:56Z"
     }
   ],
   "pairedSensors": [
@@ -295,7 +374,1617 @@
         "length": 16,
         "value": "SENSOR01"
       },
-      "pairingDate": "2025-11-28T05:56:36Z"
+      "pairingDate": "2024-04-18T11:57:24Z"
+    }
+  ],
+  "cardRecords": [
+    {
+      "cardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "WORKSHOP_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "ownerIdentification": {
+            "ownerIdentification": {
+              "length": 13,
+              "value": "*************"
+            },
+            "consecutiveIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "replacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "renewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "cardExtendedSerialNumber": {
+        "serialNumber": "0",
+        "monthYear": {},
+        "type": "WORKSHOP_CARD",
+        "manufacturerCode": 41
+      },
+      "cardStructureVersion": {
+        "major": 1,
+        "minor": 1
+      },
+      "ownerIdentification": {
+        "ownerIdentification": {
+          "length": 13,
+          "value": "*************"
+        },
+        "consecutiveIndex": {
+          "length": 1,
+          "value": "*"
+        },
+        "replacementIndex": {
+          "length": 1,
+          "value": "*"
+        },
+        "renewalIndex": {
+          "length": 1,
+          "value": "*"
+        }
+      },
+      "rawData": "AgAqKioqKioqKioqKioqKioqAgAAAAAAAAIpAQEqKioqKioqKioqKioqKioq"
+    },
+    {
+      "cardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "cardExtendedSerialNumber": {
+        "serialNumber": "0",
+        "monthYear": {},
+        "type": "DRIVER_CARD",
+        "manufacturerCode": 41
+      },
+      "cardStructureVersion": {
+        "major": 1,
+        "minor": 1
+      },
+      "driverIdentification": {
+        "driverIdentificationNumber": {
+          "length": 14,
+          "value": "**************"
+        },
+        "cardReplacementIndex": {
+          "length": 1,
+          "value": "*"
+        },
+        "cardRenewalIndex": {
+          "length": 1,
+          "value": "*"
+        }
+      },
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQEqKioqKioqKioqKioqKioq"
+    },
+    {
+      "cardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "cardExtendedSerialNumber": {
+        "serialNumber": "0",
+        "monthYear": {},
+        "type": "DRIVER_CARD",
+        "manufacturerCode": 41
+      },
+      "cardStructureVersion": {
+        "major": 1,
+        "minor": 0
+      },
+      "driverIdentification": {
+        "driverIdentificationNumber": {
+          "length": 14,
+          "value": "**************"
+        },
+        "cardReplacementIndex": {
+          "length": 1,
+          "value": "*"
+        },
+        "cardRenewalIndex": {
+          "length": 1,
+          "value": "*"
+        }
+      },
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQAqKioqKioqKioqKioqKioq"
+    },
+    {
+      "cardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "cardExtendedSerialNumber": {
+        "serialNumber": "0",
+        "monthYear": {},
+        "type": "DRIVER_CARD",
+        "manufacturerCode": 41
+      },
+      "cardStructureVersion": {
+        "major": 1,
+        "minor": 0
+      },
+      "driverIdentification": {
+        "driverIdentificationNumber": {
+          "length": 14,
+          "value": "**************"
+        },
+        "cardReplacementIndex": {
+          "length": 1,
+          "value": "*"
+        },
+        "cardRenewalIndex": {
+          "length": 1,
+          "value": "*"
+        }
+      },
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQAqKioqKioqKioqKioqKioq"
+    },
+    {
+      "cardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "cardExtendedSerialNumber": {
+        "serialNumber": "0",
+        "monthYear": {},
+        "type": "DRIVER_CARD",
+        "manufacturerCode": 163
+      },
+      "cardStructureVersion": {
+        "major": 1,
+        "minor": 0
+      },
+      "driverIdentification": {
+        "driverIdentificationNumber": {
+          "length": 14,
+          "value": "**************"
+        },
+        "cardReplacementIndex": {
+          "length": 1,
+          "value": "*"
+        },
+        "cardRenewalIndex": {
+          "length": 1,
+          "value": "*"
+        }
+      },
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgAAAAAAAAGjAQAqKioqKioqKioqKioqKioq"
+    },
+    {
+      "cardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_1"
+      },
+      "cardExtendedSerialNumber": {
+        "serialNumber": "0",
+        "monthYear": {},
+        "type": "DRIVER_CARD",
+        "manufacturerCode": 163
+      },
+      "cardStructureVersion": {
+        "major": 0,
+        "minor": 0
+      },
+      "driverIdentification": {
+        "driverIdentificationNumber": {
+          "length": 14,
+          "value": "**************"
+        },
+        "cardReplacementIndex": {
+          "length": 1,
+          "value": "*"
+        },
+        "cardRenewalIndex": {
+          "length": 1,
+          "value": "*"
+        }
+      },
+      "rawData": "AQAqKioqKioqKioqKioqKioqAQAAAAAAAAGjAAAqKioqKioqKioqKioqKioq"
+    },
+    {
+      "cardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "cardExtendedSerialNumber": {
+        "serialNumber": "0",
+        "monthYear": {},
+        "type": "DRIVER_CARD",
+        "manufacturerCode": 41
+      },
+      "cardStructureVersion": {
+        "major": 1,
+        "minor": 0
+      },
+      "driverIdentification": {
+        "driverIdentificationNumber": {
+          "length": 14,
+          "value": "**************"
+        },
+        "cardReplacementIndex": {
+          "length": 1,
+          "value": "*"
+        },
+        "cardRenewalIndex": {
+          "length": 1,
+          "value": "*"
+        }
+      },
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQAqKioqKioqKioqKioqKioq"
+    },
+    {
+      "cardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "cardExtendedSerialNumber": {
+        "serialNumber": "0",
+        "monthYear": {},
+        "type": "DRIVER_CARD",
+        "manufacturerCode": 41
+      },
+      "cardStructureVersion": {
+        "major": 1,
+        "minor": 0
+      },
+      "driverIdentification": {
+        "driverIdentificationNumber": {
+          "length": 14,
+          "value": "**************"
+        },
+        "cardReplacementIndex": {
+          "length": 1,
+          "value": "*"
+        },
+        "cardRenewalIndex": {
+          "length": 1,
+          "value": "*"
+        }
+      },
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQAqKioqKioqKioqKioqKioq"
+    },
+    {
+      "cardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "cardExtendedSerialNumber": {
+        "serialNumber": "0",
+        "monthYear": {},
+        "type": "DRIVER_CARD",
+        "manufacturerCode": 41
+      },
+      "cardStructureVersion": {
+        "major": 1,
+        "minor": 0
+      },
+      "driverIdentification": {
+        "driverIdentificationNumber": {
+          "length": 14,
+          "value": "**************"
+        },
+        "cardReplacementIndex": {
+          "length": 1,
+          "value": "*"
+        },
+        "cardRenewalIndex": {
+          "length": 1,
+          "value": "*"
+        }
+      },
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQAqKioqKioqKioqKioqKioq"
+    },
+    {
+      "cardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "cardExtendedSerialNumber": {
+        "serialNumber": "0",
+        "monthYear": {},
+        "type": "DRIVER_CARD",
+        "manufacturerCode": 41
+      },
+      "cardStructureVersion": {
+        "major": 1,
+        "minor": 0
+      },
+      "driverIdentification": {
+        "driverIdentificationNumber": {
+          "length": 14,
+          "value": "**************"
+        },
+        "cardReplacementIndex": {
+          "length": 1,
+          "value": "*"
+        },
+        "cardRenewalIndex": {
+          "length": 1,
+          "value": "*"
+        }
+      },
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQAqKioqKioqKioqKioqKioq"
+    },
+    {
+      "cardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "cardExtendedSerialNumber": {
+        "serialNumber": "0",
+        "monthYear": {},
+        "type": "DRIVER_CARD",
+        "manufacturerCode": 41
+      },
+      "cardStructureVersion": {
+        "major": 1,
+        "minor": 0
+      },
+      "driverIdentification": {
+        "driverIdentificationNumber": {
+          "length": 14,
+          "value": "**************"
+        },
+        "cardReplacementIndex": {
+          "length": 1,
+          "value": "*"
+        },
+        "cardRenewalIndex": {
+          "length": 1,
+          "value": "*"
+        }
+      },
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQAqKioqKioqKioqKioqKioq"
+    },
+    {
+      "cardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "cardExtendedSerialNumber": {
+        "serialNumber": "0",
+        "monthYear": {},
+        "type": "DRIVER_CARD",
+        "manufacturerCode": 41
+      },
+      "cardStructureVersion": {
+        "major": 1,
+        "minor": 0
+      },
+      "driverIdentification": {
+        "driverIdentificationNumber": {
+          "length": 14,
+          "value": "**************"
+        },
+        "cardReplacementIndex": {
+          "length": 1,
+          "value": "*"
+        },
+        "cardRenewalIndex": {
+          "length": 1,
+          "value": "*"
+        }
+      },
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQAqKioqKioqKioqKioqKioq"
+    },
+    {
+      "cardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "cardExtendedSerialNumber": {
+        "serialNumber": "0",
+        "monthYear": {},
+        "type": "DRIVER_CARD",
+        "manufacturerCode": 41
+      },
+      "cardStructureVersion": {
+        "major": 1,
+        "minor": 0
+      },
+      "driverIdentification": {
+        "driverIdentificationNumber": {
+          "length": 14,
+          "value": "**************"
+        },
+        "cardReplacementIndex": {
+          "length": 1,
+          "value": "*"
+        },
+        "cardRenewalIndex": {
+          "length": 1,
+          "value": "*"
+        }
+      },
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQAqKioqKioqKioqKioqKioq"
+    },
+    {
+      "cardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "cardExtendedSerialNumber": {
+        "serialNumber": "0",
+        "monthYear": {},
+        "type": "DRIVER_CARD",
+        "manufacturerCode": 41
+      },
+      "cardStructureVersion": {
+        "major": 1,
+        "minor": 0
+      },
+      "driverIdentification": {
+        "driverIdentificationNumber": {
+          "length": 14,
+          "value": "**************"
+        },
+        "cardReplacementIndex": {
+          "length": 1,
+          "value": "*"
+        },
+        "cardRenewalIndex": {
+          "length": 1,
+          "value": "*"
+        }
+      },
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQAqKioqKioqKioqKioqKioq"
+    },
+    {
+      "cardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "COMPANY_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "ownerIdentification": {
+            "ownerIdentification": {
+              "length": 13,
+              "value": "*************"
+            },
+            "consecutiveIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "replacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "renewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "cardExtendedSerialNumber": {
+        "serialNumber": "0",
+        "monthYear": {},
+        "type": "COMPANY_CARD",
+        "manufacturerCode": 41
+      },
+      "cardStructureVersion": {
+        "major": 1,
+        "minor": 0
+      },
+      "ownerIdentification": {
+        "ownerIdentification": {
+          "length": 13,
+          "value": "*************"
+        },
+        "consecutiveIndex": {
+          "length": 1,
+          "value": "*"
+        },
+        "replacementIndex": {
+          "length": 1,
+          "value": "*"
+        },
+        "renewalIndex": {
+          "length": 1,
+          "value": "*"
+        }
+      },
+      "rawData": "BAAqKioqKioqKioqKioqKioqAgAAAAAAAAQpAQAqKioqKioqKioqKioqKioq"
+    },
+    {
+      "cardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "cardExtendedSerialNumber": {
+        "serialNumber": "0",
+        "monthYear": {},
+        "type": "DRIVER_CARD",
+        "manufacturerCode": 163
+      },
+      "cardStructureVersion": {
+        "major": 1,
+        "minor": 0
+      },
+      "driverIdentification": {
+        "driverIdentificationNumber": {
+          "length": 14,
+          "value": "**************"
+        },
+        "cardReplacementIndex": {
+          "length": 1,
+          "value": "*"
+        },
+        "cardRenewalIndex": {
+          "length": 1,
+          "value": "*"
+        }
+      },
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgAAAAAAAAGjAQAqKioqKioqKioqKioqKioq"
+    },
+    {
+      "cardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "cardExtendedSerialNumber": {
+        "serialNumber": "0",
+        "monthYear": {},
+        "type": "DRIVER_CARD",
+        "manufacturerCode": 41
+      },
+      "cardStructureVersion": {
+        "major": 1,
+        "minor": 0
+      },
+      "driverIdentification": {
+        "driverIdentificationNumber": {
+          "length": 14,
+          "value": "**************"
+        },
+        "cardReplacementIndex": {
+          "length": 1,
+          "value": "*"
+        },
+        "cardRenewalIndex": {
+          "length": 1,
+          "value": "*"
+        }
+      },
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQAqKioqKioqKioqKioqKioq"
+    },
+    {
+      "cardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "cardExtendedSerialNumber": {
+        "serialNumber": "0",
+        "monthYear": {},
+        "type": "DRIVER_CARD",
+        "manufacturerCode": 41
+      },
+      "cardStructureVersion": {
+        "major": 1,
+        "minor": 0
+      },
+      "driverIdentification": {
+        "driverIdentificationNumber": {
+          "length": 14,
+          "value": "**************"
+        },
+        "cardReplacementIndex": {
+          "length": 1,
+          "value": "*"
+        },
+        "cardRenewalIndex": {
+          "length": 1,
+          "value": "*"
+        }
+      },
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQAqKioqKioqKioqKioqKioq"
+    },
+    {
+      "cardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "cardExtendedSerialNumber": {
+        "serialNumber": "0",
+        "monthYear": {},
+        "type": "DRIVER_CARD",
+        "manufacturerCode": 41
+      },
+      "cardStructureVersion": {
+        "major": 1,
+        "minor": 0
+      },
+      "driverIdentification": {
+        "driverIdentificationNumber": {
+          "length": 14,
+          "value": "**************"
+        },
+        "cardReplacementIndex": {
+          "length": 1,
+          "value": "*"
+        },
+        "cardRenewalIndex": {
+          "length": 1,
+          "value": "*"
+        }
+      },
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQAqKioqKioqKioqKioqKioq"
+    },
+    {
+      "cardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "cardExtendedSerialNumber": {
+        "serialNumber": "0",
+        "monthYear": {},
+        "type": "DRIVER_CARD",
+        "manufacturerCode": 41
+      },
+      "cardStructureVersion": {
+        "major": 1,
+        "minor": 0
+      },
+      "driverIdentification": {
+        "driverIdentificationNumber": {
+          "length": 14,
+          "value": "**************"
+        },
+        "cardReplacementIndex": {
+          "length": 1,
+          "value": "*"
+        },
+        "cardRenewalIndex": {
+          "length": 1,
+          "value": "*"
+        }
+      },
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQAqKioqKioqKioqKioqKioq"
+    },
+    {
+      "cardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "cardExtendedSerialNumber": {
+        "serialNumber": "0",
+        "monthYear": {},
+        "type": "DRIVER_CARD",
+        "manufacturerCode": 41
+      },
+      "cardStructureVersion": {
+        "major": 1,
+        "minor": 1
+      },
+      "driverIdentification": {
+        "driverIdentificationNumber": {
+          "length": 14,
+          "value": "**************"
+        },
+        "cardReplacementIndex": {
+          "length": 1,
+          "value": "*"
+        },
+        "cardRenewalIndex": {
+          "length": 1,
+          "value": "*"
+        }
+      },
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQEqKioqKioqKioqKioqKioq"
+    },
+    {
+      "cardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "cardExtendedSerialNumber": {
+        "serialNumber": "0",
+        "monthYear": {},
+        "type": "DRIVER_CARD",
+        "manufacturerCode": 41
+      },
+      "cardStructureVersion": {
+        "major": 1,
+        "minor": 0
+      },
+      "driverIdentification": {
+        "driverIdentificationNumber": {
+          "length": 14,
+          "value": "**************"
+        },
+        "cardReplacementIndex": {
+          "length": 1,
+          "value": "*"
+        },
+        "cardRenewalIndex": {
+          "length": 1,
+          "value": "*"
+        }
+      },
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQAqKioqKioqKioqKioqKioq"
+    },
+    {
+      "cardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "cardExtendedSerialNumber": {
+        "serialNumber": "0",
+        "monthYear": {},
+        "type": "DRIVER_CARD",
+        "manufacturerCode": 41
+      },
+      "cardStructureVersion": {
+        "major": 1,
+        "minor": 1
+      },
+      "driverIdentification": {
+        "driverIdentificationNumber": {
+          "length": 14,
+          "value": "**************"
+        },
+        "cardReplacementIndex": {
+          "length": 1,
+          "value": "*"
+        },
+        "cardRenewalIndex": {
+          "length": 1,
+          "value": "*"
+        }
+      },
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQEqKioqKioqKioqKioqKioq"
+    },
+    {
+      "cardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "cardExtendedSerialNumber": {
+        "serialNumber": "0",
+        "monthYear": {},
+        "type": "DRIVER_CARD",
+        "manufacturerCode": 41
+      },
+      "cardStructureVersion": {
+        "major": 1,
+        "minor": 0
+      },
+      "driverIdentification": {
+        "driverIdentificationNumber": {
+          "length": 14,
+          "value": "**************"
+        },
+        "cardReplacementIndex": {
+          "length": 1,
+          "value": "*"
+        },
+        "cardRenewalIndex": {
+          "length": 1,
+          "value": "*"
+        }
+      },
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQAqKioqKioqKioqKioqKioq"
+    },
+    {
+      "cardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "cardExtendedSerialNumber": {
+        "serialNumber": "0",
+        "monthYear": {},
+        "type": "DRIVER_CARD",
+        "manufacturerCode": 41
+      },
+      "cardStructureVersion": {
+        "major": 1,
+        "minor": 0
+      },
+      "driverIdentification": {
+        "driverIdentificationNumber": {
+          "length": 14,
+          "value": "**************"
+        },
+        "cardReplacementIndex": {
+          "length": 1,
+          "value": "*"
+        },
+        "cardRenewalIndex": {
+          "length": 1,
+          "value": "*"
+        }
+      },
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQAqKioqKioqKioqKioqKioq"
+    },
+    {
+      "cardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "cardExtendedSerialNumber": {
+        "serialNumber": "0",
+        "monthYear": {},
+        "type": "DRIVER_CARD",
+        "manufacturerCode": 41
+      },
+      "cardStructureVersion": {
+        "major": 1,
+        "minor": 0
+      },
+      "driverIdentification": {
+        "driverIdentificationNumber": {
+          "length": 14,
+          "value": "**************"
+        },
+        "cardReplacementIndex": {
+          "length": 1,
+          "value": "*"
+        },
+        "cardRenewalIndex": {
+          "length": 1,
+          "value": "*"
+        }
+      },
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQAqKioqKioqKioqKioqKioq"
+    },
+    {
+      "cardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "cardExtendedSerialNumber": {
+        "serialNumber": "0",
+        "monthYear": {},
+        "type": "DRIVER_CARD",
+        "manufacturerCode": 41
+      },
+      "cardStructureVersion": {
+        "major": 1,
+        "minor": 0
+      },
+      "driverIdentification": {
+        "driverIdentificationNumber": {
+          "length": 14,
+          "value": "**************"
+        },
+        "cardReplacementIndex": {
+          "length": 1,
+          "value": "*"
+        },
+        "cardRenewalIndex": {
+          "length": 1,
+          "value": "*"
+        }
+      },
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQAqKioqKioqKioqKioqKioq"
+    },
+    {
+      "cardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "cardExtendedSerialNumber": {
+        "serialNumber": "0",
+        "monthYear": {},
+        "type": "DRIVER_CARD",
+        "manufacturerCode": 41
+      },
+      "cardStructureVersion": {
+        "major": 1,
+        "minor": 0
+      },
+      "driverIdentification": {
+        "driverIdentificationNumber": {
+          "length": 14,
+          "value": "**************"
+        },
+        "cardReplacementIndex": {
+          "length": 1,
+          "value": "*"
+        },
+        "cardRenewalIndex": {
+          "length": 1,
+          "value": "*"
+        }
+      },
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQAqKioqKioqKioqKioqKioq"
+    },
+    {
+      "cardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "cardExtendedSerialNumber": {
+        "serialNumber": "0",
+        "monthYear": {},
+        "type": "DRIVER_CARD",
+        "manufacturerCode": 41
+      },
+      "cardStructureVersion": {
+        "major": 1,
+        "minor": 0
+      },
+      "driverIdentification": {
+        "driverIdentificationNumber": {
+          "length": 14,
+          "value": "**************"
+        },
+        "cardReplacementIndex": {
+          "length": 1,
+          "value": "*"
+        },
+        "cardRenewalIndex": {
+          "length": 1,
+          "value": "*"
+        }
+      },
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQAqKioqKioqKioqKioqKioq"
+    },
+    {
+      "cardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "cardExtendedSerialNumber": {
+        "serialNumber": "0",
+        "monthYear": {},
+        "type": "DRIVER_CARD",
+        "manufacturerCode": 41
+      },
+      "cardStructureVersion": {
+        "major": 1,
+        "minor": 0
+      },
+      "driverIdentification": {
+        "driverIdentificationNumber": {
+          "length": 14,
+          "value": "**************"
+        },
+        "cardReplacementIndex": {
+          "length": 1,
+          "value": "*"
+        },
+        "cardRenewalIndex": {
+          "length": 1,
+          "value": "*"
+        }
+      },
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQAqKioqKioqKioqKioqKioq"
+    },
+    {
+      "cardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "cardExtendedSerialNumber": {
+        "serialNumber": "0",
+        "monthYear": {},
+        "type": "DRIVER_CARD",
+        "manufacturerCode": 41
+      },
+      "cardStructureVersion": {
+        "major": 1,
+        "minor": 1
+      },
+      "driverIdentification": {
+        "driverIdentificationNumber": {
+          "length": 14,
+          "value": "**************"
+        },
+        "cardReplacementIndex": {
+          "length": 1,
+          "value": "*"
+        },
+        "cardRenewalIndex": {
+          "length": 1,
+          "value": "*"
+        }
+      },
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQEqKioqKioqKioqKioqKioq"
+    },
+    {
+      "cardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "cardExtendedSerialNumber": {
+        "serialNumber": "0",
+        "monthYear": {},
+        "type": "DRIVER_CARD",
+        "manufacturerCode": 163
+      },
+      "cardStructureVersion": {
+        "major": 1,
+        "minor": 0
+      },
+      "driverIdentification": {
+        "driverIdentificationNumber": {
+          "length": 14,
+          "value": "**************"
+        },
+        "cardReplacementIndex": {
+          "length": 1,
+          "value": "*"
+        },
+        "cardRenewalIndex": {
+          "length": 1,
+          "value": "*"
+        }
+      },
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgAAAAAAAAGjAQAqKioqKioqKioqKioqKioq"
+    },
+    {
+      "cardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "COMPANY_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "ownerIdentification": {
+            "ownerIdentification": {
+              "length": 13,
+              "value": "*************"
+            },
+            "consecutiveIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "replacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "renewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "cardExtendedSerialNumber": {
+        "serialNumber": "0",
+        "monthYear": {},
+        "type": "COMPANY_CARD",
+        "manufacturerCode": 41
+      },
+      "cardStructureVersion": {
+        "major": 1,
+        "minor": 0
+      },
+      "ownerIdentification": {
+        "ownerIdentification": {
+          "length": 13,
+          "value": "*************"
+        },
+        "consecutiveIndex": {
+          "length": 1,
+          "value": "*"
+        },
+        "replacementIndex": {
+          "length": 1,
+          "value": "*"
+        },
+        "renewalIndex": {
+          "length": 1,
+          "value": "*"
+        }
+      },
+      "rawData": "BAAqKioqKioqKioqKioqKioqAgAAAAAAAAQpAQAqKioqKioqKioqKioqKioq"
     }
   ],
   "itsConsentRecords": [
@@ -325,7 +2014,8 @@
         },
         "generation": "GENERATION_2"
       },
-      "consentStatus": true
+      "consentStatus": false,
+      "rawData": "AgAqKioqKioqKioqKioqKioqAgA="
     },
     {
       "fullCardNumberAndGeneration": {
@@ -349,7 +2039,8 @@
         },
         "generation": "GENERATION_2"
       },
-      "consentStatus": true
+      "consentStatus": true,
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgE="
     },
     {
       "fullCardNumberAndGeneration": {
@@ -373,35 +2064,8 @@
         },
         "generation": "GENERATION_2"
       },
-      "consentStatus": true
-    },
-    {
-      "fullCardNumberAndGeneration": {
-        "fullCardNumber": {
-          "cardType": "COMPANY_CARD",
-          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
-          "ownerIdentification": {
-            "ownerIdentification": {
-              "length": 13,
-              "value": "*************"
-            },
-            "consecutiveIndex": {
-              "length": 1,
-              "value": "*"
-            },
-            "replacementIndex": {
-              "length": 1,
-              "value": "*"
-            },
-            "renewalIndex": {
-              "length": 1,
-              "value": "*"
-            }
-          }
-        },
-        "generation": "GENERATION_2"
-      },
-      "consentStatus": true
+      "consentStatus": true,
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgE="
     },
     {
       "fullCardNumberAndGeneration": {
@@ -425,7 +2089,8 @@
         },
         "generation": "GENERATION_2"
       },
-      "consentStatus": true
+      "consentStatus": true,
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgE="
     },
     {
       "fullCardNumberAndGeneration": {
@@ -449,7 +2114,33 @@
         },
         "generation": "GENERATION_2"
       },
-      "consentStatus": true
+      "consentStatus": true,
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgE="
+    },
+    {
+      "fullCardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_1"
+      },
+      "consentStatus": true,
+      "rawData": "AQAqKioqKioqKioqKioqKioqAQE="
     },
     {
       "fullCardNumberAndGeneration": {
@@ -473,7 +2164,8 @@
         },
         "generation": "GENERATION_2"
       },
-      "consentStatus": true
+      "consentStatus": true,
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgE="
     },
     {
       "fullCardNumberAndGeneration": {
@@ -497,7 +2189,8 @@
         },
         "generation": "GENERATION_2"
       },
-      "consentStatus": true
+      "consentStatus": true,
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgE="
     },
     {
       "fullCardNumberAndGeneration": {
@@ -521,7 +2214,8 @@
         },
         "generation": "GENERATION_2"
       },
-      "consentStatus": true
+      "consentStatus": false,
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgA="
     },
     {
       "fullCardNumberAndGeneration": {
@@ -545,27 +2239,24 @@
         },
         "generation": "GENERATION_2"
       },
-      "consentStatus": true
+      "consentStatus": false,
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgA="
     },
     {
       "fullCardNumberAndGeneration": {
         "fullCardNumber": {
-          "cardType": "COMPANY_CARD",
+          "cardType": "DRIVER_CARD",
           "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
-          "ownerIdentification": {
-            "ownerIdentification": {
-              "length": 13,
-              "value": "*************"
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
             },
-            "consecutiveIndex": {
+            "cardReplacementIndex": {
               "length": 1,
               "value": "*"
             },
-            "replacementIndex": {
-              "length": 1,
-              "value": "*"
-            },
-            "renewalIndex": {
+            "cardRenewalIndex": {
               "length": 1,
               "value": "*"
             }
@@ -573,27 +2264,24 @@
         },
         "generation": "GENERATION_2"
       },
-      "consentStatus": false
+      "consentStatus": true,
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgE="
     },
     {
       "fullCardNumberAndGeneration": {
         "fullCardNumber": {
-          "cardType": "COMPANY_CARD",
+          "cardType": "DRIVER_CARD",
           "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
-          "ownerIdentification": {
-            "ownerIdentification": {
-              "length": 13,
-              "value": "*************"
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
             },
-            "consecutiveIndex": {
+            "cardReplacementIndex": {
               "length": 1,
               "value": "*"
             },
-            "replacementIndex": {
-              "length": 1,
-              "value": "*"
-            },
-            "renewalIndex": {
+            "cardRenewalIndex": {
               "length": 1,
               "value": "*"
             }
@@ -601,47 +2289,490 @@
         },
         "generation": "GENERATION_2"
       },
-      "consentStatus": true
+      "consentStatus": true,
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgE="
+    },
+    {
+      "fullCardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "consentStatus": true,
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgE="
+    },
+    {
+      "fullCardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "consentStatus": true,
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgE="
+    },
+    {
+      "fullCardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "consentStatus": true,
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgE="
+    },
+    {
+      "fullCardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "consentStatus": true,
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgE="
+    },
+    {
+      "fullCardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "consentStatus": true,
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgE="
+    },
+    {
+      "fullCardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "consentStatus": true,
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgE="
+    },
+    {
+      "fullCardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "consentStatus": true,
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgE="
+    },
+    {
+      "fullCardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "consentStatus": true,
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgE="
+    },
+    {
+      "fullCardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "consentStatus": true,
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgE="
+    },
+    {
+      "fullCardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "consentStatus": true,
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgE="
+    },
+    {
+      "fullCardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "consentStatus": true,
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgE="
+    },
+    {
+      "fullCardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "consentStatus": true,
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgE="
+    },
+    {
+      "fullCardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "consentStatus": true,
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgE="
+    },
+    {
+      "fullCardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "consentStatus": true,
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgE="
+    },
+    {
+      "fullCardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "consentStatus": true,
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgE="
+    },
+    {
+      "fullCardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "consentStatus": true,
+      "rawData": "AQAqKioqKioqKioqKioqKioqAgE="
     }
   ],
   "powerSupplyInterruptions": [
     {
-      "timestamp": "1971-02-07T03:59:44Z",
-      "unrecognizedCardSlotNumber": 49
+      "eventType": "GENERAL_POWER_SUPPLY_INTERRUPTION",
+      "unrecognizedEventType": 0,
+      "eventRecordPurpose": "LONGEST_IN_LAST_10_DAYS",
+      "unrecognizedEventRecordPurpose": 0,
+      "eventBeginTime": "2020-01-01T00:00:00Z",
+      "eventEndTime": "2020-01-01T00:00:00Z",
+      "cardNumberAndGenerationDriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenerationDriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenerationCodriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenerationCodriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "similarEventsNumber": 2,
+      "rawData": "CAFeC+EAXgvhAP////////////////////////////////////////////////////////////////////////////////////////////////////8C"
     },
     {
-      "timestamp": "1970-07-27T23:30:56Z",
-      "unrecognizedCardSlotNumber": 48
+      "eventType": "GENERAL_POWER_SUPPLY_INTERRUPTION",
+      "unrecognizedEventType": 0,
+      "eventRecordPurpose": "FIVE_LONGEST_IN_LAST_365_DAYS",
+      "unrecognizedEventRecordPurpose": 0,
+      "eventBeginTime": "2020-01-01T00:00:00Z",
+      "eventEndTime": "2020-01-01T00:00:00Z",
+      "cardNumberAndGenerationDriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenerationDriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenerationCodriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenerationCodriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "similarEventsNumber": 1,
+      "rawData": "CAJeC+EAXgvhAP////////////////////////////////////////////////////////////////////////////////////////////////////8B"
     },
     {
-      "timestamp": "1970-07-27T23:30:56Z",
-      "unrecognizedCardSlotNumber": 48
-    },
-    {
-      "timestamp": "1970-07-27T23:30:56Z",
-      "unrecognizedCardSlotNumber": 51
-    },
-    {
-      "timestamp": "1970-07-27T23:30:56Z",
-      "unrecognizedCardSlotNumber": 54
-    },
-    {
-      "timestamp": "1970-07-27T23:30:56Z",
-      "unrecognizedCardSlotNumber": 49
-    },
-    {
-      "timestamp": "1970-07-27T23:30:56Z",
-      "unrecognizedCardSlotNumber": 48
-    },
-    {
-      "timestamp": "1970-07-27T23:30:56Z",
-      "unrecognizedCardSlotNumber": 54
-    },
-    {
-      "timestamp": "1970-07-27T23:30:56Z",
-      "unrecognizedCardSlotNumber": 55
+      "eventType": "GENERAL_POWER_SUPPLY_INTERRUPTION",
+      "unrecognizedEventType": 0,
+      "eventRecordPurpose": "FIVE_LONGEST_IN_LAST_365_DAYS",
+      "unrecognizedEventRecordPurpose": 0,
+      "eventBeginTime": "2020-01-01T00:00:00Z",
+      "eventEndTime": "2020-01-01T00:00:00Z",
+      "cardNumberAndGenerationDriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenerationDriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenerationCodriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenerationCodriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "similarEventsNumber": 2,
+      "rawData": "CAJeC+EAXgvhAP////////////////////////////////////////////////////////////////////////////////////////////////////8C"
     }
   ],
-  "signature": "BwAAAAA=",
-  "rawData": "AQB8AAEBKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioBKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAAAAAAAABqE0MTQwaMF4umjAv4BURVNUMDAwMSAgICAgICAgAgAcAAEAAAAAAAAHoVNFTlNPUjAxICAgICAgICBpKTmUAwAcAAAEAKgABAEBKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioBKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioCACoqKioqKioqKioqKioqKioAMmVlVyoqKioqKioqKioqKioqKioqDwEqKioqKioqKioqKioqvDm8YKAzKioqKioqKioqKioqKioqBG5xcP//KF4L4QBeC+EAXgvhAAIBKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioBKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioCACoqKioqKioqKioqKioqKioAMmVlVyoqKioqKioqKioqKioqKioqDwEqKioqKioqKioqKioqvDm8YKAzKioqKioqKioqKioqKioqBG5xcP//KF4L4QBeC+EAXgvhAAMBKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioBKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioCACoqKioqKioqKioqKioqKioAMmVlVyoqKioqKioqKioqKioqKioqDwEqKioqKioqKioqKioqvDm8YKAzKioqKioqKioqKioqKioqBG5xcP//KF4L4QBeC+EAXgvhAIQBKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioBKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioCACoqKioqKioqKioqKioqKioAMmVlVyoqKioqKioqKioqKioqKioqDwEqKioqKioqKioqKioqvDm8YKAzKioqKioqKioqKioqKioqBG5xcP//KF4L4QBeC+EAXgvhAAUAFAAMAgAqKioqKioqKioqKioqKioqAgEBACoqKioqKioqKioqKioqKioCAQEAKioqKioqKioqKioqKioqKgIBBAAqKioqKioqKioqKioqKioqAgEBACoqKioqKioqKioqKioqKioCAQEAKioqKioqKioqKioqKioqKgIBAQAqKioqKioqKioqKioqKioqAgEBACoqKioqKioqKioqKioqKioCAQEAKioqKioqKioqKioqKioqKgIBAQAqKioqKioqKioqKioqKioqAgEEACoqKioqKioqKioqKioqKioCAAQAKioqKioqKioqKioqKioqKgIBBgAFAAkCEjMwMQESMTAwARIxMDABEjEwMwESMTA2ARIxMDEBEjEwMAESMTA2ARIxMDcHAAAAAA=="
+  "signature": "CAAAAAA=",
+  "rawData": "GQB8AAEBKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioBKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAAAAAAAABqIxMjE0ZVAVgGVQFYBURVNUMDAwMSAgICAgICAgIAAcAAEAAAAAAAAHoVNFTlNPUjAxICAgICAgICBmIQqkIQAcAAAMAPwAAwMBKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioBKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioCACoqKioqKioqKioqKioqKipn6yx/KioqKioqKioqKioqKioqKioVASoqKioqKioqKioqKioXTBdMYQAqKioqKioqKioqKioqKipaAmFgAmFgXgvhAF4L4QBeC+EAAAAAAAAAB6EAAAAAAAAAAAAAAAAAAAD/EgAAAAAAAAAAAAASAAAAAAAAAAAAABIAAAAAAAAAAAAAEgAAAAAAAAAAAAASAAAAAAAAAAAAAAEAZiEKpAQBKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioBKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioCACoqKioqKioqKioqKioqKipn6yx/KioqKioqKioqKioqKioqKioVASoqKioqKioqKioqKioXTBdMYQAqKioqKioqKioqKioqKipaAmFgAmFgXgvhAF4L4QBeC+EAAAAAAAAAB6EAAAAAAAAAAAAAAAAAAAmiEgAAAAAAAAAAAAASAAAAAAAAAAAAABIAAAAAAAAAAAAAEgAAAAAAAAAAAAASAAAAAAAAAAAAAAEVZiELGAYBKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioBKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioCACoqKioqKioqKioqKioqKipn6yx/KioqKioqKioqKioqKioqKioVASoqKioqKioqKioqKioXwxfDYMAqKioqKioqKioqKioqKipaAmFgAmFgXgvhAF4L4QBeC+EAAAAAAAAAB6EAAAAAAAAAAAAAAAAAAAmiCUFTMDAxNDg1MDYSAAAAAAAAAAAAABIAAAAAAAAAAAAAEgAAAAAAAAAAAAASAAAAAAAAAAAAAAEVZiEO/A4ALQAhAgAqKioqKioqKioqKioqKioqAgAAAAAAAAIpAQEqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQEqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQAqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQAqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqAgAAAAAAAAGjAQAqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqAQAAAAAAAAGjAAAqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQAqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQAqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQAqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQAqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQAqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQAqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQAqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQAqKioqKioqKioqKioqKioqBAAqKioqKioqKioqKioqKioqAgAAAAAAAAQpAQAqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqAgAAAAAAAAGjAQAqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQAqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQAqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQAqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQAqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQEqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQAqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQEqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQAqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQAqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQAqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQAqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQAqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQAqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQAqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqAgAAAAAAAAEpAQEqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqAgAAAAAAAAGjAQAqKioqKioqKioqKioqKioqBAAqKioqKioqKioqKioqKioqAgAAAAAAAAQpAQAqKioqKioqKioqKioqKioqFwAUABwCACoqKioqKioqKioqKioqKioCAAEAKioqKioqKioqKioqKioqKgIBAQAqKioqKioqKioqKioqKioqAgEBACoqKioqKioqKioqKioqKioCAQEAKioqKioqKioqKioqKioqKgIBAQAqKioqKioqKioqKioqKioqAQEBACoqKioqKioqKioqKioqKioCAQEAKioqKioqKioqKioqKioqKgIBAQAqKioqKioqKioqKioqKioqAgABACoqKioqKioqKioqKioqKioCAAEAKioqKioqKioqKioqKioqKgIBAQAqKioqKioqKioqKioqKioqAgEBACoqKioqKioqKioqKioqKioCAQEAKioqKioqKioqKioqKioqKgIBAQAqKioqKioqKioqKioqKioqAgEBACoqKioqKioqKioqKioqKioCAQEAKioqKioqKioqKioqKioqKgIBAQAqKioqKioqKioqKioqKioqAgEBACoqKioqKioqKioqKioqKioCAQEAKioqKioqKioqKioqKioqKgIBAQAqKioqKioqKioqKioqKioqAgEBACoqKioqKioqKioqKioqKioCAQEAKioqKioqKioqKioqKioqKgIBAQAqKioqKioqKioqKioqKioqAgEBACoqKioqKioqKioqKioqKioCAQEAKioqKioqKioqKioqKioqKgIBAQAqKioqKioqKioqKioqKioqAgEBACoqKioqKioqKioqKioqKioCAR8AVwADCAFeC+EAXgvhAP////////////////////////////////////////////////////////////////////////////////////////////////////8CCAJeC+EAXgvhAP////////////////////////////////////////////////////////////////////////////////////////////////////8BCAJeC+EAXgvhAP////////////////////////////////////////////////////////////////////////////////////////////////////8CCAAAAAA="
 }

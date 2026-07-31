@@ -1794,6 +1794,9 @@ type TechnicalDataGen2V2_CardRecord struct {
 	xxx_hidden_CardStructureVersion     *v11.CardStructureVersion        `protobuf:"bytes,3,opt,name=card_structure_version,json=cardStructureVersion"`
 	xxx_hidden_DriverIdentification     *v11.DriverIdentification        `protobuf:"bytes,4,opt,name=driver_identification,json=driverIdentification"`
 	xxx_hidden_OwnerIdentification      *v11.OwnerIdentification         `protobuf:"bytes,5,opt,name=owner_identification,json=ownerIdentification"`
+	xxx_hidden_RawData                  []byte                           `protobuf:"bytes,99,opt,name=raw_data,json=rawData"`
+	XXX_raceDetectHookData              protoimpl.RaceDetectHookData
+	XXX_presence                        [1]uint32
 	unknownFields                       protoimpl.UnknownFields
 	sizeCache                           protoimpl.SizeCache
 }
@@ -1858,6 +1861,13 @@ func (x *TechnicalDataGen2V2_CardRecord) GetOwnerIdentification() *v11.OwnerIden
 	return nil
 }
 
+func (x *TechnicalDataGen2V2_CardRecord) GetRawData() []byte {
+	if x != nil {
+		return x.xxx_hidden_RawData
+	}
+	return nil
+}
+
 func (x *TechnicalDataGen2V2_CardRecord) SetCardNumberAndGeneration(v *v11.FullCardNumberAndGeneration) {
 	x.xxx_hidden_CardNumberAndGeneration = v
 }
@@ -1876,6 +1886,14 @@ func (x *TechnicalDataGen2V2_CardRecord) SetDriverIdentification(v *v11.DriverId
 
 func (x *TechnicalDataGen2V2_CardRecord) SetOwnerIdentification(v *v11.OwnerIdentification) {
 	x.xxx_hidden_OwnerIdentification = v
+}
+
+func (x *TechnicalDataGen2V2_CardRecord) SetRawData(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_RawData = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 6)
 }
 
 func (x *TechnicalDataGen2V2_CardRecord) HasCardNumberAndGeneration() bool {
@@ -1913,6 +1931,13 @@ func (x *TechnicalDataGen2V2_CardRecord) HasOwnerIdentification() bool {
 	return x.xxx_hidden_OwnerIdentification != nil
 }
 
+func (x *TechnicalDataGen2V2_CardRecord) HasRawData() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
+}
+
 func (x *TechnicalDataGen2V2_CardRecord) ClearCardNumberAndGeneration() {
 	x.xxx_hidden_CardNumberAndGeneration = nil
 }
@@ -1931,6 +1956,11 @@ func (x *TechnicalDataGen2V2_CardRecord) ClearDriverIdentification() {
 
 func (x *TechnicalDataGen2V2_CardRecord) ClearOwnerIdentification() {
 	x.xxx_hidden_OwnerIdentification = nil
+}
+
+func (x *TechnicalDataGen2V2_CardRecord) ClearRawData() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 5)
+	x.xxx_hidden_RawData = nil
 }
 
 type TechnicalDataGen2V2_CardRecord_builder struct {
@@ -1953,6 +1983,7 @@ type TechnicalDataGen2V2_CardRecord_builder struct {
 	// See Data Dictionary, Section 2.26.
 	DriverIdentification *v11.DriverIdentification
 	OwnerIdentification  *v11.OwnerIdentification
+	RawData              []byte
 }
 
 func (b0 TechnicalDataGen2V2_CardRecord_builder) Build() *TechnicalDataGen2V2_CardRecord {
@@ -1964,6 +1995,10 @@ func (b0 TechnicalDataGen2V2_CardRecord_builder) Build() *TechnicalDataGen2V2_Ca
 	x.xxx_hidden_CardStructureVersion = b.CardStructureVersion
 	x.xxx_hidden_DriverIdentification = b.DriverIdentification
 	x.xxx_hidden_OwnerIdentification = b.OwnerIdentification
+	if b.RawData != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 6)
+		x.xxx_hidden_RawData = b.RawData
+	}
 	return m0
 }
 
@@ -1974,6 +2009,7 @@ type TechnicalDataGen2V2_ItsConsentRecord struct {
 	state                                  protoimpl.MessageState           `protogen:"opaque.v1"`
 	xxx_hidden_FullCardNumberAndGeneration *v11.FullCardNumberAndGeneration `protobuf:"bytes,1,opt,name=full_card_number_and_generation,json=fullCardNumberAndGeneration"`
 	xxx_hidden_ConsentStatus               bool                             `protobuf:"varint,2,opt,name=consent_status,json=consentStatus"`
+	xxx_hidden_RawData                     []byte                           `protobuf:"bytes,99,opt,name=raw_data,json=rawData"`
 	XXX_raceDetectHookData                 protoimpl.RaceDetectHookData
 	XXX_presence                           [1]uint32
 	unknownFields                          protoimpl.UnknownFields
@@ -2019,13 +2055,28 @@ func (x *TechnicalDataGen2V2_ItsConsentRecord) GetConsentStatus() bool {
 	return false
 }
 
+func (x *TechnicalDataGen2V2_ItsConsentRecord) GetRawData() []byte {
+	if x != nil {
+		return x.xxx_hidden_RawData
+	}
+	return nil
+}
+
 func (x *TechnicalDataGen2V2_ItsConsentRecord) SetFullCardNumberAndGeneration(v *v11.FullCardNumberAndGeneration) {
 	x.xxx_hidden_FullCardNumberAndGeneration = v
 }
 
 func (x *TechnicalDataGen2V2_ItsConsentRecord) SetConsentStatus(v bool) {
 	x.xxx_hidden_ConsentStatus = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 2)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 3)
+}
+
+func (x *TechnicalDataGen2V2_ItsConsentRecord) SetRawData(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_RawData = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
 }
 
 func (x *TechnicalDataGen2V2_ItsConsentRecord) HasFullCardNumberAndGeneration() bool {
@@ -2042,6 +2093,13 @@ func (x *TechnicalDataGen2V2_ItsConsentRecord) HasConsentStatus() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
 }
 
+func (x *TechnicalDataGen2V2_ItsConsentRecord) HasRawData() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+}
+
 func (x *TechnicalDataGen2V2_ItsConsentRecord) ClearFullCardNumberAndGeneration() {
 	x.xxx_hidden_FullCardNumberAndGeneration = nil
 }
@@ -2051,6 +2109,11 @@ func (x *TechnicalDataGen2V2_ItsConsentRecord) ClearConsentStatus() {
 	x.xxx_hidden_ConsentStatus = false
 }
 
+func (x *TechnicalDataGen2V2_ItsConsentRecord) ClearRawData() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	x.xxx_hidden_RawData = nil
+}
+
 type TechnicalDataGen2V2_ItsConsentRecord_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
@@ -2058,6 +2121,7 @@ type TechnicalDataGen2V2_ItsConsentRecord_builder struct {
 	FullCardNumberAndGeneration *v11.FullCardNumberAndGeneration
 	// The consent status for ITS data provision.
 	ConsentStatus *bool
+	RawData       []byte
 }
 
 func (b0 TechnicalDataGen2V2_ItsConsentRecord_builder) Build() *TechnicalDataGen2V2_ItsConsentRecord {
@@ -2066,24 +2130,40 @@ func (b0 TechnicalDataGen2V2_ItsConsentRecord_builder) Build() *TechnicalDataGen
 	_, _ = b, x
 	x.xxx_hidden_FullCardNumberAndGeneration = b.FullCardNumberAndGeneration
 	if b.ConsentStatus != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 2)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 3)
 		x.xxx_hidden_ConsentStatus = *b.ConsentStatus
+	}
+	if b.RawData != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
+		x.xxx_hidden_RawData = b.RawData
 	}
 	return m0
 }
 
-// Represents a record of a power supply interruption (Gen2 V2 only).
+// Represents a power supply interruption event stored by the VU.
 //
 // See Data Dictionary, Section 2.240, `VuPowerSupplyInterruptionRecord`.
 type TechnicalDataGen2V2_PowerSupplyInterruptionRecord struct {
-	state                                 protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Timestamp                  *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=timestamp"`
-	xxx_hidden_CardSlotNumber             v11.CardSlotNumber     `protobuf:"varint,2,opt,name=card_slot_number,json=cardSlotNumber,enum=wayplatform.connect.tachograph.dd.v1.CardSlotNumber"`
-	xxx_hidden_UnrecognizedCardSlotNumber int32                  `protobuf:"varint,3,opt,name=unrecognized_card_slot_number,json=unrecognizedCardSlotNumber"`
-	XXX_raceDetectHookData                protoimpl.RaceDetectHookData
-	XXX_presence                          [1]uint32
-	unknownFields                         protoimpl.UnknownFields
-	sizeCache                             protoimpl.SizeCache
+	state                                               protoimpl.MessageState           `protogen:"opaque.v1"`
+	xxx_hidden_Timestamp                                *timestamppb.Timestamp           `protobuf:"bytes,1,opt,name=timestamp"`
+	xxx_hidden_CardSlotNumber                           v11.CardSlotNumber               `protobuf:"varint,2,opt,name=card_slot_number,json=cardSlotNumber,enum=wayplatform.connect.tachograph.dd.v1.CardSlotNumber"`
+	xxx_hidden_UnrecognizedCardSlotNumber               int32                            `protobuf:"varint,3,opt,name=unrecognized_card_slot_number,json=unrecognizedCardSlotNumber"`
+	xxx_hidden_EventType                                v11.EventFaultType               `protobuf:"varint,4,opt,name=event_type,json=eventType,enum=wayplatform.connect.tachograph.dd.v1.EventFaultType"`
+	xxx_hidden_UnrecognizedEventType                    int32                            `protobuf:"varint,5,opt,name=unrecognized_event_type,json=unrecognizedEventType"`
+	xxx_hidden_EventRecordPurpose                       v11.EventFaultRecordPurpose      `protobuf:"varint,6,opt,name=event_record_purpose,json=eventRecordPurpose,enum=wayplatform.connect.tachograph.dd.v1.EventFaultRecordPurpose"`
+	xxx_hidden_UnrecognizedEventRecordPurpose           int32                            `protobuf:"varint,7,opt,name=unrecognized_event_record_purpose,json=unrecognizedEventRecordPurpose"`
+	xxx_hidden_EventBeginTime                           *timestamppb.Timestamp           `protobuf:"bytes,8,opt,name=event_begin_time,json=eventBeginTime"`
+	xxx_hidden_EventEndTime                             *timestamppb.Timestamp           `protobuf:"bytes,9,opt,name=event_end_time,json=eventEndTime"`
+	xxx_hidden_CardNumberAndGenerationDriverSlotBegin   *v11.FullCardNumberAndGeneration `protobuf:"bytes,10,opt,name=card_number_and_generation_driver_slot_begin,json=cardNumberAndGenerationDriverSlotBegin"`
+	xxx_hidden_CardNumberAndGenerationDriverSlotEnd     *v11.FullCardNumberAndGeneration `protobuf:"bytes,11,opt,name=card_number_and_generation_driver_slot_end,json=cardNumberAndGenerationDriverSlotEnd"`
+	xxx_hidden_CardNumberAndGenerationCodriverSlotBegin *v11.FullCardNumberAndGeneration `protobuf:"bytes,12,opt,name=card_number_and_generation_codriver_slot_begin,json=cardNumberAndGenerationCodriverSlotBegin"`
+	xxx_hidden_CardNumberAndGenerationCodriverSlotEnd   *v11.FullCardNumberAndGeneration `protobuf:"bytes,13,opt,name=card_number_and_generation_codriver_slot_end,json=cardNumberAndGenerationCodriverSlotEnd"`
+	xxx_hidden_SimilarEventsNumber                      int32                            `protobuf:"varint,14,opt,name=similar_events_number,json=similarEventsNumber"`
+	xxx_hidden_RawData                                  []byte                           `protobuf:"bytes,99,opt,name=raw_data,json=rawData"`
+	XXX_raceDetectHookData                              protoimpl.RaceDetectHookData
+	XXX_presence                                        [1]uint32
+	unknownFields                                       protoimpl.UnknownFields
+	sizeCache                                           protoimpl.SizeCache
 }
 
 func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) Reset() {
@@ -2111,6 +2191,7 @@ func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) ProtoReflect() proto
 	return mi.MessageOf(x)
 }
 
+// Deprecated: Marked as deprecated in wayplatform/connect/tachograph/vu/v1/technical_data_gen2_v2.proto.
 func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) GetTimestamp() *timestamppb.Timestamp {
 	if x != nil {
 		return x.xxx_hidden_Timestamp
@@ -2118,6 +2199,7 @@ func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) GetTimestamp() *time
 	return nil
 }
 
+// Deprecated: Marked as deprecated in wayplatform/connect/tachograph/vu/v1/technical_data_gen2_v2.proto.
 func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) GetCardSlotNumber() v11.CardSlotNumber {
 	if x != nil {
 		if protoimpl.X.Present(&(x.XXX_presence[0]), 1) {
@@ -2127,6 +2209,7 @@ func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) GetCardSlotNumber() 
 	return v11.CardSlotNumber(0)
 }
 
+// Deprecated: Marked as deprecated in wayplatform/connect/tachograph/vu/v1/technical_data_gen2_v2.proto.
 func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) GetUnrecognizedCardSlotNumber() int32 {
 	if x != nil {
 		return x.xxx_hidden_UnrecognizedCardSlotNumber
@@ -2134,20 +2217,169 @@ func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) GetUnrecognizedCardS
 	return 0
 }
 
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) GetEventType() v11.EventFaultType {
+	if x != nil {
+		if protoimpl.X.Present(&(x.XXX_presence[0]), 3) {
+			return x.xxx_hidden_EventType
+		}
+	}
+	return v11.EventFaultType(0)
+}
+
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) GetUnrecognizedEventType() int32 {
+	if x != nil {
+		return x.xxx_hidden_UnrecognizedEventType
+	}
+	return 0
+}
+
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) GetEventRecordPurpose() v11.EventFaultRecordPurpose {
+	if x != nil {
+		if protoimpl.X.Present(&(x.XXX_presence[0]), 5) {
+			return x.xxx_hidden_EventRecordPurpose
+		}
+	}
+	return v11.EventFaultRecordPurpose(0)
+}
+
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) GetUnrecognizedEventRecordPurpose() int32 {
+	if x != nil {
+		return x.xxx_hidden_UnrecognizedEventRecordPurpose
+	}
+	return 0
+}
+
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) GetEventBeginTime() *timestamppb.Timestamp {
+	if x != nil {
+		return x.xxx_hidden_EventBeginTime
+	}
+	return nil
+}
+
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) GetEventEndTime() *timestamppb.Timestamp {
+	if x != nil {
+		return x.xxx_hidden_EventEndTime
+	}
+	return nil
+}
+
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) GetCardNumberAndGenerationDriverSlotBegin() *v11.FullCardNumberAndGeneration {
+	if x != nil {
+		return x.xxx_hidden_CardNumberAndGenerationDriverSlotBegin
+	}
+	return nil
+}
+
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) GetCardNumberAndGenerationDriverSlotEnd() *v11.FullCardNumberAndGeneration {
+	if x != nil {
+		return x.xxx_hidden_CardNumberAndGenerationDriverSlotEnd
+	}
+	return nil
+}
+
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) GetCardNumberAndGenerationCodriverSlotBegin() *v11.FullCardNumberAndGeneration {
+	if x != nil {
+		return x.xxx_hidden_CardNumberAndGenerationCodriverSlotBegin
+	}
+	return nil
+}
+
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) GetCardNumberAndGenerationCodriverSlotEnd() *v11.FullCardNumberAndGeneration {
+	if x != nil {
+		return x.xxx_hidden_CardNumberAndGenerationCodriverSlotEnd
+	}
+	return nil
+}
+
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) GetSimilarEventsNumber() int32 {
+	if x != nil {
+		return x.xxx_hidden_SimilarEventsNumber
+	}
+	return 0
+}
+
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) GetRawData() []byte {
+	if x != nil {
+		return x.xxx_hidden_RawData
+	}
+	return nil
+}
+
+// Deprecated: Marked as deprecated in wayplatform/connect/tachograph/vu/v1/technical_data_gen2_v2.proto.
 func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) SetTimestamp(v *timestamppb.Timestamp) {
 	x.xxx_hidden_Timestamp = v
 }
 
+// Deprecated: Marked as deprecated in wayplatform/connect/tachograph/vu/v1/technical_data_gen2_v2.proto.
 func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) SetCardSlotNumber(v v11.CardSlotNumber) {
 	x.xxx_hidden_CardSlotNumber = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 3)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 15)
 }
 
+// Deprecated: Marked as deprecated in wayplatform/connect/tachograph/vu/v1/technical_data_gen2_v2.proto.
 func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) SetUnrecognizedCardSlotNumber(v int32) {
 	x.xxx_hidden_UnrecognizedCardSlotNumber = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 15)
 }
 
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) SetEventType(v v11.EventFaultType) {
+	x.xxx_hidden_EventType = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 15)
+}
+
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) SetUnrecognizedEventType(v int32) {
+	x.xxx_hidden_UnrecognizedEventType = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 15)
+}
+
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) SetEventRecordPurpose(v v11.EventFaultRecordPurpose) {
+	x.xxx_hidden_EventRecordPurpose = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 15)
+}
+
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) SetUnrecognizedEventRecordPurpose(v int32) {
+	x.xxx_hidden_UnrecognizedEventRecordPurpose = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 15)
+}
+
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) SetEventBeginTime(v *timestamppb.Timestamp) {
+	x.xxx_hidden_EventBeginTime = v
+}
+
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) SetEventEndTime(v *timestamppb.Timestamp) {
+	x.xxx_hidden_EventEndTime = v
+}
+
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) SetCardNumberAndGenerationDriverSlotBegin(v *v11.FullCardNumberAndGeneration) {
+	x.xxx_hidden_CardNumberAndGenerationDriverSlotBegin = v
+}
+
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) SetCardNumberAndGenerationDriverSlotEnd(v *v11.FullCardNumberAndGeneration) {
+	x.xxx_hidden_CardNumberAndGenerationDriverSlotEnd = v
+}
+
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) SetCardNumberAndGenerationCodriverSlotBegin(v *v11.FullCardNumberAndGeneration) {
+	x.xxx_hidden_CardNumberAndGenerationCodriverSlotBegin = v
+}
+
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) SetCardNumberAndGenerationCodriverSlotEnd(v *v11.FullCardNumberAndGeneration) {
+	x.xxx_hidden_CardNumberAndGenerationCodriverSlotEnd = v
+}
+
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) SetSimilarEventsNumber(v int32) {
+	x.xxx_hidden_SimilarEventsNumber = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 13, 15)
+}
+
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) SetRawData(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_RawData = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 14, 15)
+}
+
+// Deprecated: Marked as deprecated in wayplatform/connect/tachograph/vu/v1/technical_data_gen2_v2.proto.
 func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) HasTimestamp() bool {
 	if x == nil {
 		return false
@@ -2155,6 +2387,7 @@ func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) HasTimestamp() bool 
 	return x.xxx_hidden_Timestamp != nil
 }
 
+// Deprecated: Marked as deprecated in wayplatform/connect/tachograph/vu/v1/technical_data_gen2_v2.proto.
 func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) HasCardSlotNumber() bool {
 	if x == nil {
 		return false
@@ -2162,6 +2395,7 @@ func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) HasCardSlotNumber() 
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
 }
 
+// Deprecated: Marked as deprecated in wayplatform/connect/tachograph/vu/v1/technical_data_gen2_v2.proto.
 func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) HasUnrecognizedCardSlotNumber() bool {
 	if x == nil {
 		return false
@@ -2169,32 +2403,184 @@ func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) HasUnrecognizedCardS
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
 }
 
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) HasEventType() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
+}
+
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) HasUnrecognizedEventType() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
+}
+
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) HasEventRecordPurpose() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
+}
+
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) HasUnrecognizedEventRecordPurpose() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 6)
+}
+
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) HasEventBeginTime() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_EventBeginTime != nil
+}
+
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) HasEventEndTime() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_EventEndTime != nil
+}
+
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) HasCardNumberAndGenerationDriverSlotBegin() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_CardNumberAndGenerationDriverSlotBegin != nil
+}
+
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) HasCardNumberAndGenerationDriverSlotEnd() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_CardNumberAndGenerationDriverSlotEnd != nil
+}
+
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) HasCardNumberAndGenerationCodriverSlotBegin() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_CardNumberAndGenerationCodriverSlotBegin != nil
+}
+
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) HasCardNumberAndGenerationCodriverSlotEnd() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_CardNumberAndGenerationCodriverSlotEnd != nil
+}
+
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) HasSimilarEventsNumber() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 13)
+}
+
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) HasRawData() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 14)
+}
+
+// Deprecated: Marked as deprecated in wayplatform/connect/tachograph/vu/v1/technical_data_gen2_v2.proto.
 func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) ClearTimestamp() {
 	x.xxx_hidden_Timestamp = nil
 }
 
+// Deprecated: Marked as deprecated in wayplatform/connect/tachograph/vu/v1/technical_data_gen2_v2.proto.
 func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) ClearCardSlotNumber() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
 	x.xxx_hidden_CardSlotNumber = v11.CardSlotNumber_CARD_SLOT_NUMBER_UNSPECIFIED
 }
 
+// Deprecated: Marked as deprecated in wayplatform/connect/tachograph/vu/v1/technical_data_gen2_v2.proto.
 func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) ClearUnrecognizedCardSlotNumber() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
 	x.xxx_hidden_UnrecognizedCardSlotNumber = 0
 }
 
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) ClearEventType() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
+	x.xxx_hidden_EventType = v11.EventFaultType_EVENT_FAULT_TYPE_UNSPECIFIED
+}
+
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) ClearUnrecognizedEventType() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
+	x.xxx_hidden_UnrecognizedEventType = 0
+}
+
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) ClearEventRecordPurpose() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 5)
+	x.xxx_hidden_EventRecordPurpose = v11.EventFaultRecordPurpose_EVENT_FAULT_RECORD_PURPOSE_UNSPECIFIED
+}
+
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) ClearUnrecognizedEventRecordPurpose() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 6)
+	x.xxx_hidden_UnrecognizedEventRecordPurpose = 0
+}
+
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) ClearEventBeginTime() {
+	x.xxx_hidden_EventBeginTime = nil
+}
+
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) ClearEventEndTime() {
+	x.xxx_hidden_EventEndTime = nil
+}
+
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) ClearCardNumberAndGenerationDriverSlotBegin() {
+	x.xxx_hidden_CardNumberAndGenerationDriverSlotBegin = nil
+}
+
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) ClearCardNumberAndGenerationDriverSlotEnd() {
+	x.xxx_hidden_CardNumberAndGenerationDriverSlotEnd = nil
+}
+
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) ClearCardNumberAndGenerationCodriverSlotBegin() {
+	x.xxx_hidden_CardNumberAndGenerationCodriverSlotBegin = nil
+}
+
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) ClearCardNumberAndGenerationCodriverSlotEnd() {
+	x.xxx_hidden_CardNumberAndGenerationCodriverSlotEnd = nil
+}
+
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) ClearSimilarEventsNumber() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 13)
+	x.xxx_hidden_SimilarEventsNumber = 0
+}
+
+func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) ClearRawData() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 14)
+	x.xxx_hidden_RawData = nil
+}
+
 type TechnicalDataGen2V2_PowerSupplyInterruptionRecord_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// The timestamp of the interruption.
+	// Legacy fields from an incorrect five-byte interpretation of this record.
 	//
-	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// Deprecated: Marked as deprecated in wayplatform/connect/tachograph/vu/v1/technical_data_gen2_v2.proto.
 	Timestamp *timestamppb.Timestamp
-	// The slot number of the card affected.
-	//
-	// See Data Dictionary, Section 2.33, `CardSlotNumber`.
-	CardSlotNumber             *v11.CardSlotNumber
-	UnrecognizedCardSlotNumber *int32
+	// Deprecated: Marked as deprecated in wayplatform/connect/tachograph/vu/v1/technical_data_gen2_v2.proto.
+	CardSlotNumber *v11.CardSlotNumber
+	// Deprecated: Marked as deprecated in wayplatform/connect/tachograph/vu/v1/technical_data_gen2_v2.proto.
+	UnrecognizedCardSlotNumber               *int32
+	EventType                                *v11.EventFaultType
+	UnrecognizedEventType                    *int32
+	EventRecordPurpose                       *v11.EventFaultRecordPurpose
+	UnrecognizedEventRecordPurpose           *int32
+	EventBeginTime                           *timestamppb.Timestamp
+	EventEndTime                             *timestamppb.Timestamp
+	CardNumberAndGenerationDriverSlotBegin   *v11.FullCardNumberAndGeneration
+	CardNumberAndGenerationDriverSlotEnd     *v11.FullCardNumberAndGeneration
+	CardNumberAndGenerationCodriverSlotBegin *v11.FullCardNumberAndGeneration
+	CardNumberAndGenerationCodriverSlotEnd   *v11.FullCardNumberAndGeneration
+	SimilarEventsNumber                      *int32
+	RawData                                  []byte
 }
 
 func (b0 TechnicalDataGen2V2_PowerSupplyInterruptionRecord_builder) Build() *TechnicalDataGen2V2_PowerSupplyInterruptionRecord {
@@ -2203,12 +2589,42 @@ func (b0 TechnicalDataGen2V2_PowerSupplyInterruptionRecord_builder) Build() *Tec
 	_, _ = b, x
 	x.xxx_hidden_Timestamp = b.Timestamp
 	if b.CardSlotNumber != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 3)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 15)
 		x.xxx_hidden_CardSlotNumber = *b.CardSlotNumber
 	}
 	if b.UnrecognizedCardSlotNumber != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 15)
 		x.xxx_hidden_UnrecognizedCardSlotNumber = *b.UnrecognizedCardSlotNumber
+	}
+	if b.EventType != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 15)
+		x.xxx_hidden_EventType = *b.EventType
+	}
+	if b.UnrecognizedEventType != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 15)
+		x.xxx_hidden_UnrecognizedEventType = *b.UnrecognizedEventType
+	}
+	if b.EventRecordPurpose != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 15)
+		x.xxx_hidden_EventRecordPurpose = *b.EventRecordPurpose
+	}
+	if b.UnrecognizedEventRecordPurpose != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 15)
+		x.xxx_hidden_UnrecognizedEventRecordPurpose = *b.UnrecognizedEventRecordPurpose
+	}
+	x.xxx_hidden_EventBeginTime = b.EventBeginTime
+	x.xxx_hidden_EventEndTime = b.EventEndTime
+	x.xxx_hidden_CardNumberAndGenerationDriverSlotBegin = b.CardNumberAndGenerationDriverSlotBegin
+	x.xxx_hidden_CardNumberAndGenerationDriverSlotEnd = b.CardNumberAndGenerationDriverSlotEnd
+	x.xxx_hidden_CardNumberAndGenerationCodriverSlotBegin = b.CardNumberAndGenerationCodriverSlotBegin
+	x.xxx_hidden_CardNumberAndGenerationCodriverSlotEnd = b.CardNumberAndGenerationCodriverSlotEnd
+	if b.SimilarEventsNumber != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 13, 15)
+		x.xxx_hidden_SimilarEventsNumber = *b.SimilarEventsNumber
+	}
+	if b.RawData != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 14, 15)
+		x.xxx_hidden_RawData = b.RawData
 	}
 	return m0
 }
@@ -2217,7 +2633,7 @@ var File_wayplatform_connect_tachograph_vu_v1_technical_data_gen2_v2_proto proto
 
 const file_wayplatform_connect_tachograph_vu_v1_technical_data_gen2_v2_proto_rawDesc = "" +
 	"\n" +
-	"Awayplatform/connect/tachograph/vu/v1/technical_data_gen2_v2.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a>wayplatform/connect/tachograph/dd/v1/calibration_purpose.proto\x1a;wayplatform/connect/tachograph/dd/v1/card_slot_number.proto\x1aAwayplatform/connect/tachograph/dd/v1/card_structure_version.proto\x1a/wayplatform/connect/tachograph/dd/v1/date.proto\x1a@wayplatform/connect/tachograph/dd/v1/driver_identification.proto\x1a9wayplatform/connect/tachograph/dd/v1/equipment_type.proto\x1aAwayplatform/connect/tachograph/dd/v1/extended_serial_number.proto\x1a;wayplatform/connect/tachograph/dd/v1/full_card_number.proto\x1aJwayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto\x1a;wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\x1a?wayplatform/connect/tachograph/dd/v1/owner_identification.proto\x1aBwayplatform/connect/tachograph/dd/v1/software_identification.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\"\x93,\n" +
+	"Awayplatform/connect/tachograph/vu/v1/technical_data_gen2_v2.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a>wayplatform/connect/tachograph/dd/v1/calibration_purpose.proto\x1a;wayplatform/connect/tachograph/dd/v1/card_slot_number.proto\x1aAwayplatform/connect/tachograph/dd/v1/card_structure_version.proto\x1a@wayplatform/connect/tachograph/dd/v1/driver_identification.proto\x1a9wayplatform/connect/tachograph/dd/v1/equipment_type.proto\x1aEwayplatform/connect/tachograph/dd/v1/event_fault_record_purpose.proto\x1a;wayplatform/connect/tachograph/dd/v1/event_fault_type.proto\x1aAwayplatform/connect/tachograph/dd/v1/extended_serial_number.proto\x1a;wayplatform/connect/tachograph/dd/v1/full_card_number.proto\x1aJwayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto\x1a;wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\x1a?wayplatform/connect/tachograph/dd/v1/owner_identification.proto\x1aBwayplatform/connect/tachograph/dd/v1/software_identification.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\"\xfd5\n" +
 	"\x13TechnicalDataGen2V2\x12w\n" +
 	"\x11vu_identification\x18\x01 \x01(\v2J.wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.VuIdentificationR\x10vuIdentification\x12|\n" +
 	"\x13calibration_records\x18\x02 \x03(\v2K.wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CalibrationRecordR\x12calibrationRecords\x12m\n" +
@@ -2278,21 +2694,37 @@ const file_wayplatform_connect_tachograph_vu_v1_technical_data_gen2_v2_proto_raw
 	"\x0eequipment_type\x18\x01 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.EquipmentTypeR\requipmentType\x12>\n" +
 	"\x1bunrecognized_equipment_type\x18\x02 \x01(\x05R\x19unrecognizedEquipmentType\x12+\n" +
 	"\x11manufacturer_code\x18\x03 \x01(\tR\x10manufacturerCode\x12'\n" +
-	"\x0fseal_identifier\x18\x04 \x01(\tR\x0esealIdentifier\x1a\xd8\x04\n" +
+	"\x0fseal_identifier\x18\x04 \x01(\tR\x0esealIdentifier\x1a\xf3\x04\n" +
 	"\n" +
 	"CardRecord\x12~\n" +
 	"\x1acard_number_and_generation\x18\x01 \x01(\v2A.wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGenerationR\x17cardNumberAndGeneration\x12y\n" +
 	"\x1bcard_extended_serial_number\x18\x02 \x01(\v2:.wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumberR\x18cardExtendedSerialNumber\x12p\n" +
 	"\x16card_structure_version\x18\x03 \x01(\v2:.wayplatform.connect.tachograph.dd.v1.CardStructureVersionR\x14cardStructureVersion\x12o\n" +
 	"\x15driver_identification\x18\x04 \x01(\v2:.wayplatform.connect.tachograph.dd.v1.DriverIdentificationR\x14driverIdentification\x12l\n" +
-	"\x14owner_identification\x18\x05 \x01(\v29.wayplatform.connect.tachograph.dd.v1.OwnerIdentificationR\x13ownerIdentification\x1a\xc3\x01\n" +
+	"\x14owner_identification\x18\x05 \x01(\v29.wayplatform.connect.tachograph.dd.v1.OwnerIdentificationR\x13ownerIdentification\x12\x19\n" +
+	"\braw_data\x18c \x01(\fR\arawData\x1a\xde\x01\n" +
 	"\x10ItsConsentRecord\x12\x87\x01\n" +
 	"\x1ffull_card_number_and_generation\x18\x01 \x01(\v2A.wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGenerationR\x1bfullCardNumberAndGeneration\x12%\n" +
-	"\x0econsent_status\x18\x02 \x01(\bR\rconsentStatus\x1a\xfc\x01\n" +
-	"\x1dPowerSupplyInterruptionRecord\x128\n" +
-	"\ttimestamp\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x12^\n" +
-	"\x10card_slot_number\x18\x02 \x01(\x0e24.wayplatform.connect.tachograph.dd.v1.CardSlotNumberR\x0ecardSlotNumber\x12A\n" +
-	"\x1dunrecognized_card_slot_number\x18\x03 \x01(\x05R\x1aunrecognizedCardSlotNumberB\xd7\x02\n" +
+	"\x0econsent_status\x18\x02 \x01(\bR\rconsentStatus\x12\x19\n" +
+	"\braw_data\x18c \x01(\fR\arawData\x1a\xb0\v\n" +
+	"\x1dPowerSupplyInterruptionRecord\x12<\n" +
+	"\ttimestamp\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampB\x02\x18\x01R\ttimestamp\x12b\n" +
+	"\x10card_slot_number\x18\x02 \x01(\x0e24.wayplatform.connect.tachograph.dd.v1.CardSlotNumberB\x02\x18\x01R\x0ecardSlotNumber\x12E\n" +
+	"\x1dunrecognized_card_slot_number\x18\x03 \x01(\x05B\x02\x18\x01R\x1aunrecognizedCardSlotNumber\x12S\n" +
+	"\n" +
+	"event_type\x18\x04 \x01(\x0e24.wayplatform.connect.tachograph.dd.v1.EventFaultTypeR\teventType\x126\n" +
+	"\x17unrecognized_event_type\x18\x05 \x01(\x05R\x15unrecognizedEventType\x12o\n" +
+	"\x14event_record_purpose\x18\x06 \x01(\x0e2=.wayplatform.connect.tachograph.dd.v1.EventFaultRecordPurposeR\x12eventRecordPurpose\x12I\n" +
+	"!unrecognized_event_record_purpose\x18\a \x01(\x05R\x1eunrecognizedEventRecordPurpose\x12D\n" +
+	"\x10event_begin_time\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\x0eeventBeginTime\x12@\n" +
+	"\x0eevent_end_time\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\feventEndTime\x12\x9f\x01\n" +
+	",card_number_and_generation_driver_slot_begin\x18\n" +
+	" \x01(\v2A.wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGenerationR&cardNumberAndGenerationDriverSlotBegin\x12\x9b\x01\n" +
+	"*card_number_and_generation_driver_slot_end\x18\v \x01(\v2A.wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGenerationR$cardNumberAndGenerationDriverSlotEnd\x12\xa3\x01\n" +
+	".card_number_and_generation_codriver_slot_begin\x18\f \x01(\v2A.wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGenerationR(cardNumberAndGenerationCodriverSlotBegin\x12\x9f\x01\n" +
+	",card_number_and_generation_codriver_slot_end\x18\r \x01(\v2A.wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGenerationR&cardNumberAndGenerationCodriverSlotEnd\x122\n" +
+	"\x15similar_events_number\x18\x0e \x01(\x05R\x13similarEventsNumber\x12\x19\n" +
+	"\braw_data\x18c \x01(\fR\arawDataB\xd7\x02\n" +
 	"(com.wayplatform.connect.tachograph.vu.v1B\x18TechnicalDataGen2V2ProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1;vuv1\xa2\x02\x04WCTV\xaa\x02$Wayplatform.Connect.Tachograph.Vu.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Vu\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Vu\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Vu::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_vu_v1_technical_data_gen2_v2_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
@@ -2322,6 +2754,8 @@ var file_wayplatform_connect_tachograph_vu_v1_technical_data_gen2_v2_proto_goTyp
 	(*v11.DriverIdentification)(nil),                          // 22: wayplatform.connect.tachograph.dd.v1.DriverIdentification
 	(*v11.OwnerIdentification)(nil),                           // 23: wayplatform.connect.tachograph.dd.v1.OwnerIdentification
 	(v11.CardSlotNumber)(0),                                   // 24: wayplatform.connect.tachograph.dd.v1.CardSlotNumber
+	(v11.EventFaultType)(0),                                   // 25: wayplatform.connect.tachograph.dd.v1.EventFaultType
+	(v11.EventFaultRecordPurpose)(0),                          // 26: wayplatform.connect.tachograph.dd.v1.EventFaultRecordPurpose
 }
 var file_wayplatform_connect_tachograph_vu_v1_technical_data_gen2_v2_proto_depIdxs = []int32{
 	1,  // 0: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.vu_identification:type_name -> wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.VuIdentification
@@ -2371,11 +2805,19 @@ var file_wayplatform_connect_tachograph_vu_v1_technical_data_gen2_v2_proto_depId
 	20, // 44: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.ItsConsentRecord.full_card_number_and_generation:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
 	14, // 45: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.PowerSupplyInterruptionRecord.timestamp:type_name -> google.protobuf.Timestamp
 	24, // 46: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.PowerSupplyInterruptionRecord.card_slot_number:type_name -> wayplatform.connect.tachograph.dd.v1.CardSlotNumber
-	47, // [47:47] is the sub-list for method output_type
-	47, // [47:47] is the sub-list for method input_type
-	47, // [47:47] is the sub-list for extension type_name
-	47, // [47:47] is the sub-list for extension extendee
-	0,  // [0:47] is the sub-list for field type_name
+	25, // 47: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.PowerSupplyInterruptionRecord.event_type:type_name -> wayplatform.connect.tachograph.dd.v1.EventFaultType
+	26, // 48: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.PowerSupplyInterruptionRecord.event_record_purpose:type_name -> wayplatform.connect.tachograph.dd.v1.EventFaultRecordPurpose
+	14, // 49: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.PowerSupplyInterruptionRecord.event_begin_time:type_name -> google.protobuf.Timestamp
+	14, // 50: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.PowerSupplyInterruptionRecord.event_end_time:type_name -> google.protobuf.Timestamp
+	20, // 51: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.PowerSupplyInterruptionRecord.card_number_and_generation_driver_slot_begin:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
+	20, // 52: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.PowerSupplyInterruptionRecord.card_number_and_generation_driver_slot_end:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
+	20, // 53: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.PowerSupplyInterruptionRecord.card_number_and_generation_codriver_slot_begin:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
+	20, // 54: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.PowerSupplyInterruptionRecord.card_number_and_generation_codriver_slot_end:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
+	55, // [55:55] is the sub-list for method output_type
+	55, // [55:55] is the sub-list for method input_type
+	55, // [55:55] is the sub-list for extension type_name
+	55, // [55:55] is the sub-list for extension extendee
+	0,  // [0:55] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_vu_v1_technical_data_gen2_v2_proto_init() }

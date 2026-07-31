@@ -230,7 +230,7 @@ func (opts MarshalOptions) MarshalActivitiesGen2V2(activities *vuv1.ActivitiesGe
 
 	// Append signature at the end (TV format: maintains structure)
 	// Gen2 uses variable-length ECDSA signatures
-	result = appendSignature(result, activities.GetSignature(), 0x0A)
+	result = appendSignature(result, activities.GetSignature())
 
 	return result, nil
 }

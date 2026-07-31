@@ -60,21 +60,38 @@ func TestOverview_Gen2V1(t *testing.T) {
 	}
 }
 
-func TestParseVehicleRegistrationNumberRecordArrayGen2V1(t *testing.T) {
+func TestParseVehicleRegistrationNumberRecordArray(t *testing.T) {
 	data := []byte{
-		0x24, 0x00, 0x0E, 0x00, 0x01, // RecordArray: VRN, 14 bytes, one record
+		0x0B, 0x00, 0x0E, 0x00, 0x01, // RecordArray: VRN, 14 bytes, one record
 		0x00, 'P', 'E', '6', '7', 'H', 'X', 'S', ' ', ' ', ' ', ' ', ' ', ' ',
 	}
 
-	got, bytesRead, err := parseVehicleRegistrationNumberRecordArrayGen2V1(data, 0)
+	got, bytesRead, err := parseVehicleRegistrationNumberRecordArray(data, 0)
 	if err != nil {
-		t.Fatalf("parseVehicleRegistrationNumberRecordArrayGen2V1() error = %v", err)
+		t.Fatalf("parseVehicleRegistrationNumberRecordArray() error = %v", err)
 	}
 	if bytesRead != len(data) {
 		t.Errorf("bytes read = %d, want %d", bytesRead, len(data))
 	}
 	if got.GetNation() != ddv1.NationNumeric_NATION_NUMERIC_UNSPECIFIED {
 		t.Errorf("nation = %v, want NATION_NUMERIC_UNSPECIFIED", got.GetNation())
+	}
+	if got.GetNumber().GetValue() != "PE67HXS" {
+		t.Errorf("registration = %q, want %q", got.GetNumber().GetValue(), "PE67HXS")
+	}
+}
+
+func TestParseVehicleRegistrationNumberRecordArrayAcceptsAppendix7SwappedForm(t *testing.T) {
+	record := []byte{0x15, 0x01, 'P', 'E', '6', '7', 'H', 'X', 'S', ' ', ' ', ' ', ' ', ' ', ' '}
+	data := appendRecordArrayHeader(nil, recordTypeVehicleRegistrationIdentification, uint16(len(record)), 1)
+	data = append(data, record...)
+
+	got, _, err := parseVehicleRegistrationNumberRecordArray(data, 0)
+	if err != nil {
+		t.Fatalf("parseVehicleRegistrationNumberRecordArray() error = %v", err)
+	}
+	if got.GetNation() != ddv1.NationNumeric_UNITED_KINGDOM {
+		t.Errorf("nation = %v, want UNITED_KINGDOM", got.GetNation())
 	}
 	if got.GetNumber().GetValue() != "PE67HXS" {
 		t.Errorf("registration = %q, want %q", got.GetNumber().GetValue(), "PE67HXS")

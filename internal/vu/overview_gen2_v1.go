@@ -68,7 +68,7 @@ func unmarshalOverviewGen2V1(value []byte) (*vuv1.OverviewGen2V1, error) {
 	offset += bytesRead
 
 	// VehicleRegistrationNumberRecordArray
-	vrn, bytesRead, err := parseVehicleRegistrationNumberRecordArrayGen2V1(data, offset)
+	vrn, bytesRead, err := parseVehicleRegistrationNumberRecordArray(data, offset)
 	if err != nil {
 		return nil, fmt.Errorf("parse VehicleRegistrationNumberRecordArray: %w", err)
 	}
@@ -171,7 +171,7 @@ func (opts MarshalOptions) MarshalOverviewGen2V1(overview *vuv1.OverviewGen2V1) 
 	if len(vrnData) != 14 {
 		return nil, fmt.Errorf("marshal VRN: got %d bytes, want 14", len(vrnData))
 	}
-	result = appendRecordArrayHeader(result, 0x04, uint16(len(vrnData)), 1)
+	result = appendRecordArrayHeader(result, recordTypeVehicleRegistrationNumber, uint16(len(vrnData)), 1)
 	result = append(result, vrnData...)
 
 	// CurrentDateTimeRecordArray (4 bytes)
@@ -222,7 +222,7 @@ func (opts MarshalOptions) MarshalOverviewGen2V1(overview *vuv1.OverviewGen2V1) 
 	result = appendRecordArrayHeader(result, 0x0A, 32, uint16(len(overview.GetControlActivities())))
 	result = append(result, controlsData...)
 
-	result = appendSignature(result, overview.GetSignature(), 0x0B)
+	result = appendSignature(result, overview.GetSignature())
 	return result, nil
 }
 
@@ -348,19 +348,24 @@ func parseVehicleIdentificationNumberRecordArray(data []byte, offset int) (*ddv1
 	return vin, totalSize, nil
 }
 
-// parseVehicleRegistrationNumberRecordArrayGen2V1 parses the 14-byte
-// VehicleRegistrationNumberRecordArray used by Gen2 V1 Overview transfers.
-func parseVehicleRegistrationNumberRecordArrayGen2V1(data []byte, offset int) (*ddv1.VehicleRegistrationIdentification, int, error) {
-	_, recordSize, noOfRecords, headerSize, err := parseRecordArrayHeader(data, offset)
+const (
+	recordTypeVehicleRegistrationNumber         = 0x0b
+	recordTypeVehicleRegistrationIdentification = 0x24
+	lenVehicleRegistrationNumber                = 14
+	lenVehicleRegistrationIdentification        = 15
+)
+
+// parseVehicleRegistrationNumberRecordArray parses the Gen2 V1
+// VehicleRegistrationNumberRecordArray. Appendix 7 transposes this array with
+// the Gen2 V2 VehicleRegistrationIdentificationRecordArray, so the swapped
+// type-and-size pair is accepted explicitly for compatibility.
+func parseVehicleRegistrationNumberRecordArray(data []byte, offset int) (*ddv1.VehicleRegistrationIdentification, int, error) {
+	recordType, recordSize, noOfRecords, headerSize, err := parseRecordArrayHeader(data, offset)
 	if err != nil {
 		return nil, 0, err
 	}
 	if noOfRecords != 1 {
 		return nil, 0, fmt.Errorf("expected 1 VRN record, got %d", noOfRecords)
-	}
-	const lenVehicleRegistrationNumber = 14
-	if recordSize != lenVehicleRegistrationNumber {
-		return nil, 0, fmt.Errorf("unexpected VRN record size: got %d, want %d", recordSize, lenVehicleRegistrationNumber)
 	}
 	recordStart := offset + headerSize
 	recordEnd := recordStart + int(recordSize)
@@ -368,14 +373,33 @@ func parseVehicleRegistrationNumberRecordArrayGen2V1(data []byte, offset int) (*
 		return nil, 0, fmt.Errorf("insufficient data for VRN record")
 	}
 	var unmarshalOpts dd.UnmarshalOptions
-	number, err := unmarshalOpts.UnmarshalStringValue(data[recordStart:recordEnd])
-	if err != nil {
-		return nil, 0, fmt.Errorf("unmarshal VRN: %w", err)
+	var registration *ddv1.VehicleRegistrationIdentification
+	switch {
+	case recordType == recordTypeVehicleRegistrationNumber && recordSize == lenVehicleRegistrationNumber:
+		number, numberErr := unmarshalOpts.UnmarshalStringValue(data[recordStart:recordEnd])
+		if numberErr != nil {
+			return nil, 0, fmt.Errorf("unmarshal VRN: %w", numberErr)
+		}
+		registration = &ddv1.VehicleRegistrationIdentification{}
+		registration.SetNumber(number)
+	case recordType == recordTypeVehicleRegistrationIdentification && recordSize == lenVehicleRegistrationIdentification:
+		registration, err = unmarshalOpts.UnmarshalVehicleRegistrationIdentification(data[recordStart:recordEnd])
+		if err != nil {
+			return nil, 0, fmt.Errorf("unmarshal vehicle registration identification: %w", err)
+		}
+	default:
+		return nil, 0, fmt.Errorf(
+			"unexpected vehicle registration RecordArray: type 0x%02x, size %d; want type 0x%02x size %d or compatibility type 0x%02x size %d",
+			recordType,
+			recordSize,
+			recordTypeVehicleRegistrationNumber,
+			lenVehicleRegistrationNumber,
+			recordTypeVehicleRegistrationIdentification,
+			lenVehicleRegistrationIdentification,
+		)
 	}
-	vrn := &ddv1.VehicleRegistrationIdentification{}
-	vrn.SetNumber(number)
 	totalSize := headerSize + int(recordSize)
-	return vrn, totalSize, nil
+	return registration, totalSize, nil
 }
 
 // parseCurrentDateTimeRecordArray parses a CurrentDateTimeRecordArray.

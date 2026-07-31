@@ -9,7 +9,6 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
@@ -29,20 +28,13 @@ func TestStrictRawVehicleUnitFileRejectsNonterminalTrailingData(t *testing.T) {
 	}
 }
 
-func TestExpectedFileLevelSignatureRequiresGen2V2Transfer(t *testing.T) {
-	signature := appendRecordArrayHeader(nil, recordTypeSignature, 64, 1)
-	signature = append(signature, make([]byte, 64)...)
+func TestStrictRawVehicleUnitFileRejectsDetachedGen2V2Signature(t *testing.T) {
+	data := []byte{0x76, 0x00, 0x02, 0x02} // DownloadInterfaceVersion: Gen2 V2
+	data = appendRecordArrayHeader(data, recordTypeSignature, 64, 1)
+	data = append(data, make([]byte, 64)...)
 
-	rawFile := &vuv1.RawVehicleUnitFile{}
-	if isExpectedFileLevelSignature(signature, rawFile) {
-		t.Fatal("signature accepted without a Gen2 V2 transfer")
-	}
-
-	record := &vuv1.RawVehicleUnitFile_Record{}
-	record.SetType(vuv1.TransferType_OVERVIEW_GEN2_V2)
-	rawFile.SetRecords([]*vuv1.RawVehicleUnitFile_Record{record})
-	if !isExpectedFileLevelSignature(signature, rawFile) {
-		t.Fatal("valid Gen2 V2 file-level signature rejected")
+	if _, err := (UnmarshalOptions{Strict: true}).UnmarshalRawVehicleUnitFile(data); err == nil {
+		t.Fatal("strict unmarshal error = nil, want detached signature rejection")
 	}
 }
 

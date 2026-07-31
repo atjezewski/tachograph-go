@@ -6,9 +6,10 @@ import "google/protobuf/timestamp.proto";
 import "wayplatform/connect/tachograph/dd/v1/calibration_purpose.proto";
 import "wayplatform/connect/tachograph/dd/v1/card_slot_number.proto";
 import "wayplatform/connect/tachograph/dd/v1/card_structure_version.proto";
-import "wayplatform/connect/tachograph/dd/v1/date.proto";
 import "wayplatform/connect/tachograph/dd/v1/driver_identification.proto";
 import "wayplatform/connect/tachograph/dd/v1/equipment_type.proto";
+import "wayplatform/connect/tachograph/dd/v1/event_fault_record_purpose.proto";
+import "wayplatform/connect/tachograph/dd/v1/event_fault_type.proto";
 import "wayplatform/connect/tachograph/dd/v1/extended_serial_number.proto";
 import "wayplatform/connect/tachograph/dd/v1/full_card_number.proto";
 import "wayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto";
@@ -272,6 +273,8 @@ message TechnicalDataGen2V2 {
     // See Data Dictionary, Section 2.26.
     dd.v1.DriverIdentification driver_identification = 4;
     dd.v1.OwnerIdentification owner_identification = 5;
+
+    bytes raw_data = 99;
   }
 
   // Represents a record of ITS consent status for a card (Gen2 only).
@@ -283,22 +286,31 @@ message TechnicalDataGen2V2 {
 
     // The consent status for ITS data provision.
     bool consent_status = 2;
+
+    bytes raw_data = 99;
   }
 
-  // Represents a record of a power supply interruption (Gen2 V2 only).
+  // Represents a power supply interruption event stored by the VU.
   //
   // See Data Dictionary, Section 2.240, `VuPowerSupplyInterruptionRecord`.
   message PowerSupplyInterruptionRecord {
-    // The timestamp of the interruption.
-    //
-    // See Data Dictionary, Section 2.162, `TimeReal`.
-    google.protobuf.Timestamp timestamp = 1;
+    // Legacy fields from an incorrect five-byte interpretation of this record.
+    google.protobuf.Timestamp timestamp = 1 [deprecated = true];
+    dd.v1.CardSlotNumber card_slot_number = 2 [deprecated = true];
+    int32 unrecognized_card_slot_number = 3 [deprecated = true];
 
-    // The slot number of the card affected.
-    //
-    // See Data Dictionary, Section 2.33, `CardSlotNumber`.
-    dd.v1.CardSlotNumber card_slot_number = 2;
-    int32 unrecognized_card_slot_number = 3;
+    dd.v1.EventFaultType event_type = 4;
+    int32 unrecognized_event_type = 5;
+    dd.v1.EventFaultRecordPurpose event_record_purpose = 6;
+    int32 unrecognized_event_record_purpose = 7;
+    google.protobuf.Timestamp event_begin_time = 8;
+    google.protobuf.Timestamp event_end_time = 9;
+    dd.v1.FullCardNumberAndGeneration card_number_and_generation_driver_slot_begin = 10;
+    dd.v1.FullCardNumberAndGeneration card_number_and_generation_driver_slot_end = 11;
+    dd.v1.FullCardNumberAndGeneration card_number_and_generation_codriver_slot_begin = 12;
+    dd.v1.FullCardNumberAndGeneration card_number_and_generation_codriver_slot_end = 13;
+    int32 similar_events_number = 14;
+    bytes raw_data = 99;
   }
 
   // Vehicle unit identification data.

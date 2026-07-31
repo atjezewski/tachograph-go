@@ -10,7 +10,7 @@ import (
 
 // unmarshalOverviewGen2V2 parses Gen2 V2 Overview data from the complete transfer value.
 //
-// Gen2 V2 adds VehicleRegistrationNumberRecordArray at position 4 (after VIN, before CurrentDateTime).
+// Gen2 V2 adds VehicleRegistrationIdentificationRecordArray at position 4 (after VIN, before CurrentDateTime).
 //
 // Structure:
 //
@@ -18,7 +18,7 @@ import (
 //	    memberStateCertificateRecordArray                MemberStateCertificateRecordArray,
 //	    vuCertificateRecordArray                         VuCertificateRecordArray,
 //	    vehicleIdentificationNumberRecordArray           VehicleIdentificationNumberRecordArray,
-//	    vehicleRegistrationNumberRecordArray             VehicleRegistrationNumberRecordArray,
+//	    vehicleRegistrationIdentificationRecordArray     VehicleRegistrationIdentificationRecordArray,
 //	    currentDateTimeRecordArray                       CurrentDateTimeRecordArray,
 //	    vuDownloadablePeriodRecordArray                  VuDownloadablePeriodRecordArray,
 //	    cardSlotsStatusRecordArray                       CardSlotsStatusRecordArray,
@@ -68,11 +68,10 @@ func unmarshalOverviewGen2V2(value []byte) (*vuv1.OverviewGen2V2, error) {
 	overview.SetVehicleIdentificationNumber(vin)
 	offset += bytesRead
 
-	// VehicleRegistrationNumberRecordArray (Gen2 V2 addition)
-	// Real VUs write VehicleRegistrationIdentification (15 bytes) despite spec saying 13.
-	vrn, bytesRead, err := parseVehicleRegistrationNumberRecordArray(data, offset)
+	// VehicleRegistrationIdentificationRecordArray (Gen2 V2 addition)
+	vrn, bytesRead, err := parseVehicleRegistrationIdentificationRecordArray(data, offset)
 	if err != nil {
-		return nil, fmt.Errorf("parse VehicleRegistrationNumberRecordArray: %w", err)
+		return nil, fmt.Errorf("parse VehicleRegistrationIdentificationRecordArray: %w", err)
 	}
 	overview.SetVehicleRegistrationIdentification(vrn)
 	offset += bytesRead
@@ -168,7 +167,7 @@ func (opts MarshalOptions) MarshalOverviewGen2V2(overview *vuv1.OverviewGen2V2) 
 	if err != nil {
 		return nil, fmt.Errorf("marshal VRI: %w", err)
 	}
-	result = appendRecordArrayHeader(result, 0x04, uint16(len(vrnData)), 1)
+	result = appendRecordArrayHeader(result, recordTypeVehicleRegistrationIdentification, uint16(len(vrnData)), 1)
 	result = append(result, vrnData...)
 
 	// CurrentDateTimeRecordArray (4 bytes)
@@ -219,7 +218,7 @@ func (opts MarshalOptions) MarshalOverviewGen2V2(overview *vuv1.OverviewGen2V2) 
 	result = appendRecordArrayHeader(result, 0x0A, 32, uint16(len(overview.GetControlActivities())))
 	result = append(result, controlsData...)
 
-	result = appendSignature(result, overview.GetSignature(), 0x0B)
+	result = appendSignature(result, overview.GetSignature())
 	return result, nil
 }
 
@@ -295,13 +294,12 @@ func (opts AnonymizeOptions) anonymizeOverviewGen2V2(overview *vuv1.OverviewGen2
 
 // ===== V2-specific parse helpers =====
 
-// parseVehicleRegistrationNumberRecordArray parses a VehicleRegistrationNumberRecordArray.
-//
-// The spec says VehicleRegistrationNumber (13-byte IA5String), but real VUs
-// write VehicleRegistrationIdentification (15 bytes: nation + codepage + string).
-// We dispatch on the actual record size from the header.
-func parseVehicleRegistrationNumberRecordArray(data []byte, offset int) (*ddv1.VehicleRegistrationIdentification, int, error) {
-	_, recordSize, noOfRecords, headerSize, err := parseRecordArrayHeader(data, offset)
+// parseVehicleRegistrationIdentificationRecordArray parses the Gen2 V2
+// VehicleRegistrationIdentificationRecordArray. Appendix 7 transposes this
+// array with the Gen2 V1 VehicleRegistrationNumberRecordArray, so the swapped
+// type-and-size pair is accepted explicitly for compatibility.
+func parseVehicleRegistrationIdentificationRecordArray(data []byte, offset int) (*ddv1.VehicleRegistrationIdentification, int, error) {
+	recordType, recordSize, noOfRecords, headerSize, err := parseRecordArrayHeader(data, offset)
 	if err != nil {
 		return nil, 0, err
 	}
@@ -315,23 +313,27 @@ func parseVehicleRegistrationNumberRecordArray(data []byte, offset int) (*ddv1.V
 	}
 	var unmarshalOpts dd.UnmarshalOptions
 	var vri *ddv1.VehicleRegistrationIdentification
-	switch recordSize {
-	case 15:
-		// VehicleRegistrationIdentification: 1 nation + 1 codepage + 13 string
+	switch {
+	case (recordType == recordTypeVehicleRegistrationIdentification || recordType == 0x04) && recordSize == lenVehicleRegistrationIdentification:
+		// 0x04 was emitted by older tachograph-go releases as a sequence ordinal.
 		vri, err = unmarshalOpts.UnmarshalVehicleRegistrationIdentification(data[recordStart:recordEnd])
-	case 13:
-		// VehicleRegistrationNumber: 13-byte IA5String (spec-compliant, unlikely in practice)
-		ia5, ia5Err := unmarshalOpts.UnmarshalIa5StringValue(data[recordStart:recordEnd])
-		if ia5Err != nil {
-			return nil, 0, fmt.Errorf("unmarshal VRN as IA5: %w", ia5Err)
+	case recordType == recordTypeVehicleRegistrationNumber && recordSize == lenVehicleRegistrationNumber:
+		number, numberErr := unmarshalOpts.UnmarshalStringValue(data[recordStart:recordEnd])
+		if numberErr != nil {
+			return nil, 0, fmt.Errorf("unmarshal VRN: %w", numberErr)
 		}
-		// Wrap in VehicleRegistrationIdentification with default nation
 		vri = &ddv1.VehicleRegistrationIdentification{}
-		number := &ddv1.StringValue{}
-		number.SetValue(ia5.GetValue())
 		vri.SetNumber(number)
 	default:
-		return nil, 0, fmt.Errorf("unexpected VRN record size: %d (expected 13 or 15)", recordSize)
+		return nil, 0, fmt.Errorf(
+			"unexpected vehicle registration RecordArray: type 0x%02x, size %d; want type 0x%02x size %d or compatibility type 0x%02x size %d",
+			recordType,
+			recordSize,
+			recordTypeVehicleRegistrationIdentification,
+			lenVehicleRegistrationIdentification,
+			recordTypeVehicleRegistrationNumber,
+			lenVehicleRegistrationNumber,
+		)
 	}
 	if err != nil {
 		return nil, 0, fmt.Errorf("unmarshal VRN: %w", err)
