@@ -1,6 +1,7 @@
 package security
 
 import (
+	"bytes"
 	"crypto/ecdsa"
 	"crypto/elliptic"
 	"crypto/sha256"
@@ -8,10 +9,23 @@ import (
 	"encoding/asn1"
 	"fmt"
 	"math/big"
+	"time"
 
 	"github.com/way-platform/tachograph-go/internal/brainpool"
 	securityv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/security/v1"
 )
+
+// EccCertificateRole is the protocol value stored in the final byte of a
+// Generation 2 Certificate Holder Authorisation field.
+type EccCertificateRole byte
+
+const (
+	EccCertificateRoleEuropeanRootCA  EccCertificateRole = 13
+	EccCertificateRoleMemberStateCA   EccCertificateRole = 14
+	EccCertificateRoleVehicleUnitSign EccCertificateRole = 19
+)
+
+var tachographApplicationID = [...]byte{0xff, 0x53, 0x4d, 0x52, 0x44, 0x54}
 
 // VerifyEccCertificateWithEccRoot verifies an ECC certificate against an ECC root certificate.
 //
@@ -30,8 +44,12 @@ func VerifyEccCertificateWithEccRoot(cert, root *securityv1.EccCertificate) erro
 	if cert == nil {
 		return fmt.Errorf("certificate cannot be nil")
 	}
+	cert.SetSignatureValid(false)
 	if root == nil {
 		return fmt.Errorf("root certificate cannot be nil")
+	}
+	if err := verifyEccCertificateIssuer(cert, root); err != nil {
+		return err
 	}
 
 	// Get root's public key
@@ -118,6 +136,7 @@ func VerifyEccCertificateWithEccRoot(cert, root *securityv1.EccCertificate) erro
 		return fmt.Errorf("ECDSA certificate signature verification failed")
 	}
 
+	cert.SetSignatureValid(true)
 	return nil
 }
 
@@ -129,6 +148,98 @@ func VerifyEccCertificateWithEccRoot(cert, root *securityv1.EccCertificate) erro
 func VerifyEccCertificateWithCA(cert, ca *securityv1.EccCertificate) error {
 	// The verification process is identical whether verifying against root or CA
 	return VerifyEccCertificateWithEccRoot(cert, ca)
+}
+
+// VerifyEccCertificateWithCAAt verifies a certificate's issuer, signature, and
+// temporal validity at the supplied time.
+func VerifyEccCertificateWithCAAt(cert, ca *securityv1.EccCertificate, at time.Time) error {
+	if err := VerifyEccCertificateWithCA(cert, ca); err != nil {
+		return err
+	}
+	return VerifyEccCertificateValidityAt(cert, at)
+}
+
+// VerifyEccCertificateValidityAt verifies that a certificate is effective and
+// not expired at the supplied time.
+func VerifyEccCertificateValidityAt(cert *securityv1.EccCertificate, at time.Time) error {
+	if cert == nil {
+		return fmt.Errorf("certificate cannot be nil")
+	}
+	if at.IsZero() {
+		return fmt.Errorf("verification time cannot be zero")
+	}
+
+	effective := cert.GetCertificateEffectiveDate()
+	if effective == nil || !effective.IsValid() {
+		return fmt.Errorf("certificate has no valid effective date")
+	}
+	expiration := cert.GetCertificateExpirationDate()
+	if expiration == nil || !expiration.IsValid() {
+		return fmt.Errorf("certificate has no valid expiration date")
+	}
+
+	effectiveTime := effective.AsTime()
+	expirationTime := expiration.AsTime()
+	if expirationTime.Before(effectiveTime) {
+		return fmt.Errorf("certificate expiration %s precedes effective date %s", expirationTime, effectiveTime)
+	}
+	if at.Before(effectiveTime) {
+		return fmt.Errorf("certificate is not effective until %s", effectiveTime)
+	}
+	if at.After(expirationTime) {
+		return fmt.Errorf("certificate expired at %s", expirationTime)
+	}
+	return nil
+}
+
+// VerifyEccCertificateRole verifies the Tachograph Application ID and equipment
+// type encoded in a certificate's Certificate Holder Authorisation field.
+func VerifyEccCertificateRole(cert *securityv1.EccCertificate, expected EccCertificateRole) error {
+	if cert == nil {
+		return fmt.Errorf("certificate cannot be nil")
+	}
+	cha := cert.GetCertificateHolderAuthorisation()
+	if len(cha) != 7 {
+		return fmt.Errorf("certificate CHA length is %d, want 7", len(cha))
+	}
+	if !bytes.Equal(cha[:6], tachographApplicationID[:]) {
+		return fmt.Errorf("certificate CHA has invalid tachograph application ID %x", cha[:6])
+	}
+	if EccCertificateRole(cha[6]) != expected {
+		return fmt.Errorf("certificate CHA role is %d, want %d", cha[6], expected)
+	}
+	return nil
+}
+
+func verifyEccCertificateIssuer(cert, issuer *securityv1.EccCertificate) error {
+	car := cert.GetCertificateAuthorityReferenceRaw()
+	chr := issuer.GetCertificateHolderReferenceRaw()
+	if len(car) > 0 || len(chr) > 0 {
+		if len(car) != 8 {
+			return fmt.Errorf("certificate CAR length is %d, want 8", len(car))
+		}
+		if len(chr) != 8 {
+			return fmt.Errorf("issuer CHR length is %d, want 8", len(chr))
+		}
+		if !bytes.Equal(car, chr) {
+			return fmt.Errorf("CAR does not match issuer CHR: %x != %x", car, chr)
+		}
+		return nil
+	}
+
+	// Preserve compatibility with certificates assembled by callers before the
+	// raw reference fields were added.
+	if cert.GetCertificateAuthorityReference() == "" {
+		return fmt.Errorf("certificate CAR is empty")
+	}
+	if issuer.GetCertificateHolderReference() == "" {
+		return fmt.Errorf("issuer CHR is empty")
+	}
+	if cert.GetCertificateAuthorityReference() != issuer.GetCertificateHolderReference() {
+		return fmt.Errorf("CAR %s does not match issuer CHR %s",
+			cert.GetCertificateAuthorityReference(), issuer.GetCertificateHolderReference())
+	}
+	return nil
 }
 
 // parseCurveOID parses an elliptic curve OID and returns the hash size in bits

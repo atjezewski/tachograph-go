@@ -82,6 +82,7 @@ func UnmarshalEccCertificate(data []byte) (*securityv1.EccCertificate, error) {
 	car := binary.BigEndian.Uint64(carRaw.Bytes)
 	carStr := fmt.Sprintf("%d", car)
 	cert.SetCertificateAuthorityReference(carStr)
+	cert.SetCertificateAuthorityReferenceRaw(carRaw.Bytes)
 
 	// Parse Certificate Holder Authorisation (CHA)
 	var chaRaw asn1.RawValue
@@ -144,6 +145,7 @@ func UnmarshalEccCertificate(data []byte) (*securityv1.EccCertificate, error) {
 	chr := binary.BigEndian.Uint64(chrRaw.Bytes)
 	chrStr := fmt.Sprintf("%d", chr)
 	cert.SetCertificateHolderReference(chrStr)
+	cert.SetCertificateHolderReferenceRaw(chrRaw.Bytes)
 
 	// Parse Certificate Effective Date (CEfD)
 	var cefdRaw asn1.RawValue

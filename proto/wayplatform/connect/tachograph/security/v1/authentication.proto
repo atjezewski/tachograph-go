@@ -53,8 +53,9 @@ message Authentication {
   // Determined by the equipment certificate type and generation.
   SignatureAlgorithm signature_algorithm = 2;
 
-  // The timestamp when the signature was created, extracted from the
-  // signing certificate's validity period or signature metadata.
+  // The timestamp associated with signature creation. For VU downloads this
+  // is the signed CurrentDateTime from the Overview transfer unless the caller
+  // supplies an independent verification time.
   google.protobuf.Timestamp signature_creation_time = 3;
 
   // Information about the equipment certificate (Card or VU certificate)
@@ -166,7 +167,9 @@ message CertificateInfo {
 
   // Certificate Holder Reference from the certificate.
   // Uniquely identifies the entity that holds this certificate.
-  // For equipment certificates: the card/VU serial number
+  // For equipment certificates: the card/VU serial number, or for a VU whose
+  // serial number was unknown at certificate generation, a certificate request
+  // identifier
   // For MSCA certificates: the Member State identifier
   string certificate_holder_reference = 5;
 
@@ -177,4 +180,13 @@ message CertificateInfo {
   // End of the certificate's validity period.
   // Certificates used after this time are invalid.
   google.protobuf.Timestamp valid_to = 7;
+
+  // Raw Certification Authority Reference bytes exactly as encoded in a
+  // Generation 2 certificate.
+  bytes certification_authority_reference_raw = 8;
+
+  // Raw Certificate Holder Reference bytes exactly as encoded in a Generation
+  // 2 certificate. Preserve these bytes because the reference may encode
+  // different Appendix 1 data types.
+  bytes certificate_holder_reference_raw = 9;
 }

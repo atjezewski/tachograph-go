@@ -3,6 +3,7 @@ package tachograph
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/way-platform/tachograph-go/internal/card"
 	"github.com/way-platform/tachograph-go/internal/vu"
@@ -32,6 +33,12 @@ type AuthenticateOptions struct {
 	// CertificateResolver is used to resolve CA certificates by their Certificate Authority Reference (CAR).
 	// If nil, this defaults to using DefaultCertificateResolver.
 	CertificateResolver CertificateResolver
+
+	// VerificationTime overrides the timestamp used for VU certificate validity
+	// checks. The zero value uses the signed CurrentDateTime from the VU Overview
+	// transfer. Callers may supply an independently recorded download time when
+	// available. Card certificate validity checks do not currently use this field.
+	VerificationTime time.Time
 
 	// Mutate controls whether authentication modifies the input RawFile in-place.
 	//
@@ -70,6 +77,7 @@ func (o AuthenticateOptions) Authenticate(ctx context.Context, rawFile *tachogra
 	}
 	vuOpts := vu.AuthenticateOptions{
 		CertificateResolver: o.CertificateResolver,
+		VerificationTime:    o.VerificationTime,
 	}
 
 	switch target.GetType() {

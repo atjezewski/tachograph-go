@@ -3,9 +3,29 @@ package vu
 import (
 	"encoding/binary"
 	"testing"
+	"time"
 
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
 )
+
+func TestGen2VerificationTimeUsesOverviewCurrentDateTime(t *testing.T) {
+	data, err := readHexdump("testdata/records/004-anonymized/000-OVERVIEW_GEN2_V2.hexdump")
+	if err != nil {
+		t.Fatalf("readHexdump() error = %v", err)
+	}
+	record := &vuv1.RawVehicleUnitFile_Record{}
+	record.SetType(vuv1.TransferType_OVERVIEW_GEN2_V2)
+	record.SetValue(data)
+
+	got, err := gen2VerificationTime(record)
+	if err != nil {
+		t.Fatalf("gen2VerificationTime() error = %v", err)
+	}
+	want := time.Date(2026, time.March, 11, 22, 52, 29, 0, time.UTC)
+	if !got.Equal(want) {
+		t.Fatalf("gen2VerificationTime() = %s, want %s", got, want)
+	}
+}
 
 func TestUnwrapGen2SignatureRecordArray(t *testing.T) {
 	signature := make([]byte, 64)

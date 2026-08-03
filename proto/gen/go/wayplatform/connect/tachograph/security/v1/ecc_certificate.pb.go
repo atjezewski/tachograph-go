@@ -77,21 +77,23 @@ const (
 //
 // See Appendix 11, Section 9.3.2 for the detailed verification algorithm.
 type EccCertificate struct {
-	state                                     protoimpl.MessageState       `protogen:"opaque.v1"`
-	xxx_hidden_CertificateProfileIdentifier   int32                        `protobuf:"varint,1,opt,name=certificate_profile_identifier,json=certificateProfileIdentifier"`
-	xxx_hidden_CertificateAuthorityReference  *string                      `protobuf:"bytes,2,opt,name=certificate_authority_reference,json=certificateAuthorityReference"`
-	xxx_hidden_CertificateHolderAuthorisation []byte                       `protobuf:"bytes,3,opt,name=certificate_holder_authorisation,json=certificateHolderAuthorisation"`
-	xxx_hidden_PublicKey                      *EccCertificate_PublicKey    `protobuf:"bytes,4,opt,name=public_key,json=publicKey"`
-	xxx_hidden_CertificateHolderReference     *string                      `protobuf:"bytes,5,opt,name=certificate_holder_reference,json=certificateHolderReference"`
-	xxx_hidden_CertificateEffectiveDate       *timestamppb.Timestamp       `protobuf:"bytes,6,opt,name=certificate_effective_date,json=certificateEffectiveDate"`
-	xxx_hidden_CertificateExpirationDate      *timestamppb.Timestamp       `protobuf:"bytes,7,opt,name=certificate_expiration_date,json=certificateExpirationDate"`
-	xxx_hidden_Signature                      *EccCertificate_EccSignature `protobuf:"bytes,8,opt,name=signature"`
-	xxx_hidden_SignatureValid                 bool                         `protobuf:"varint,9,opt,name=signature_valid,json=signatureValid"`
-	xxx_hidden_RawData                        []byte                       `protobuf:"bytes,10,opt,name=raw_data,json=rawData"`
-	XXX_raceDetectHookData                    protoimpl.RaceDetectHookData
-	XXX_presence                              [1]uint32
-	unknownFields                             protoimpl.UnknownFields
-	sizeCache                                 protoimpl.SizeCache
+	state                                       protoimpl.MessageState       `protogen:"opaque.v1"`
+	xxx_hidden_CertificateProfileIdentifier     int32                        `protobuf:"varint,1,opt,name=certificate_profile_identifier,json=certificateProfileIdentifier"`
+	xxx_hidden_CertificateAuthorityReference    *string                      `protobuf:"bytes,2,opt,name=certificate_authority_reference,json=certificateAuthorityReference"`
+	xxx_hidden_CertificateHolderAuthorisation   []byte                       `protobuf:"bytes,3,opt,name=certificate_holder_authorisation,json=certificateHolderAuthorisation"`
+	xxx_hidden_PublicKey                        *EccCertificate_PublicKey    `protobuf:"bytes,4,opt,name=public_key,json=publicKey"`
+	xxx_hidden_CertificateHolderReference       *string                      `protobuf:"bytes,5,opt,name=certificate_holder_reference,json=certificateHolderReference"`
+	xxx_hidden_CertificateEffectiveDate         *timestamppb.Timestamp       `protobuf:"bytes,6,opt,name=certificate_effective_date,json=certificateEffectiveDate"`
+	xxx_hidden_CertificateExpirationDate        *timestamppb.Timestamp       `protobuf:"bytes,7,opt,name=certificate_expiration_date,json=certificateExpirationDate"`
+	xxx_hidden_Signature                        *EccCertificate_EccSignature `protobuf:"bytes,8,opt,name=signature"`
+	xxx_hidden_SignatureValid                   bool                         `protobuf:"varint,9,opt,name=signature_valid,json=signatureValid"`
+	xxx_hidden_RawData                          []byte                       `protobuf:"bytes,10,opt,name=raw_data,json=rawData"`
+	xxx_hidden_CertificateAuthorityReferenceRaw []byte                       `protobuf:"bytes,11,opt,name=certificate_authority_reference_raw,json=certificateAuthorityReferenceRaw"`
+	xxx_hidden_CertificateHolderReferenceRaw    []byte                       `protobuf:"bytes,12,opt,name=certificate_holder_reference_raw,json=certificateHolderReferenceRaw"`
+	XXX_raceDetectHookData                      protoimpl.RaceDetectHookData
+	XXX_presence                                [1]uint32
+	unknownFields                               protoimpl.UnknownFields
+	sizeCache                                   protoimpl.SizeCache
 }
 
 func (x *EccCertificate) Reset() {
@@ -195,14 +197,28 @@ func (x *EccCertificate) GetRawData() []byte {
 	return nil
 }
 
+func (x *EccCertificate) GetCertificateAuthorityReferenceRaw() []byte {
+	if x != nil {
+		return x.xxx_hidden_CertificateAuthorityReferenceRaw
+	}
+	return nil
+}
+
+func (x *EccCertificate) GetCertificateHolderReferenceRaw() []byte {
+	if x != nil {
+		return x.xxx_hidden_CertificateHolderReferenceRaw
+	}
+	return nil
+}
+
 func (x *EccCertificate) SetCertificateProfileIdentifier(v int32) {
 	x.xxx_hidden_CertificateProfileIdentifier = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 10)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 12)
 }
 
 func (x *EccCertificate) SetCertificateAuthorityReference(v string) {
 	x.xxx_hidden_CertificateAuthorityReference = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 10)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 12)
 }
 
 func (x *EccCertificate) SetCertificateHolderAuthorisation(v []byte) {
@@ -210,7 +226,7 @@ func (x *EccCertificate) SetCertificateHolderAuthorisation(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_CertificateHolderAuthorisation = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 10)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 12)
 }
 
 func (x *EccCertificate) SetPublicKey(v *EccCertificate_PublicKey) {
@@ -219,7 +235,7 @@ func (x *EccCertificate) SetPublicKey(v *EccCertificate_PublicKey) {
 
 func (x *EccCertificate) SetCertificateHolderReference(v string) {
 	x.xxx_hidden_CertificateHolderReference = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 10)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 12)
 }
 
 func (x *EccCertificate) SetCertificateEffectiveDate(v *timestamppb.Timestamp) {
@@ -236,7 +252,7 @@ func (x *EccCertificate) SetSignature(v *EccCertificate_EccSignature) {
 
 func (x *EccCertificate) SetSignatureValid(v bool) {
 	x.xxx_hidden_SignatureValid = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 8, 10)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 8, 12)
 }
 
 func (x *EccCertificate) SetRawData(v []byte) {
@@ -244,7 +260,23 @@ func (x *EccCertificate) SetRawData(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_RawData = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 9, 10)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 9, 12)
+}
+
+func (x *EccCertificate) SetCertificateAuthorityReferenceRaw(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_CertificateAuthorityReferenceRaw = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 10, 12)
+}
+
+func (x *EccCertificate) SetCertificateHolderReferenceRaw(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_CertificateHolderReferenceRaw = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 11, 12)
 }
 
 func (x *EccCertificate) HasCertificateProfileIdentifier() bool {
@@ -317,6 +349,20 @@ func (x *EccCertificate) HasRawData() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 9)
 }
 
+func (x *EccCertificate) HasCertificateAuthorityReferenceRaw() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 10)
+}
+
+func (x *EccCertificate) HasCertificateHolderReferenceRaw() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 11)
+}
+
 func (x *EccCertificate) ClearCertificateProfileIdentifier() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_CertificateProfileIdentifier = 0
@@ -361,6 +407,16 @@ func (x *EccCertificate) ClearSignatureValid() {
 func (x *EccCertificate) ClearRawData() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 9)
 	x.xxx_hidden_RawData = nil
+}
+
+func (x *EccCertificate) ClearCertificateAuthorityReferenceRaw() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 10)
+	x.xxx_hidden_CertificateAuthorityReferenceRaw = nil
+}
+
+func (x *EccCertificate) ClearCertificateHolderReferenceRaw() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 11)
+	x.xxx_hidden_CertificateHolderReferenceRaw = nil
 }
 
 type EccCertificate_builder struct {
@@ -448,6 +504,14 @@ type EccCertificate_builder struct {
 	// ensures perfect round-trip fidelity and allows re-verification of the
 	// signature.
 	RawData []byte
+	// Raw Certificate Authority Reference bytes exactly as encoded in the
+	// certificate. Use this field for identity comparisons; the decimal string
+	// field is retained for backwards compatibility.
+	CertificateAuthorityReferenceRaw []byte
+	// Raw Certificate Holder Reference bytes exactly as encoded in the
+	// certificate. Depending on the certificate type, these bytes encode a
+	// CertificationAuthorityKID, ExtendedSerialNumber, or CertificateRequestID.
+	CertificateHolderReferenceRaw []byte
 }
 
 func (b0 EccCertificate_builder) Build() *EccCertificate {
@@ -455,32 +519,40 @@ func (b0 EccCertificate_builder) Build() *EccCertificate {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.CertificateProfileIdentifier != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 10)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 12)
 		x.xxx_hidden_CertificateProfileIdentifier = *b.CertificateProfileIdentifier
 	}
 	if b.CertificateAuthorityReference != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 10)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 12)
 		x.xxx_hidden_CertificateAuthorityReference = b.CertificateAuthorityReference
 	}
 	if b.CertificateHolderAuthorisation != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 10)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 12)
 		x.xxx_hidden_CertificateHolderAuthorisation = b.CertificateHolderAuthorisation
 	}
 	x.xxx_hidden_PublicKey = b.PublicKey
 	if b.CertificateHolderReference != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 10)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 12)
 		x.xxx_hidden_CertificateHolderReference = b.CertificateHolderReference
 	}
 	x.xxx_hidden_CertificateEffectiveDate = b.CertificateEffectiveDate
 	x.xxx_hidden_CertificateExpirationDate = b.CertificateExpirationDate
 	x.xxx_hidden_Signature = b.Signature
 	if b.SignatureValid != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 8, 10)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 8, 12)
 		x.xxx_hidden_SignatureValid = *b.SignatureValid
 	}
 	if b.RawData != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 9, 10)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 9, 12)
 		x.xxx_hidden_RawData = b.RawData
+	}
+	if b.CertificateAuthorityReferenceRaw != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 10, 12)
+		x.xxx_hidden_CertificateAuthorityReferenceRaw = b.CertificateAuthorityReferenceRaw
+	}
+	if b.CertificateHolderReferenceRaw != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 11, 12)
+		x.xxx_hidden_CertificateHolderReferenceRaw = b.CertificateHolderReferenceRaw
 	}
 	return m0
 }
@@ -774,7 +846,7 @@ var File_wayplatform_connect_tachograph_security_v1_ecc_certificate_proto protor
 
 const file_wayplatform_connect_tachograph_security_v1_ecc_certificate_proto_rawDesc = "" +
 	"\n" +
-	"@wayplatform/connect/tachograph/security/v1/ecc_certificate.proto\x12*wayplatform.connect.tachograph.security.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\xaa\a\n" +
+	"@wayplatform/connect/tachograph/security/v1/ecc_certificate.proto\x12*wayplatform.connect.tachograph.security.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\xc2\b\n" +
 	"\x0eEccCertificate\x12D\n" +
 	"\x1ecertificate_profile_identifier\x18\x01 \x01(\x05R\x1ccertificateProfileIdentifier\x12F\n" +
 	"\x1fcertificate_authority_reference\x18\x02 \x01(\tR\x1dcertificateAuthorityReference\x12H\n" +
@@ -787,7 +859,9 @@ const file_wayplatform_connect_tachograph_security_v1_ecc_certificate_proto_rawD
 	"\tsignature\x18\b \x01(\v2G.wayplatform.connect.tachograph.security.v1.EccCertificate.EccSignatureR\tsignature\x12'\n" +
 	"\x0fsignature_valid\x18\t \x01(\bR\x0esignatureValid\x12\x19\n" +
 	"\braw_data\x18\n" +
-	" \x01(\fR\arawData\x1a\x8b\x01\n" +
+	" \x01(\fR\arawData\x12M\n" +
+	"#certificate_authority_reference_raw\x18\v \x01(\fR certificateAuthorityReferenceRaw\x12G\n" +
+	" certificate_holder_reference_raw\x18\f \x01(\fR\x1dcertificateHolderReferenceRaw\x1a\x8b\x01\n" +
 	"\tPublicKey\x122\n" +
 	"\x15domain_parameters_oid\x18\x01 \x01(\tR\x13domainParametersOid\x12$\n" +
 	"\x0epublic_point_x\x18\x02 \x01(\fR\fpublicPointX\x12$\n" +

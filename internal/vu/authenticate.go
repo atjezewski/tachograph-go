@@ -5,18 +5,25 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
+	"time"
 
 	"github.com/way-platform/tachograph-go/internal/cert"
 	"github.com/way-platform/tachograph-go/internal/security"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	securityv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/security/v1"
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 // AuthenticateOptions configures the VU authentication process.
 type AuthenticateOptions struct {
 	// CertificateResolver is used to resolve CA certificates by their Certificate Authority Reference (CAR).
 	CertificateResolver cert.Resolver
+
+	// VerificationTime overrides the signed Overview CurrentDateTime used for
+	// Generation 2 certificate validity checks. It is intended for controlled
+	// verification and tests; the zero value uses the Overview timestamp.
+	VerificationTime time.Time
 }
 
 // AuthenticateRawVehicleUnitFile performs cryptographic authentication on all records
@@ -44,6 +51,13 @@ func (opts AuthenticateOptions) AuthenticateRawVehicleUnitFile(ctx context.Conte
 
 	var errs []error
 	records := rawFile.GetRecords()
+	if opts.VerificationTime.IsZero() {
+		if overview := opts.findGen2OverviewRecord(records); overview != nil {
+			if verificationTime, err := gen2VerificationTime(overview); err == nil {
+				opts.VerificationTime = verificationTime
+			}
+		}
+	}
 
 	for _, record := range records {
 		if err := opts.authenticateRecord(ctx, record, records); err != nil {
@@ -125,9 +139,17 @@ func (opts AuthenticateOptions) authenticateGen2Record(ctx context.Context, reco
 		auth.SetStatus(securityv1.Authentication_CERTIFICATE_VERIFICATION_FAILED)
 		return fmt.Errorf("failed to extract Gen2 certificates: %w", err)
 	}
+	verificationTime := opts.VerificationTime
+	if verificationTime.IsZero() {
+		verificationTime, err = gen2VerificationTime(overviewRecord)
+		if err != nil {
+			auth.SetStatus(securityv1.Authentication_CERTIFICATE_VERIFICATION_FAILED)
+			return fmt.Errorf("failed to determine Gen2 verification time: %w", err)
+		}
+	}
 
 	// Step 3: Verify certificate chain
-	if err := opts.verifyGen2CertificateChain(ctx, vuCert, mscaCert, auth); err != nil {
+	if err := opts.verifyGen2CertificateChain(ctx, vuCert, mscaCert, verificationTime, auth); err != nil {
 		return err
 	}
 
@@ -138,6 +160,7 @@ func (opts AuthenticateOptions) authenticateGen2Record(ctx context.Context, reco
 
 	// Authentication succeeded
 	auth.SetStatus(securityv1.Authentication_VERIFIED)
+	auth.SetSignatureCreationTime(timestamppb.New(verificationTime))
 
 	// Infer signature algorithm from VU certificate's curve
 	if pubKey := vuCert.GetPublicKey(); pubKey != nil {
@@ -240,7 +263,7 @@ func (opts AuthenticateOptions) extractGen2Certificates(overviewRecord *vuv1.Raw
 }
 
 // verifyGen2CertificateChain verifies the Gen2 certificate chain: EUR Root (ECC) -> MSCA (ECC) -> VU (ECC)
-func (opts AuthenticateOptions) verifyGen2CertificateChain(ctx context.Context, vuCert *securityv1.EccCertificate, mscaCert *securityv1.EccCertificate, auth *securityv1.Authentication) error {
+func (opts AuthenticateOptions) verifyGen2CertificateChain(ctx context.Context, vuCert *securityv1.EccCertificate, mscaCert *securityv1.EccCertificate, verificationTime time.Time, auth *securityv1.Authentication) error {
 	// Get Gen2 ECC root certificate
 	rootCert, err := opts.CertificateResolver.GetEccRootCertificate(ctx)
 	if err != nil {
@@ -248,19 +271,73 @@ func (opts AuthenticateOptions) verifyGen2CertificateChain(ctx context.Context, 
 		return fmt.Errorf("failed to get Gen2 root certificate: %w", err)
 	}
 
-	// Verify MSCA certificate against EUR Gen2 root (both ECC)
-	if err := security.VerifyEccCertificateWithEccRoot(mscaCert, rootCert); err != nil {
+	if err := security.VerifyEccCertificateRole(mscaCert, security.EccCertificateRoleMemberStateCA); err != nil {
+		auth.SetStatus(securityv1.Authentication_CERTIFICATE_VERIFICATION_FAILED)
+		return fmt.Errorf("invalid MSCA certificate role: %w", err)
+	}
+	if err := security.VerifyEccCertificateRole(vuCert, security.EccCertificateRoleVehicleUnitSign); err != nil {
+		auth.SetStatus(securityv1.Authentication_CERTIFICATE_VERIFICATION_FAILED)
+		return fmt.Errorf("invalid VU certificate role: %w", err)
+	}
+	if err := security.VerifyEccCertificateValidityAt(rootCert, verificationTime); err != nil {
+		auth.SetStatus(securityv1.Authentication_CERTIFICATE_VERIFICATION_FAILED)
+		return fmt.Errorf("root certificate validity failed: %w", err)
+	}
+
+	// Verify MSCA certificate against EUR Gen2 root (both ECC).
+	if err := security.VerifyEccCertificateWithCAAt(mscaCert, rootCert, verificationTime); err != nil {
 		auth.SetStatus(securityv1.Authentication_CERTIFICATE_VERIFICATION_FAILED)
 		return fmt.Errorf("MSCA certificate verification failed: %w", err)
 	}
 
 	// Verify VU certificate against MSCA
-	if err := security.VerifyEccCertificateWithCA(vuCert, mscaCert); err != nil {
+	if err := security.VerifyEccCertificateWithCAAt(vuCert, mscaCert, verificationTime); err != nil {
 		auth.SetStatus(securityv1.Authentication_CERTIFICATE_VERIFICATION_FAILED)
 		return fmt.Errorf("VU certificate verification failed: %w", err)
 	}
+	auth.SetSignerCertificate(eccCertificateInfo(vuCert))
+	auth.SetRootCertificate(eccCertificateInfo(rootCert))
 
 	return nil
+}
+
+func eccCertificateInfo(cert *securityv1.EccCertificate) *securityv1.CertificateInfo {
+	info := &securityv1.CertificateInfo{}
+	info.SetCertificationAuthorityReference(cert.GetCertificateAuthorityReference())
+	info.SetCertificateHolderReference(cert.GetCertificateHolderReference())
+	info.SetValidFrom(cert.GetCertificateEffectiveDate())
+	info.SetValidTo(cert.GetCertificateExpirationDate())
+	info.SetCertificationAuthorityReferenceRaw(cert.GetCertificateAuthorityReferenceRaw())
+	info.SetCertificateHolderReferenceRaw(cert.GetCertificateHolderReferenceRaw())
+	return info
+}
+
+func gen2VerificationTime(overviewRecord *vuv1.RawVehicleUnitFile_Record) (time.Time, error) {
+	var currentDateTime time.Time
+	switch overviewRecord.GetType() {
+	case vuv1.TransferType_OVERVIEW_GEN2_V1:
+		overview, err := unmarshalOverviewGen2V1(overviewRecord.GetValue())
+		if err != nil {
+			return time.Time{}, err
+		}
+		if timestamp := overview.GetCurrentDateTime(); timestamp != nil && timestamp.IsValid() {
+			currentDateTime = timestamp.AsTime()
+		}
+	case vuv1.TransferType_OVERVIEW_GEN2_V2:
+		overview, err := unmarshalOverviewGen2V2(overviewRecord.GetValue())
+		if err != nil {
+			return time.Time{}, err
+		}
+		if timestamp := overview.GetCurrentDateTime(); timestamp != nil && timestamp.IsValid() {
+			currentDateTime = timestamp.AsTime()
+		}
+	default:
+		return time.Time{}, fmt.Errorf("unsupported Overview transfer type %v", overviewRecord.GetType())
+	}
+	if currentDateTime.IsZero() {
+		return time.Time{}, fmt.Errorf("Overview CurrentDateTime is missing or invalid")
+	}
+	return currentDateTime, nil
 }
 
 // verifyGen2DataSignature verifies the ECDSA signature on the data portion of a Gen2 record.

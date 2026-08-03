@@ -195,4 +195,14 @@ message EccCertificate {
   // ensures perfect round-trip fidelity and allows re-verification of the
   // signature.
   bytes raw_data = 10;
+
+  // Raw Certificate Authority Reference bytes exactly as encoded in the
+  // certificate. Use this field for identity comparisons; the decimal string
+  // field is retained for backwards compatibility.
+  bytes certificate_authority_reference_raw = 11;
+
+  // Raw Certificate Holder Reference bytes exactly as encoded in the
+  // certificate. Depending on the certificate type, these bytes encode a
+  // CertificationAuthorityKID, ExtendedSerialNumber, or CertificateRequestID.
+  bytes certificate_holder_reference_raw = 12;
 }

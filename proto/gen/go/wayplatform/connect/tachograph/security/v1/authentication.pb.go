@@ -359,8 +359,9 @@ type Authentication_builder struct {
 	// The cryptographic algorithm used for the data signature.
 	// Determined by the equipment certificate type and generation.
 	SignatureAlgorithm *SignatureAlgorithm
-	// The timestamp when the signature was created, extracted from the
-	// signing certificate's validity period or signature metadata.
+	// The timestamp associated with signature creation. For VU downloads this
+	// is the signed CurrentDateTime from the Overview transfer unless the caller
+	// supplies an independent verification time.
 	SignatureCreationTime *timestamppb.Timestamp
 	// Information about the equipment certificate (Card or VU certificate)
 	// that was used to sign this data block. This is the leaf certificate
@@ -409,18 +410,20 @@ func (b0 Authentication_builder) Build() *Authentication {
 // is validated during authentication but its information is not included in
 // the Authentication result.
 type CertificateInfo struct {
-	state                                      protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Description                     *string                `protobuf:"bytes,1,opt,name=description"`
-	xxx_hidden_NationCode                      int32                  `protobuf:"varint,2,opt,name=nation_code,json=nationCode"`
-	xxx_hidden_NationName                      *string                `protobuf:"bytes,3,opt,name=nation_name,json=nationName"`
-	xxx_hidden_CertificationAuthorityReference *string                `protobuf:"bytes,4,opt,name=certification_authority_reference,json=certificationAuthorityReference"`
-	xxx_hidden_CertificateHolderReference      *string                `protobuf:"bytes,5,opt,name=certificate_holder_reference,json=certificateHolderReference"`
-	xxx_hidden_ValidFrom                       *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=valid_from,json=validFrom"`
-	xxx_hidden_ValidTo                         *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=valid_to,json=validTo"`
-	XXX_raceDetectHookData                     protoimpl.RaceDetectHookData
-	XXX_presence                               [1]uint32
-	unknownFields                              protoimpl.UnknownFields
-	sizeCache                                  protoimpl.SizeCache
+	state                                         protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Description                        *string                `protobuf:"bytes,1,opt,name=description"`
+	xxx_hidden_NationCode                         int32                  `protobuf:"varint,2,opt,name=nation_code,json=nationCode"`
+	xxx_hidden_NationName                         *string                `protobuf:"bytes,3,opt,name=nation_name,json=nationName"`
+	xxx_hidden_CertificationAuthorityReference    *string                `protobuf:"bytes,4,opt,name=certification_authority_reference,json=certificationAuthorityReference"`
+	xxx_hidden_CertificateHolderReference         *string                `protobuf:"bytes,5,opt,name=certificate_holder_reference,json=certificateHolderReference"`
+	xxx_hidden_ValidFrom                          *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=valid_from,json=validFrom"`
+	xxx_hidden_ValidTo                            *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=valid_to,json=validTo"`
+	xxx_hidden_CertificationAuthorityReferenceRaw []byte                 `protobuf:"bytes,8,opt,name=certification_authority_reference_raw,json=certificationAuthorityReferenceRaw"`
+	xxx_hidden_CertificateHolderReferenceRaw      []byte                 `protobuf:"bytes,9,opt,name=certificate_holder_reference_raw,json=certificateHolderReferenceRaw"`
+	XXX_raceDetectHookData                        protoimpl.RaceDetectHookData
+	XXX_presence                                  [1]uint32
+	unknownFields                                 protoimpl.UnknownFields
+	sizeCache                                     protoimpl.SizeCache
 }
 
 func (x *CertificateInfo) Reset() {
@@ -509,29 +512,43 @@ func (x *CertificateInfo) GetValidTo() *timestamppb.Timestamp {
 	return nil
 }
 
+func (x *CertificateInfo) GetCertificationAuthorityReferenceRaw() []byte {
+	if x != nil {
+		return x.xxx_hidden_CertificationAuthorityReferenceRaw
+	}
+	return nil
+}
+
+func (x *CertificateInfo) GetCertificateHolderReferenceRaw() []byte {
+	if x != nil {
+		return x.xxx_hidden_CertificateHolderReferenceRaw
+	}
+	return nil
+}
+
 func (x *CertificateInfo) SetDescription(v string) {
 	x.xxx_hidden_Description = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 7)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 9)
 }
 
 func (x *CertificateInfo) SetNationCode(v int32) {
 	x.xxx_hidden_NationCode = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 7)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 9)
 }
 
 func (x *CertificateInfo) SetNationName(v string) {
 	x.xxx_hidden_NationName = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 7)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 9)
 }
 
 func (x *CertificateInfo) SetCertificationAuthorityReference(v string) {
 	x.xxx_hidden_CertificationAuthorityReference = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 7)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 9)
 }
 
 func (x *CertificateInfo) SetCertificateHolderReference(v string) {
 	x.xxx_hidden_CertificateHolderReference = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 7)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 9)
 }
 
 func (x *CertificateInfo) SetValidFrom(v *timestamppb.Timestamp) {
@@ -540,6 +557,22 @@ func (x *CertificateInfo) SetValidFrom(v *timestamppb.Timestamp) {
 
 func (x *CertificateInfo) SetValidTo(v *timestamppb.Timestamp) {
 	x.xxx_hidden_ValidTo = v
+}
+
+func (x *CertificateInfo) SetCertificationAuthorityReferenceRaw(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_CertificationAuthorityReferenceRaw = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 9)
+}
+
+func (x *CertificateInfo) SetCertificateHolderReferenceRaw(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_CertificateHolderReferenceRaw = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 8, 9)
 }
 
 func (x *CertificateInfo) HasDescription() bool {
@@ -591,6 +624,20 @@ func (x *CertificateInfo) HasValidTo() bool {
 	return x.xxx_hidden_ValidTo != nil
 }
 
+func (x *CertificateInfo) HasCertificationAuthorityReferenceRaw() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 7)
+}
+
+func (x *CertificateInfo) HasCertificateHolderReferenceRaw() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 8)
+}
+
 func (x *CertificateInfo) ClearDescription() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_Description = nil
@@ -624,6 +671,16 @@ func (x *CertificateInfo) ClearValidTo() {
 	x.xxx_hidden_ValidTo = nil
 }
 
+func (x *CertificateInfo) ClearCertificationAuthorityReferenceRaw() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 7)
+	x.xxx_hidden_CertificationAuthorityReferenceRaw = nil
+}
+
+func (x *CertificateInfo) ClearCertificateHolderReferenceRaw() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 8)
+	x.xxx_hidden_CertificateHolderReferenceRaw = nil
+}
+
 type CertificateInfo_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
@@ -644,7 +701,9 @@ type CertificateInfo_builder struct {
 	CertificationAuthorityReference *string
 	// Certificate Holder Reference from the certificate.
 	// Uniquely identifies the entity that holds this certificate.
-	// For equipment certificates: the card/VU serial number
+	// For equipment certificates: the card/VU serial number, or for a VU whose
+	// serial number was unknown at certificate generation, a certificate request
+	// identifier
 	// For MSCA certificates: the Member State identifier
 	CertificateHolderReference *string
 	// Start of the certificate's validity period.
@@ -653,6 +712,13 @@ type CertificateInfo_builder struct {
 	// End of the certificate's validity period.
 	// Certificates used after this time are invalid.
 	ValidTo *timestamppb.Timestamp
+	// Raw Certification Authority Reference bytes exactly as encoded in a
+	// Generation 2 certificate.
+	CertificationAuthorityReferenceRaw []byte
+	// Raw Certificate Holder Reference bytes exactly as encoded in a Generation
+	// 2 certificate. Preserve these bytes because the reference may encode
+	// different Appendix 1 data types.
+	CertificateHolderReferenceRaw []byte
 }
 
 func (b0 CertificateInfo_builder) Build() *CertificateInfo {
@@ -660,27 +726,35 @@ func (b0 CertificateInfo_builder) Build() *CertificateInfo {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.Description != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 7)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 9)
 		x.xxx_hidden_Description = b.Description
 	}
 	if b.NationCode != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 7)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 9)
 		x.xxx_hidden_NationCode = *b.NationCode
 	}
 	if b.NationName != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 7)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 9)
 		x.xxx_hidden_NationName = b.NationName
 	}
 	if b.CertificationAuthorityReference != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 7)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 9)
 		x.xxx_hidden_CertificationAuthorityReference = b.CertificationAuthorityReference
 	}
 	if b.CertificateHolderReference != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 7)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 9)
 		x.xxx_hidden_CertificateHolderReference = b.CertificateHolderReference
 	}
 	x.xxx_hidden_ValidFrom = b.ValidFrom
 	x.xxx_hidden_ValidTo = b.ValidTo
+	if b.CertificationAuthorityReferenceRaw != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 9)
+		x.xxx_hidden_CertificationAuthorityReferenceRaw = b.CertificationAuthorityReferenceRaw
+	}
+	if b.CertificateHolderReferenceRaw != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 8, 9)
+		x.xxx_hidden_CertificateHolderReferenceRaw = b.CertificateHolderReferenceRaw
+	}
 	return m0
 }
 
@@ -699,7 +773,7 @@ const file_wayplatform_connect_tachograph_security_v1_authentication_proto_rawDe
 	"\x12STATUS_UNSPECIFIED\x10\x00\x12\f\n" +
 	"\bVERIFIED\x10\x01\x12\x1a\n" +
 	"\x16DATA_SIGNATURE_INVALID\x10\x02\x12#\n" +
-	"\x1fCERTIFICATE_VERIFICATION_FAILED\x10\x03\"\xf5\x02\n" +
+	"\x1fCERTIFICATE_VERIFICATION_FAILED\x10\x03\"\x91\x04\n" +
 	"\x0fCertificateInfo\x12 \n" +
 	"\vdescription\x18\x01 \x01(\tR\vdescription\x12\x1f\n" +
 	"\vnation_code\x18\x02 \x01(\x05R\n" +
@@ -710,7 +784,9 @@ const file_wayplatform_connect_tachograph_security_v1_authentication_proto_rawDe
 	"\x1ccertificate_holder_reference\x18\x05 \x01(\tR\x1acertificateHolderReference\x129\n" +
 	"\n" +
 	"valid_from\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tvalidFrom\x125\n" +
-	"\bvalid_to\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\avalidTo*\x9c\x01\n" +
+	"\bvalid_to\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\avalidTo\x12Q\n" +
+	"%certification_authority_reference_raw\x18\b \x01(\fR\"certificationAuthorityReferenceRaw\x12G\n" +
+	" certificate_holder_reference_raw\x18\t \x01(\fR\x1dcertificateHolderReferenceRaw*\x9c\x01\n" +
 	"\x12SignatureAlgorithm\x12#\n" +
 	"\x1fSIGNATURE_ALGORITHM_UNSPECIFIED\x10\x00\x12\x1c\n" +
 	"\x18SHA1_WITH_RSA_ENCRYPTION\x10\x01\x12\x15\n" +

@@ -70,6 +70,9 @@ func TestUnmarshalEccCertificate(t *testing.T) {
 			if car != tt.expectedCAR {
 				t.Errorf("CertificateAuthorityReference = %q, want %q", car, tt.expectedCAR)
 			}
+			if len(cert.GetCertificateAuthorityReferenceRaw()) != 8 {
+				t.Errorf("CertificateAuthorityReferenceRaw length = %d, want 8", len(cert.GetCertificateAuthorityReferenceRaw()))
+			}
 
 			// Validate Certificate Holder Authorisation is present
 			cha := cert.GetCertificateHolderAuthorisation()
@@ -107,6 +110,9 @@ func TestUnmarshalEccCertificate(t *testing.T) {
 			chr := cert.GetCertificateHolderReference()
 			if chr != tt.expectedCHR {
 				t.Errorf("CertificateHolderReference = %q, want %q", chr, tt.expectedCHR)
+			}
+			if len(cert.GetCertificateHolderReferenceRaw()) != 8 {
+				t.Errorf("CertificateHolderReferenceRaw length = %d, want 8", len(cert.GetCertificateHolderReferenceRaw()))
 			}
 
 			// Validate timestamps are present
