@@ -361,7 +361,9 @@ type Authentication_builder struct {
 	SignatureAlgorithm *SignatureAlgorithm
 	// The timestamp associated with signature creation. For VU downloads this
 	// is the signed CurrentDateTime from the Overview transfer unless the caller
-	// supplies an independent verification time.
+	// supplies an independent verification time. Card downloads populate this
+	// only when the caller supplies an independently recorded acquisition time;
+	// EF_Card_Download is unsigned and cannot be trusted as a fallback.
 	SignatureCreationTime *timestamppb.Timestamp
 	// Information about the equipment certificate (Card or VU certificate)
 	// that was used to sign this data block. This is the leaf certificate

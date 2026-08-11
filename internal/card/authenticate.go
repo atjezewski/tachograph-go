@@ -4,18 +4,25 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"time"
 
 	"github.com/way-platform/tachograph-go/internal/cert"
 	"github.com/way-platform/tachograph-go/internal/security"
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	securityv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/security/v1"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 // AuthenticateOptions configures the card authentication process.
 type AuthenticateOptions struct {
 	// CertificateResolver is used to resolve CA certificates by their Certificate Authority Reference (CAR).
 	CertificateResolver cert.Resolver
+
+	// VerificationTime is an independently recorded card acquisition time used
+	// for certificate validity checks. The zero value skips temporal checks
+	// because EF_Card_Download is unsigned.
+	VerificationTime time.Time
 }
 
 // AuthenticateRawCardFile performs cryptographic authentication on all signed Elementary Files
@@ -44,19 +51,23 @@ func (opts AuthenticateOptions) AuthenticateRawCardFile(ctx context.Context, raw
 	// Check which generations are present in the file
 	// Many cards have both Gen1 and Gen2 data for backward compatibility
 	hasGen1, hasGen2 := opts.detectGenerations(rawFile)
+	cardType := InferFileType(rawFile)
+	if cardType == cardv1.CardType_CARD_TYPE_UNSPECIFIED {
+		return fmt.Errorf("unable to determine card type")
+	}
 
 	var errs []error
 
 	// Authenticate Gen1 data if present
 	if hasGen1 {
-		if err := opts.authenticateGen1CardFile(ctx, rawFile); err != nil {
+		if err := opts.authenticateGen1CardFile(ctx, rawFile, cardType); err != nil {
 			errs = append(errs, fmt.Errorf("Gen1 authentication failed: %w", err))
 		}
 	}
 
 	// Authenticate Gen2 data if present
 	if hasGen2 {
-		if err := opts.authenticateGen2CardFile(ctx, rawFile); err != nil {
+		if err := opts.authenticateGen2CardFile(ctx, rawFile, cardType); err != nil {
 			errs = append(errs, fmt.Errorf("Gen2 authentication failed: %w", err))
 		}
 	}
@@ -69,15 +80,18 @@ func (opts AuthenticateOptions) AuthenticateRawCardFile(ctx context.Context, raw
 }
 
 // authenticateGen1CardFile authenticates a Generation 1 card file using RSA signature recovery.
-func (opts AuthenticateOptions) authenticateGen1CardFile(ctx context.Context, rawFile *cardv1.RawCardFile) error {
+func (opts AuthenticateOptions) authenticateGen1CardFile(ctx context.Context, rawFile *cardv1.RawCardFile, cardType cardv1.CardType) error {
 	// Step 1: Extract certificates
 	cardCert, mscaCert, err := opts.extractGen1CardCertificates(rawFile)
 	if err != nil {
+		markCardCertificateFailure(rawFile, ddv1.Generation_GENERATION_1)
 		return fmt.Errorf("failed to extract Gen1 certificates: %w", err)
 	}
 
 	// Step 2: Verify certificate chain
-	if err := opts.verifyGen1CertificateChain(ctx, cardCert, mscaCert); err != nil {
+	rootCert, err := opts.verifyGen1CertificateChain(ctx, cardCert, mscaCert, cardType)
+	if err != nil {
+		markCardCertificateFailure(rawFile, ddv1.Generation_GENERATION_1)
 		return fmt.Errorf("certificate chain verification failed: %w", err)
 	}
 
@@ -113,7 +127,7 @@ func (opts AuthenticateOptions) authenticateGen1CardFile(ctx context.Context, ra
 		}
 
 		// Verify signature
-		if err := opts.authenticateGen1EF(record, signatureRecord, cardCert); err != nil {
+		if err := opts.authenticateGen1EF(record, signatureRecord, cardCert, rootCert); err != nil {
 			errs = append(errs, err)
 		}
 	}
@@ -122,15 +136,18 @@ func (opts AuthenticateOptions) authenticateGen1CardFile(ctx context.Context, ra
 }
 
 // authenticateGen2CardFile authenticates a Generation 2 card file using ECDSA signature verification.
-func (opts AuthenticateOptions) authenticateGen2CardFile(ctx context.Context, rawFile *cardv1.RawCardFile) error {
+func (opts AuthenticateOptions) authenticateGen2CardFile(ctx context.Context, rawFile *cardv1.RawCardFile, cardType cardv1.CardType) error {
 	// Step 1: Extract certificates
 	cardCert, mscaCert, err := opts.extractGen2CardCertificates(rawFile)
 	if err != nil {
+		markCardCertificateFailure(rawFile, ddv1.Generation_GENERATION_2)
 		return fmt.Errorf("failed to extract Gen2 certificates: %w", err)
 	}
 
 	// Step 2: Verify certificate chain
-	if err := opts.verifyGen2CertificateChain(ctx, cardCert, mscaCert); err != nil {
+	rootCert, err := opts.verifyGen2CertificateChain(ctx, cardCert, mscaCert, cardType)
+	if err != nil {
+		markCardCertificateFailure(rawFile, ddv1.Generation_GENERATION_2)
 		return fmt.Errorf("certificate chain verification failed: %w", err)
 	}
 
@@ -166,7 +183,7 @@ func (opts AuthenticateOptions) authenticateGen2CardFile(ctx context.Context, ra
 		}
 
 		// Verify signature
-		if err := opts.authenticateGen2EF(record, signatureRecord, cardCert); err != nil {
+		if err := opts.authenticateGen2EF(record, signatureRecord, cardCert, rootCert); err != nil {
 			errs = append(errs, err)
 		}
 	}
@@ -268,52 +285,105 @@ func (opts AuthenticateOptions) extractGen2CardCertificates(rawFile *cardv1.RawC
 	return cardCert, mscaCert, nil
 }
 
-// verifyGen1CertificateChain verifies the Gen1 certificate chain: EUR Root -> MSCA -> Card
-func (opts AuthenticateOptions) verifyGen1CertificateChain(ctx context.Context, cardCert *securityv1.RsaCertificate, mscaCert *securityv1.RsaCertificate) error {
+// verifyGen1CertificateChain verifies the Gen1 certificate chain: EUR Root -> MSCA -> Card.
+func (opts AuthenticateOptions) verifyGen1CertificateChain(ctx context.Context, cardCert *securityv1.RsaCertificate, mscaCert *securityv1.RsaCertificate, cardType cardv1.CardType) (*securityv1.RootCertificate, error) {
 	// Get EUR root certificate
 	rootCert, err := opts.CertificateResolver.GetRootCertificate(ctx)
 	if err != nil {
-		return fmt.Errorf("failed to get root certificate: %w", err)
+		return nil, fmt.Errorf("failed to get root certificate: %w", err)
 	}
 
-	// Verify MSCA certificate against EUR root
-	if err := security.VerifyRsaCertificateWithRoot(mscaCert, rootCert); err != nil {
-		return fmt.Errorf("MSCA certificate verification failed: %w", err)
+	if opts.VerificationTime.IsZero() {
+		err = security.VerifyRsaCertificateWithRoot(mscaCert, rootCert)
+	} else {
+		err = security.VerifyRsaCertificateWithRootAt(mscaCert, rootCert, opts.VerificationTime)
+	}
+	if err != nil {
+		return nil, fmt.Errorf("MSCA certificate verification failed: %w", err)
+	}
+	if err := security.VerifyRsaCertificateRole(mscaCert, security.RsaCertificateRoleMemberState); err != nil {
+		return nil, fmt.Errorf("invalid MSCA certificate role: %w", err)
 	}
 
-	// Verify card certificate against MSCA
-	if err := security.VerifyRsaCertificateWithCA(cardCert, mscaCert); err != nil {
-		return fmt.Errorf("card certificate verification failed: %w", err)
+	if opts.VerificationTime.IsZero() {
+		err = security.VerifyRsaCertificateWithCA(cardCert, mscaCert)
+	} else {
+		err = security.VerifyRsaCertificateWithCAAt(cardCert, mscaCert, opts.VerificationTime)
+	}
+	if err != nil {
+		return nil, fmt.Errorf("card certificate verification failed: %w", err)
+	}
+	role, err := gen1CardCertificateRole(cardType)
+	if err != nil {
+		return nil, err
+	}
+	if err := security.VerifyRsaCertificateRole(cardCert, role); err != nil {
+		return nil, fmt.Errorf("invalid card certificate role: %w", err)
 	}
 
-	return nil
+	return rootCert, nil
 }
 
-// verifyGen2CertificateChain verifies the Gen2 certificate chain: EUR Root -> MSCA -> Card
-func (opts AuthenticateOptions) verifyGen2CertificateChain(ctx context.Context, cardCert *securityv1.EccCertificate, mscaCert *securityv1.EccCertificate) error {
+// verifyGen2CertificateChain verifies the Gen2 certificate chain: EUR Root -> MSCA -> Card_Sign.
+func (opts AuthenticateOptions) verifyGen2CertificateChain(ctx context.Context, cardCert *securityv1.EccCertificate, mscaCert *securityv1.EccCertificate, cardType cardv1.CardType) (*securityv1.EccCertificate, error) {
 	// Get Gen2 ECC root certificate
 	rootCert, err := opts.CertificateResolver.GetEccRootCertificate(ctx)
 	if err != nil {
-		return fmt.Errorf("failed to get Gen2 root certificate: %w", err)
+		return nil, fmt.Errorf("failed to get Gen2 root certificate: %w", err)
 	}
 
-	// Verify MSCA certificate against EUR Gen2 root (both ECC)
-	if err := security.VerifyEccCertificateWithEccRoot(mscaCert, rootCert); err != nil {
-		return fmt.Errorf("MSCA certificate verification failed: %w", err)
+	if err := security.VerifyEccCertificateRole(rootCert, security.EccCertificateRoleEuropeanRootCA); err != nil {
+		return nil, fmt.Errorf("invalid root certificate role: %w", err)
+	}
+	if err := security.VerifyEccCertificateRole(mscaCert, security.EccCertificateRoleMemberStateCA); err != nil {
+		return nil, fmt.Errorf("invalid MSCA certificate role: %w", err)
+	}
+	role, err := gen2CardCertificateRole(cardType)
+	if err != nil {
+		return nil, err
+	}
+	if err := security.VerifyEccCertificateRole(cardCert, role); err != nil {
+		return nil, fmt.Errorf("invalid Card_Sign certificate role: %w", err)
 	}
 
-	// Verify card certificate against MSCA
-	if err := security.VerifyEccCertificateWithCA(cardCert, mscaCert); err != nil {
-		return fmt.Errorf("card certificate verification failed: %w", err)
+	if !opts.VerificationTime.IsZero() {
+		if err := security.VerifyEccCertificateValidityAt(rootCert, opts.VerificationTime); err != nil {
+			return nil, fmt.Errorf("root certificate validity failed: %w", err)
+		}
 	}
 
-	return nil
+	if opts.VerificationTime.IsZero() {
+		err = security.VerifyEccCertificateWithEccRoot(mscaCert, rootCert)
+	} else {
+		err = security.VerifyEccCertificateWithCAAt(mscaCert, rootCert, opts.VerificationTime)
+	}
+	if err != nil {
+		return nil, fmt.Errorf("MSCA certificate verification failed: %w", err)
+	}
+
+	if opts.VerificationTime.IsZero() {
+		err = security.VerifyEccCertificateWithCA(cardCert, mscaCert)
+	} else {
+		err = security.VerifyEccCertificateWithCAAt(cardCert, mscaCert, opts.VerificationTime)
+	}
+	if err != nil {
+		return nil, fmt.Errorf("card certificate verification failed: %w", err)
+	}
+
+	return rootCert, nil
 }
 
 // authenticateGen1EF authenticates a single Gen1 EF using RSA signature verification.
-func (opts AuthenticateOptions) authenticateGen1EF(dataRecord *cardv1.RawCardFile_Record, signatureRecord *cardv1.RawCardFile_Record, cardCert *securityv1.RsaCertificate) error {
+func (opts AuthenticateOptions) authenticateGen1EF(dataRecord *cardv1.RawCardFile_Record, signatureRecord *cardv1.RawCardFile_Record, cardCert *securityv1.RsaCertificate, rootCert *securityv1.RootCertificate) error {
 	auth := &securityv1.Authentication{}
 	dataRecord.SetAuthentication(auth)
+	auth.SetSignerCertificate(rsaCertificateInfo(cardCert))
+	rootInfo := &securityv1.CertificateInfo{}
+	rootInfo.SetCertificateHolderReference(rootCert.GetKeyId())
+	auth.SetRootCertificate(rootInfo)
+	if !opts.VerificationTime.IsZero() {
+		auth.SetSignatureCreationTime(timestamppb.New(opts.VerificationTime))
+	}
 
 	if signatureRecord == nil {
 		auth.SetStatus(securityv1.Authentication_DATA_SIGNATURE_INVALID)
@@ -337,9 +407,14 @@ func (opts AuthenticateOptions) authenticateGen1EF(dataRecord *cardv1.RawCardFil
 }
 
 // authenticateGen2EF authenticates a single Gen2 EF using ECDSA signature verification.
-func (opts AuthenticateOptions) authenticateGen2EF(dataRecord *cardv1.RawCardFile_Record, signatureRecord *cardv1.RawCardFile_Record, cardCert *securityv1.EccCertificate) error {
+func (opts AuthenticateOptions) authenticateGen2EF(dataRecord *cardv1.RawCardFile_Record, signatureRecord *cardv1.RawCardFile_Record, cardCert *securityv1.EccCertificate, rootCert *securityv1.EccCertificate) error {
 	auth := &securityv1.Authentication{}
 	dataRecord.SetAuthentication(auth)
+	auth.SetSignerCertificate(eccCertificateInfo(cardCert))
+	auth.SetRootCertificate(eccCertificateInfo(rootCert))
+	if !opts.VerificationTime.IsZero() {
+		auth.SetSignatureCreationTime(timestamppb.New(opts.VerificationTime))
+	}
 
 	if signatureRecord == nil {
 		auth.SetStatus(securityv1.Authentication_DATA_SIGNATURE_INVALID)
@@ -378,6 +453,64 @@ func (opts AuthenticateOptions) authenticateGen2EF(dataRecord *cardv1.RawCardFil
 	auth.SetSignatureAlgorithm(sigAlg)
 
 	return nil
+}
+
+func gen1CardCertificateRole(cardType cardv1.CardType) (security.RsaCertificateRole, error) {
+	switch cardType {
+	case cardv1.CardType_DRIVER_CARD:
+		return security.RsaCertificateRoleDriverCard, nil
+	case cardv1.CardType_WORKSHOP_CARD:
+		return security.RsaCertificateRoleWorkshopCard, nil
+	case cardv1.CardType_CONTROL_CARD:
+		return security.RsaCertificateRoleControlCard, nil
+	case cardv1.CardType_COMPANY_CARD:
+		return security.RsaCertificateRoleCompanyCard, nil
+	default:
+		return 0, fmt.Errorf("unsupported card type %v for Gen1 certificate role", cardType)
+	}
+}
+
+func gen2CardCertificateRole(cardType cardv1.CardType) (security.EccCertificateRole, error) {
+	switch cardType {
+	case cardv1.CardType_DRIVER_CARD:
+		return security.EccCertificateRoleDriverCardSign, nil
+	case cardv1.CardType_WORKSHOP_CARD:
+		return security.EccCertificateRoleWorkshopCardSign, nil
+	default:
+		return 0, fmt.Errorf("card type %v has no Gen2 Card_Sign certificate", cardType)
+	}
+}
+
+func markCardCertificateFailure(rawFile *cardv1.RawCardFile, generation ddv1.Generation) {
+	for _, record := range rawFile.GetRecords() {
+		if record.GetGeneration() != generation ||
+			record.GetContentType() != cardv1.ContentType_DATA ||
+			!isSignedEF(record.GetFile()) {
+			continue
+		}
+		auth := &securityv1.Authentication{}
+		auth.SetStatus(securityv1.Authentication_CERTIFICATE_VERIFICATION_FAILED)
+		record.SetAuthentication(auth)
+	}
+}
+
+func rsaCertificateInfo(cert *securityv1.RsaCertificate) *securityv1.CertificateInfo {
+	info := &securityv1.CertificateInfo{}
+	info.SetCertificationAuthorityReference(cert.GetCertificateAuthorityReference())
+	info.SetCertificateHolderReference(cert.GetCertificateHolderReference())
+	info.SetValidTo(cert.GetEndOfValidity())
+	return info
+}
+
+func eccCertificateInfo(cert *securityv1.EccCertificate) *securityv1.CertificateInfo {
+	info := &securityv1.CertificateInfo{}
+	info.SetCertificationAuthorityReference(cert.GetCertificateAuthorityReference())
+	info.SetCertificateHolderReference(cert.GetCertificateHolderReference())
+	info.SetValidFrom(cert.GetCertificateEffectiveDate())
+	info.SetValidTo(cert.GetCertificateExpirationDate())
+	info.SetCertificationAuthorityReferenceRaw(cert.GetCertificateAuthorityReferenceRaw())
+	info.SetCertificateHolderReferenceRaw(cert.GetCertificateHolderReferenceRaw())
+	return info
 }
 
 // isSignedEF returns true if the given EF type should have a signature.

@@ -55,7 +55,9 @@ message Authentication {
 
   // The timestamp associated with signature creation. For VU downloads this
   // is the signed CurrentDateTime from the Overview transfer unless the caller
-  // supplies an independent verification time.
+  // supplies an independent verification time. Card downloads populate this
+  // only when the caller supplies an independently recorded acquisition time;
+  // EF_Card_Download is unsigned and cannot be trusted as a fallback.
   google.protobuf.Timestamp signature_creation_time = 3;
 
   // Information about the equipment certificate (Card or VU certificate)

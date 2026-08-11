@@ -34,10 +34,11 @@ type AuthenticateOptions struct {
 	// If nil, this defaults to using DefaultCertificateResolver.
 	CertificateResolver CertificateResolver
 
-	// VerificationTime overrides the timestamp used for VU certificate validity
-	// checks. The zero value uses the signed CurrentDateTime from the VU Overview
-	// transfer. Callers may supply an independently recorded download time when
-	// available. Card certificate validity checks do not currently use this field.
+	// VerificationTime overrides the timestamp used for certificate validity
+	// checks. For VU files, the zero value uses the signed CurrentDateTime from
+	// the Overview transfer. Card files have no trustworthy signed download
+	// timestamp, so their zero value skips temporal checks. Callers should supply
+	// an independently recorded card acquisition time when available.
 	VerificationTime time.Time
 
 	// Mutate controls whether authentication modifies the input RawFile in-place.
@@ -74,6 +75,7 @@ func (o AuthenticateOptions) Authenticate(ctx context.Context, rawFile *tachogra
 	// Convert top-level options to internal options
 	cardOpts := card.AuthenticateOptions{
 		CertificateResolver: o.CertificateResolver,
+		VerificationTime:    o.VerificationTime,
 	}
 	vuOpts := vu.AuthenticateOptions{
 		CertificateResolver: o.CertificateResolver,

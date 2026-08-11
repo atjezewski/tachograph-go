@@ -20,9 +20,11 @@ import (
 type EccCertificateRole byte
 
 const (
-	EccCertificateRoleEuropeanRootCA  EccCertificateRole = 13
-	EccCertificateRoleMemberStateCA   EccCertificateRole = 14
-	EccCertificateRoleVehicleUnitSign EccCertificateRole = 19
+	EccCertificateRoleEuropeanRootCA   EccCertificateRole = 13
+	EccCertificateRoleMemberStateCA    EccCertificateRole = 14
+	EccCertificateRoleDriverCardSign   EccCertificateRole = 17
+	EccCertificateRoleWorkshopCardSign EccCertificateRole = 18
+	EccCertificateRoleVehicleUnitSign  EccCertificateRole = 19
 )
 
 var tachographApplicationID = [...]byte{0xff, 0x53, 0x4d, 0x52, 0x44, 0x54}
