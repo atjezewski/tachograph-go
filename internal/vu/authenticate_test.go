@@ -27,6 +27,25 @@ func TestGen2VerificationTimeUsesOverviewCurrentDateTime(t *testing.T) {
 	}
 }
 
+func TestGen1VerificationTimeUsesOverviewCurrentDateTime(t *testing.T) {
+	data, err := readHexdump("testdata/records/000-anonymized/000-OVERVIEW_GEN1.hexdump")
+	if err != nil {
+		t.Fatalf("readHexdump() error = %v", err)
+	}
+	record := &vuv1.RawVehicleUnitFile_Record{}
+	record.SetType(vuv1.TransferType_OVERVIEW_GEN1)
+	record.SetValue(data)
+
+	got, err := gen1VerificationTime(record)
+	if err != nil {
+		t.Fatalf("gen1VerificationTime() error = %v", err)
+	}
+	want := time.Date(2025, time.September, 12, 13, 32, 45, 0, time.UTC)
+	if !got.Equal(want) {
+		t.Fatalf("gen1VerificationTime() = %s, want %s", got, want)
+	}
+}
+
 func TestUnwrapGen2SignatureRecordArray(t *testing.T) {
 	signature := make([]byte, 64)
 	for i := range signature {

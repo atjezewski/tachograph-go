@@ -75,8 +75,9 @@ message RsaCertificate {
   // End of Validity timestamp for this certificate.
   //
   // Extracted from bytes 16-19 of the recovered certificate content. This
-  // timestamp indicates when the certificate expires. A value of 0xFFFFFFFF
-  // (2106-02-07 06:28:15 UTC) indicates no expiry date.
+  // timestamp indicates when the certificate expires. The protocol value
+  // 0xFFFFFFFF indicates that the optional expiry is not used; in that case
+  // this field remains unset.
   google.protobuf.Timestamp end_of_validity = 3;
 
   // RSA public key modulus (n) - 128 bytes.
@@ -108,9 +109,23 @@ message RsaCertificate {
   // Section 3.3.2) has completed successfully:
   // - The header and trailer bytes were correct (0x6A and 0xBC)
   // - The recovered hash H' matched SHA-1(Cr' || Cn')
-  // - The semantic fields (CHR, EOV, modulus, exponent) were extracted
+  // - The semantic fields (CPI, CAR, CHA, EOV, CHR, modulus, exponent) were
+  //   validated and extracted
   //
   // When false or unset, either verification has not been performed or the
   // signature is invalid.
   bool signature_valid = 7;
+
+  // Certificate Profile Identifier (CPI).
+  //
+  // Extracted from byte 0 of the recovered certificate content. Generation 1
+  // certificates use the value 0x01.
+  int32 certificate_profile_identifier = 8;
+
+  // Certificate Holder Authorisation (CHA).
+  //
+  // Extracted from bytes 9-15 of the recovered certificate content. It is the
+  // six-byte Generation 1 Tachograph Application ID followed by the equipment
+  // type for which the certificate is intended.
+  bytes certificate_holder_authorisation = 9;
 }

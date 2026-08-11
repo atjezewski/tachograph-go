@@ -56,6 +56,10 @@ func (opts AuthenticateOptions) AuthenticateRawVehicleUnitFile(ctx context.Conte
 			if verificationTime, err := gen2VerificationTime(overview); err == nil {
 				opts.VerificationTime = verificationTime
 			}
+		} else if overview := opts.findOverviewRecord(records); overview != nil {
+			if verificationTime, err := gen1VerificationTime(overview); err == nil {
+				opts.VerificationTime = verificationTime
+			}
 		}
 	}
 
@@ -106,9 +110,17 @@ func (opts AuthenticateOptions) authenticateGen1Record(ctx context.Context, reco
 		auth.SetStatus(securityv1.Authentication_CERTIFICATE_VERIFICATION_FAILED)
 		return fmt.Errorf("failed to extract Gen1 certificates: %w", err)
 	}
+	verificationTime := opts.VerificationTime
+	if verificationTime.IsZero() {
+		verificationTime, err = gen1VerificationTime(overviewRecord)
+		if err != nil {
+			auth.SetStatus(securityv1.Authentication_CERTIFICATE_VERIFICATION_FAILED)
+			return fmt.Errorf("failed to determine Gen1 verification time: %w", err)
+		}
+	}
 
 	// Step 3: Verify certificate chain
-	if err := opts.verifyGen1CertificateChain(ctx, vuCert, mscaCert, auth); err != nil {
+	if err := opts.verifyGen1CertificateChain(ctx, vuCert, mscaCert, verificationTime, auth); err != nil {
 		return err
 	}
 
@@ -120,6 +132,7 @@ func (opts AuthenticateOptions) authenticateGen1Record(ctx context.Context, reco
 	// Authentication succeeded
 	auth.SetStatus(securityv1.Authentication_VERIFIED)
 	auth.SetSignatureAlgorithm(securityv1.SignatureAlgorithm_SHA1_WITH_RSA_ENCRYPTION)
+	auth.SetSignatureCreationTime(timestamppb.New(verificationTime))
 
 	return nil
 }
@@ -340,6 +353,20 @@ func gen2VerificationTime(overviewRecord *vuv1.RawVehicleUnitFile_Record) (time.
 	return currentDateTime, nil
 }
 
+func gen1VerificationTime(overviewRecord *vuv1.RawVehicleUnitFile_Record) (time.Time, error) {
+	if overviewRecord.GetType() != vuv1.TransferType_OVERVIEW_GEN1 {
+		return time.Time{}, fmt.Errorf("unsupported Gen1 Overview transfer type %v", overviewRecord.GetType())
+	}
+	overview, err := unmarshalOverviewGen1(overviewRecord.GetValue())
+	if err != nil {
+		return time.Time{}, err
+	}
+	if timestamp := overview.GetCurrentDateTime(); timestamp != nil && timestamp.IsValid() {
+		return timestamp.AsTime(), nil
+	}
+	return time.Time{}, fmt.Errorf("Overview CurrentDateTime is missing or invalid")
+}
+
 // verifyGen2DataSignature verifies the ECDSA signature on the data portion of a Gen2 record.
 func (opts AuthenticateOptions) verifyGen2DataSignature(record *vuv1.RawVehicleUnitFile_Record, vuCert *securityv1.EccCertificate, auth *securityv1.Authentication) error {
 	data, signatureRecordArray, err := splitTransferValue(record)
@@ -464,7 +491,7 @@ func (opts AuthenticateOptions) extractGen1Certificates(overviewRecord *vuv1.Raw
 
 // verifyGen1CertificateChain verifies the certificate chain for Gen1:
 // EUR Root -> MSCA -> VU
-func (opts AuthenticateOptions) verifyGen1CertificateChain(ctx context.Context, vuCert *securityv1.RsaCertificate, mscaCert *securityv1.RsaCertificate, auth *securityv1.Authentication) error {
+func (opts AuthenticateOptions) verifyGen1CertificateChain(ctx context.Context, vuCert *securityv1.RsaCertificate, mscaCert *securityv1.RsaCertificate, verificationTime time.Time, auth *securityv1.Authentication) error {
 	// Step 1: Get EUR root certificate
 	rootCert, err := opts.CertificateResolver.GetRootCertificate(ctx)
 	if err != nil {
@@ -473,22 +500,39 @@ func (opts AuthenticateOptions) verifyGen1CertificateChain(ctx context.Context, 
 	}
 
 	// Step 2: Verify MSCA certificate against EUR root
-	if err := security.VerifyRsaCertificateWithRoot(mscaCert, rootCert); err != nil {
+	if err := security.VerifyRsaCertificateWithRootAt(mscaCert, rootCert, verificationTime); err != nil {
 		auth.SetStatus(securityv1.Authentication_CERTIFICATE_VERIFICATION_FAILED)
 		return fmt.Errorf("MSCA certificate verification failed: %w", err)
 	}
+	if err := security.VerifyRsaCertificateRole(mscaCert, security.RsaCertificateRoleMemberState); err != nil {
+		auth.SetStatus(securityv1.Authentication_CERTIFICATE_VERIFICATION_FAILED)
+		return fmt.Errorf("invalid MSCA certificate role: %w", err)
+	}
 
 	// Step 3: Verify VU certificate against MSCA
-	if err := security.VerifyRsaCertificateWithCA(vuCert, mscaCert); err != nil {
+	if err := security.VerifyRsaCertificateWithCAAt(vuCert, mscaCert, verificationTime); err != nil {
 		auth.SetStatus(securityv1.Authentication_CERTIFICATE_VERIFICATION_FAILED)
 		return fmt.Errorf("VU certificate verification failed: %w", err)
 	}
+	if err := security.VerifyRsaCertificateRole(vuCert, security.RsaCertificateRoleVehicleUnit); err != nil {
+		auth.SetStatus(securityv1.Authentication_CERTIFICATE_VERIFICATION_FAILED)
+		return fmt.Errorf("invalid VU certificate role: %w", err)
+	}
 
-	// Step 4: Populate certificate info in auth
-	// TODO: Extract certificate info (CHR, nation, validity dates) and populate
-	// auth.signer_certificate and auth.root_certificate
+	auth.SetSignerCertificate(rsaCertificateInfo(vuCert))
+	rootInfo := &securityv1.CertificateInfo{}
+	rootInfo.SetCertificateHolderReference(rootCert.GetKeyId())
+	auth.SetRootCertificate(rootInfo)
 
 	return nil
+}
+
+func rsaCertificateInfo(cert *securityv1.RsaCertificate) *securityv1.CertificateInfo {
+	info := &securityv1.CertificateInfo{}
+	info.SetCertificationAuthorityReference(cert.GetCertificateAuthorityReference())
+	info.SetCertificateHolderReference(cert.GetCertificateHolderReference())
+	info.SetValidTo(cert.GetEndOfValidity())
+	return info
 }
 
 // verifyGen1DataSignature verifies the RSA signature on the data portion of a Gen1 record.

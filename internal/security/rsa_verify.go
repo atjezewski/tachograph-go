@@ -6,9 +6,25 @@ import (
 	"encoding/binary"
 	"fmt"
 	"math/big"
+	"time"
 
 	securityv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/security/v1"
 )
+
+// RsaCertificateRole is the Generation 1 EquipmentType protocol value stored
+// in the final byte of a Certificate Holder Authorisation field.
+type RsaCertificateRole byte
+
+const (
+	RsaCertificateRoleMemberState  RsaCertificateRole = 0
+	RsaCertificateRoleDriverCard   RsaCertificateRole = 1
+	RsaCertificateRoleWorkshopCard RsaCertificateRole = 2
+	RsaCertificateRoleControlCard  RsaCertificateRole = 3
+	RsaCertificateRoleCompanyCard  RsaCertificateRole = 4
+	RsaCertificateRoleVehicleUnit  RsaCertificateRole = 6
+)
+
+var gen1TachographApplicationID = [...]byte{0xff, 0x54, 0x41, 0x43, 0x48, 0x4f}
 
 // VerifyRsaCertificateWithCA performs signature recovery and verification on an RSA certificate
 // using another RSA certificate as the Certificate Authority.
@@ -29,6 +45,15 @@ func VerifyRsaCertificateWithCA(cert *securityv1.RsaCertificate, caCert *securit
 	return verifyRsaCertificate(cert, caModulus, caExponent, caCHR)
 }
 
+// VerifyRsaCertificateWithCAAt verifies a Generation 1 certificate's issuer,
+// signature, and end of validity at the supplied time.
+func VerifyRsaCertificateWithCAAt(cert *securityv1.RsaCertificate, caCert *securityv1.RsaCertificate, at time.Time) error {
+	if err := VerifyRsaCertificateWithCA(cert, caCert); err != nil {
+		return err
+	}
+	return VerifyRsaCertificateValidityAt(cert, at)
+}
+
 // VerifyRsaCertificateWithRoot performs signature recovery and verification on an RSA certificate
 // using the ERCA root certificate as the Certificate Authority.
 //
@@ -47,6 +72,56 @@ func VerifyRsaCertificateWithRoot(cert *securityv1.RsaCertificate, root *securit
 	rootKeyID := root.GetKeyId()
 
 	return verifyRsaCertificate(cert, rootModulus, rootExponent, rootKeyID)
+}
+
+// VerifyRsaCertificateWithRootAt verifies a Generation 1 certificate against
+// the European root and checks its end of validity at the supplied time.
+func VerifyRsaCertificateWithRootAt(cert *securityv1.RsaCertificate, root *securityv1.RootCertificate, at time.Time) error {
+	if err := VerifyRsaCertificateWithRoot(cert, root); err != nil {
+		return err
+	}
+	return VerifyRsaCertificateValidityAt(cert, at)
+}
+
+// VerifyRsaCertificateValidityAt checks the optional Generation 1 certificate
+// end of validity. An absent EOV represents the regulation's FF-padded value.
+func VerifyRsaCertificateValidityAt(cert *securityv1.RsaCertificate, at time.Time) error {
+	if cert == nil {
+		return fmt.Errorf("certificate cannot be nil")
+	}
+	if at.IsZero() {
+		return fmt.Errorf("verification time cannot be zero")
+	}
+	eov := cert.GetEndOfValidity()
+	if eov == nil {
+		return nil
+	}
+	if !eov.IsValid() {
+		return fmt.Errorf("certificate has invalid end of validity")
+	}
+	if at.After(eov.AsTime()) {
+		return fmt.Errorf("certificate expired at %s", eov.AsTime())
+	}
+	return nil
+}
+
+// VerifyRsaCertificateRole verifies the Generation 1 Tachograph Application ID
+// and equipment type encoded in a certificate's CHA field.
+func VerifyRsaCertificateRole(cert *securityv1.RsaCertificate, expected RsaCertificateRole) error {
+	if cert == nil {
+		return fmt.Errorf("certificate cannot be nil")
+	}
+	cha := cert.GetCertificateHolderAuthorisation()
+	if len(cha) != 7 {
+		return fmt.Errorf("certificate CHA length is %d, want 7", len(cha))
+	}
+	if !bytes.Equal(cha[:6], gen1TachographApplicationID[:]) {
+		return fmt.Errorf("certificate CHA has invalid tachograph application ID %x", cha[:6])
+	}
+	if RsaCertificateRole(cha[6]) != expected {
+		return fmt.Errorf("certificate CHA role is %d, want %d", cha[6], expected)
+	}
+	return nil
 }
 
 // verifyRsaCertificate is the internal implementation that performs signature recovery
@@ -91,6 +166,7 @@ func verifyRsaCertificate(cert *securityv1.RsaCertificate, caModulus, caExponent
 	if cert == nil {
 		return fmt.Errorf("certificate cannot be nil")
 	}
+	cert.SetSignatureValid(false)
 
 	rawData := cert.GetRawData()
 	if len(rawData) != 194 {
@@ -194,17 +270,28 @@ func verifyRsaCertificate(cert *securityv1.RsaCertificate, caModulus, caExponent
 		idxModulus  = 28
 		idxExponent = 156
 		lenCAR      = 8
+		lenCHA      = 7
 		lenEOV      = 4
 		lenCHR      = 8
 		lenModulus  = 128
 		lenExponent = 8
 	)
 
-	// Extract CAR
-	// Note: CAR inside C' should match CAR' at the end of the certificate,
-	// but we don't enforce this check as it doesn't affect signature validity
+	if cPrime[idxCPI] != 0x01 {
+		cert.SetSignatureValid(false)
+		return fmt.Errorf("invalid certificate profile identifier: got 0x%02X, want 0x01", cPrime[idxCPI])
+	}
+
+	// Extract CAR. The signed CAR and the appended CAR' must identify the same
+	// issuing key; CAR' is only duplicated to select that key before recovery.
 	car := binary.BigEndian.Uint64(cPrime[idxCAR : idxCAR+lenCAR])
 	carStr := fmt.Sprintf("%d", car)
+	if carStr != carPrimeStr {
+		cert.SetSignatureValid(false)
+		return fmt.Errorf("recovered CAR %s does not match appended CAR' %s", carStr, carPrimeStr)
+	}
+
+	cha := bytes.Clone(cPrime[idxCHA : idxCHA+lenCHA])
 
 	// Extract CHR
 	chr := binary.BigEndian.Uint64(cPrime[idxCHR : idxCHR+lenCHR])
@@ -221,8 +308,10 @@ func verifyRsaCertificate(cert *securityv1.RsaCertificate, caModulus, caExponent
 
 	// Signature verification successful! Populate the certificate
 	cert.SetSignatureValid(true)
+	cert.SetCertificateProfileIdentifier(int32(cPrime[idxCPI]))
 	cert.SetCertificateHolderReference(chrStr)
 	cert.SetCertificateAuthorityReference(carStr)
+	cert.SetCertificateHolderAuthorisation(cha)
 	if eov != nil {
 		cert.SetEndOfValidity(eov)
 	}
