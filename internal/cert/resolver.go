@@ -20,3 +20,10 @@ type Resolver interface {
 	// GetEccCertificate retrieves an ECC certificate (Generation 2) by its CHR.
 	GetEccCertificate(ctx context.Context, chr string) (*securityv1.EccCertificate, error)
 }
+
+// EccRootSetResolver optionally exposes every trusted Gen2 ERCA root that may
+// anchor a certificate chain. Resolver remains intentionally unchanged so
+// existing custom resolvers continue to work.
+type EccRootSetResolver interface {
+	GetEccRootCertificates(ctx context.Context) ([]*securityv1.EccCertificate, error)
+}

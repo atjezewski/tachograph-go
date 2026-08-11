@@ -277,11 +277,10 @@ func (opts AuthenticateOptions) extractGen2Certificates(overviewRecord *vuv1.Raw
 
 // verifyGen2CertificateChain verifies the Gen2 certificate chain: EUR Root (ECC) -> MSCA (ECC) -> VU (ECC)
 func (opts AuthenticateOptions) verifyGen2CertificateChain(ctx context.Context, vuCert *securityv1.EccCertificate, mscaCert *securityv1.EccCertificate, verificationTime time.Time, auth *securityv1.Authentication) error {
-	// Get Gen2 ECC root certificate
-	rootCert, err := opts.CertificateResolver.GetEccRootCertificate(ctx)
+	rootCert, err := cert.ResolveEccTrustAnchor(ctx, opts.CertificateResolver, mscaCert, nil, verificationTime)
 	if err != nil {
 		auth.SetStatus(securityv1.Authentication_CERTIFICATE_VERIFICATION_FAILED)
-		return fmt.Errorf("failed to get Gen2 root certificate: %w", err)
+		return fmt.Errorf("failed to resolve Gen2 trust anchor: %w", err)
 	}
 
 	if err := security.VerifyEccCertificateRole(mscaCert, security.EccCertificateRoleMemberStateCA); err != nil {
@@ -292,11 +291,6 @@ func (opts AuthenticateOptions) verifyGen2CertificateChain(ctx context.Context, 
 		auth.SetStatus(securityv1.Authentication_CERTIFICATE_VERIFICATION_FAILED)
 		return fmt.Errorf("invalid VU certificate role: %w", err)
 	}
-	if err := security.VerifyEccCertificateValidityAt(rootCert, verificationTime); err != nil {
-		auth.SetStatus(securityv1.Authentication_CERTIFICATE_VERIFICATION_FAILED)
-		return fmt.Errorf("root certificate validity failed: %w", err)
-	}
-
 	// Verify MSCA certificate against EUR Gen2 root (both ECC).
 	if err := security.VerifyEccCertificateWithCAAt(mscaCert, rootCert, verificationTime); err != nil {
 		auth.SetStatus(securityv1.Authentication_CERTIFICATE_VERIFICATION_FAILED)

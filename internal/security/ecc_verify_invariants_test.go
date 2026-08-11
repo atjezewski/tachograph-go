@@ -78,6 +78,17 @@ func TestVerifyEccCertificateRole(t *testing.T) {
 	}
 }
 
+func TestVerifyEccCertificateProfile(t *testing.T) {
+	cert := &securityv1.EccCertificate{}
+	if err := VerifyEccCertificateProfile(cert); err != nil {
+		t.Fatalf("VerifyEccCertificateProfile() error = %v", err)
+	}
+	cert.SetCertificateProfileIdentifier(1)
+	if err := VerifyEccCertificateProfile(cert); err == nil {
+		t.Fatal("VerifyEccCertificateProfile() accepted CPI 1")
+	}
+}
+
 func signedEccCertificate(t *testing.T, verificationTime time.Time) (*securityv1.EccCertificate, *securityv1.EccCertificate) {
 	t.Helper()
 

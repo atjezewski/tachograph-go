@@ -13,6 +13,11 @@ import (
 // remote sources.
 type CertificateResolver = cert.Resolver
 
+// EccRootSetResolver is an optional capability for certificate resolvers that
+// retain multiple trusted Gen2 ERCA root generations. Authentication falls
+// back to CertificateResolver.GetEccRootCertificate when it is not implemented.
+type EccRootSetResolver = cert.EccRootSetResolver
+
 // DefaultCertificateResolver returns the default certificate resolver.
 //
 // The default resolver uses a chain of certificate sources:

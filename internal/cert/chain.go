@@ -51,6 +51,52 @@ func (r *ChainResolver) GetEccRootCertificate(ctx context.Context) (*securityv1.
 	return nil, fmt.Errorf("failed to get Gen2 root certificate: %w", errors.Join(errs...))
 }
 
+// GetEccRootCertificates returns the union of roots exposed by the chained
+// resolvers, deduplicated by certificate holder reference.
+func (r *ChainResolver) GetEccRootCertificates(ctx context.Context) ([]*securityv1.EccCertificate, error) {
+	var roots []*securityv1.EccCertificate
+	var errs []error
+	seen := make(map[string]struct{})
+	for _, resolver := range r.resolvers {
+		var resolved []*securityv1.EccCertificate
+		var err error
+		if rootSetResolver, ok := resolver.(EccRootSetResolver); ok {
+			resolved, err = rootSetResolver.GetEccRootCertificates(ctx)
+		} else {
+			var root *securityv1.EccCertificate
+			root, err = resolver.GetEccRootCertificate(ctx)
+			if root != nil {
+				resolved = []*securityv1.EccCertificate{root}
+			}
+		}
+		if err != nil {
+			errs = append(errs, err)
+			continue
+		}
+		for _, root := range resolved {
+			if root == nil {
+				continue
+			}
+			key := root.GetCertificateHolderReference()
+			if raw := root.GetCertificateHolderReferenceRaw(); len(raw) > 0 {
+				key = string(raw)
+			}
+			if _, ok := seen[key]; ok {
+				continue
+			}
+			seen[key] = struct{}{}
+			roots = append(roots, root)
+		}
+	}
+	if len(roots) == 0 {
+		if len(errs) == 0 {
+			return nil, fmt.Errorf("no Gen2 root certificates found")
+		}
+		return nil, fmt.Errorf("failed to get Gen2 root certificates: %w", errors.Join(errs...))
+	}
+	return roots, nil
+}
+
 // GetRsaCertificate implements [Resolver.GetRsaCertificate].
 func (r *ChainResolver) GetRsaCertificate(ctx context.Context, chr string) (*securityv1.RsaCertificate, error) {
 	var errs []error

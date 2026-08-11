@@ -47,6 +47,9 @@ func VerifyEccCertificateWithEccRoot(cert, root *securityv1.EccCertificate) erro
 		return fmt.Errorf("certificate cannot be nil")
 	}
 	cert.SetSignatureValid(false)
+	if err := VerifyEccCertificateProfile(cert); err != nil {
+		return err
+	}
 	if root == nil {
 		return fmt.Errorf("root certificate cannot be nil")
 	}
@@ -139,6 +142,18 @@ func VerifyEccCertificateWithEccRoot(cert, root *securityv1.EccCertificate) erro
 	}
 
 	cert.SetSignatureValid(true)
+	return nil
+}
+
+// VerifyEccCertificateProfile verifies the Generation 2 certificate profile
+// identifier defined by Appendix 11 CSM_137.
+func VerifyEccCertificateProfile(cert *securityv1.EccCertificate) error {
+	if cert == nil {
+		return fmt.Errorf("certificate cannot be nil")
+	}
+	if got := cert.GetCertificateProfileIdentifier(); got != 0 {
+		return fmt.Errorf("certificate profile identifier is %d, want 0", got)
+	}
 	return nil
 }
 

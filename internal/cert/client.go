@@ -35,6 +35,15 @@ func (c *Client) GetEccRootCertificate(ctx context.Context) (*securityv1.EccCert
 	return RootGen2()
 }
 
+// GetEccRootCertificates retrieves all Gen2 European Root CA certificates known to the client.
+func (c *Client) GetEccRootCertificates(ctx context.Context) ([]*securityv1.EccCertificate, error) {
+	root, err := RootGen2()
+	if err != nil {
+		return nil, err
+	}
+	return []*securityv1.EccCertificate{root}, nil
+}
+
 // GetRsaCertificate retrieves an RSA certificate by its CHR.
 func (c *Client) GetRsaCertificate(ctx context.Context, chr string) (*securityv1.RsaCertificate, error) {
 	index, err := certcache.LoadIndex()
