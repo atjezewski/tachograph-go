@@ -39,12 +39,7 @@
         },
         "rawData": "AQAqKioqKioqKioqKioqKioq"
       },
-      "cardExpiryDate": {
-        "rawData": "ICUSMQ==",
-        "year": 2025,
-        "month": 12,
-        "day": 31
-      },
+      "cardExpiryDate": "2025-12-31T23:59:59Z",
       "cardInsertionTime": "2020-01-01T00:00:00Z",
       "odometerAtInsertionKm": 371000,
       "cardSlotNumber": "DRIVER_SLOT",
@@ -64,7 +59,7 @@
         "rawData": "AAEqKioqKioqKioqKioqXgvhAA=="
       },
       "manualInputFlag": true,
-      "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqICUSMV4L4QAFqTgAXgvhAP//KAABKioqKioqKioqKioqKl4L4QAB"
+      "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqaVW4/14L4QAFqTgAXgvhAP//KAABKioqKioqKioqKioqKl4L4QAB"
     }
   ],
   "activityChanges": [
@@ -1009,5 +1004,5 @@
     }
   ],
   "signature": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
-  "rawData": "aMQhCgWtVwABASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqICUSMV4L4QAFqTgAXgvhAP//KAABKioqKioqKioqKioqKl4L4QABAHEgADDlIOcBBREGGQgBFhkdESUBJxk1EUYZThFUAVURWxlcAWYZdhF3GXkRfhmGAZAZlxG6GcoB6hIEGgYSFBoqEjICPRo+Aj8aQQJJGlUSWhpiEmYCahp9EogCixqUEpkanxKpArASyBrLEs4a1ALcGuQS8xr8EwIbBQMKEyugAKjloOepBqEWqR2hJ6k1oUepTaFVqVuhZql2oX6phqGRqZehvanJoeqqBKIWqimiMqo8oj2qPqI/qkGiSqpVolqqYqJmqn2iiKqUopmqn6Kqqsiiz6rTotyq5KLzqvyjCqsrAQEAKioqKioqKioqKioqKioqKl4L4QAAEgAFqTgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+  "rawData": "aMQhCgWtVwABASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqaVW4/14L4QAFqTgAXgvhAP//KAABKioqKioqKioqKioqKl4L4QABAHEgADDlIOcBBREGGQgBFhkdESUBJxk1EUYZThFUAVURWxlcAWYZdhF3GXkRfhmGAZAZlxG6GcoB6hIEGgYSFBoqEjICPRo+Aj8aQQJJGlUSWhpiEmYCahp9EogCixqUEpkanxKpArASyBrLEs4a1ALcGuQS8xr8EwIbBQMKEyugAKjloOepBqEWqR2hJ6k1oUepTaFVqVuhZql2oX6phqGRqZehvanJoeqqBKIWqimiMqo8oj2qPqI/qkGiSqpVolqqYqJmqn2iiKqUopmqn6Kqqsiiz6rTotyq5KLzqvyjCqsrAQEAKioqKioqKioqKioqKioqKl4L4QAAEgAFqTgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
 }

@@ -3,8 +3,10 @@ package dd
 import (
 	"encoding/binary"
 	"fmt"
+	"time"
 
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/timestamppb"
 
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	"google.golang.org/protobuf/reflect/protoreflect"
@@ -21,7 +23,7 @@ import (
 //	    workshopName Name,                                                   -- 36 bytes
 //	    workshopAddress Address,                                             -- 36 bytes
 //	    workshopCardNumber FullCardNumber,                                   -- 18 bytes
-//	    workshopCardExpiryDate Datef,                                        -- 4 bytes
+//	    workshopCardExpiryDate TimeReal,                                     -- 4 bytes
 //	    vehicleIdentificationNumber VehicleIdentificationNumber,             -- 17 bytes
 //	    vehicleRegistrationIdentification VehicleRegistrationIdentification, -- 15 bytes
 //	    wVehicleCharacteristicConstant W-VehicleCharacteristicConstant,     -- 2 bytes
@@ -127,7 +129,7 @@ func (opts UnmarshalOptions) UnmarshalVuCalibrationRecord(data []byte) (*ddv1.Vu
 	record.SetWorkshopCardNumber(workshopCardNumber)
 
 	// Parse workshop card expiry date (4 bytes)
-	workshopCardExpiryDate, err := opts.UnmarshalDate(
+	workshopCardExpiryDate, err := opts.UnmarshalTimeReal(
 		data[idxWorkshopCardExpiryDate : idxWorkshopCardExpiryDate+lenWorkshopCardExpiryDate],
 	)
 	if err != nil {
@@ -290,7 +292,7 @@ func (opts MarshalOptions) MarshalVuCalibrationRecord(record *ddv1.VuCalibration
 	offset += 18
 
 	// Marshal workshop card expiry date (4 bytes)
-	workshopCardExpiryDateBytes, err := opts.MarshalDate(record.GetWorkshopCardExpiryDate())
+	workshopCardExpiryDateBytes, err := opts.MarshalTimeReal(record.GetWorkshopCardExpiryDate())
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal workshop card expiry date: %w", err)
 	}
@@ -440,8 +442,7 @@ func (opts AnonymizeOptions) AnonymizeVuCalibrationRecord(rec *ddv1.VuCalibratio
 
 	// Anonymize workshop card expiry date (preserve or anonymize timestamp)
 	if expiryDate := rec.GetWorkshopCardExpiryDate(); expiryDate != nil && !opts.PreserveTimestamps {
-		// Create test expiry date
-		result.SetWorkshopCardExpiryDate(NewDate(2025, 12, 31))
+		result.SetWorkshopCardExpiryDate(timestamppb.New(time.Date(2025, 12, 31, 23, 59, 59, 0, time.UTC)))
 	}
 
 	// Anonymize VIN

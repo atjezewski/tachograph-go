@@ -3,11 +3,13 @@ package vu
 import (
 	"encoding/binary"
 	"fmt"
+	"time"
 
 	"github.com/way-platform/tachograph-go/internal/dd"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 // unmarshalActivitiesGen1 parses Gen1 Activities data from the complete transfer value.
@@ -53,7 +55,6 @@ import (
 //   - SpecificConditionType: 1 byte
 //
 // - Signature: 128 bytes (RSA-1024)
-//
 func unmarshalActivitiesGen1(value []byte) (*vuv1.ActivitiesGen1, error) {
 	// Split transfer value into data and signature
 	// Gen1 uses fixed 128-byte RSA-1024 signatures
@@ -379,7 +380,7 @@ func (opts AnonymizeOptions) anonymizeActivitiesGen1(activities *vuv1.Activities
 
 		// Anonymize card expiry date (preserve or anonymize timestamp)
 		if expiryDate := record.GetCardExpiryDate(); expiryDate != nil && !opts.PreserveTimestamps {
-			anonRecord.SetCardExpiryDate(dd.NewDate(2025, 12, 31))
+			anonRecord.SetCardExpiryDate(timestamppb.New(time.Date(2025, 12, 31, 23, 59, 59, 0, time.UTC)))
 		}
 
 		// Anonymize card insertion/withdrawal timestamps

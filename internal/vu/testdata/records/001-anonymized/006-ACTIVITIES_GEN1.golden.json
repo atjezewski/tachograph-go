@@ -39,12 +39,7 @@
         },
         "rawData": "AQAqKioqKioqKioqKioqKioq"
       },
-      "cardExpiryDate": {
-        "rawData": "ICUSMQ==",
-        "year": 2025,
-        "month": 12,
-        "day": 31
-      },
+      "cardExpiryDate": "2025-12-31T23:59:59Z",
       "cardInsertionTime": "2020-01-01T00:00:00Z",
       "odometerAtInsertionKm": 388000,
       "cardSlotNumber": "DRIVER_SLOT",
@@ -64,7 +59,7 @@
         "rawData": "EgEqKioqKioqKioqKioqXgvhAA=="
       },
       "manualInputFlag": false,
-      "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqICUSMV4L4QAF66AAXgvhAP//KBIBKioqKioqKioqKioqKl4L4QAA"
+      "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqaVW4/14L4QAF66AAXgvhAP//KBIBKioqKioqKioqKioqKl4L4QAA"
     }
   ],
   "activityChanges": [
@@ -726,5 +721,5 @@
     }
   ],
   "signature": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
-  "rawData": "aMQHNwXu5gABASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqICUSMV4L4QAF66AAXgvhAP//KBIBKioqKioqKioqKioqKl4L4QAAAFIgABD1GPcA/BElGSYBQRlFEUcZSRFMGU4RUhlnAWoZbQFvGXkRexl9AYIZiwGkGcIB3xnnAekR7RnuAfwaBgILEhgaGQIeEmcaaAJsGnQCdRJ5GnoCfhqJEowajgKTGrygALD1qPag/KkloUGpRaFqqW2hb6l5oYKpi6GkqcKh36nnoemp7aH8qgaiC6oYoh6yZ6poomyqdKJ1qnmifqqJopOqvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+  "rawData": "aMQHNwXu5gABASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqaVW4/14L4QAF66AAXgvhAP//KBIBKioqKioqKioqKioqKl4L4QAAAFIgABD1GPcA/BElGSYBQRlFEUcZSRFMGU4RUhlnAWoZbQFvGXkRexl9AYIZiwGkGcIB3xnnAekR7RnuAfwaBgILEhgaGQIeEmcaaAJsGnQCdRJ5GnoCfhqJEowajgKTGrygALD1qPag/KkloUGpRaFqqW2hb6l5oYKpi6GkqcKh36nnoemp7aH8qgaiC6oYoh6yZ6poomyqdKJ1qnmifqqJopOqvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
 }

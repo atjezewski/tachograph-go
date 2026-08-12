@@ -31,7 +31,7 @@ const (
 //	VuCardIWRecord ::= SEQUENCE {
 //	    cardHolderName HolderName,
 //	    fullCardNumber FullCardNumber,
-//	    cardExpiryDate Datef,
+//	    cardExpiryDate TimeReal,
 //	    cardInsertionTime TimeReal,
 //	    vehicleOdometerValueAtInsertion OdometerShort,
 //	    cardSlotNumber CardSlotNumber,
@@ -46,7 +46,7 @@ type VuCardIWRecord struct {
 	state                             protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_CardHolderName         *HolderName            `protobuf:"bytes,1,opt,name=card_holder_name,json=cardHolderName"`
 	xxx_hidden_FullCardNumber         *FullCardNumber        `protobuf:"bytes,2,opt,name=full_card_number,json=fullCardNumber"`
-	xxx_hidden_CardExpiryDate         *Date                  `protobuf:"bytes,3,opt,name=card_expiry_date,json=cardExpiryDate"`
+	xxx_hidden_CardExpiryDate         *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=card_expiry_date,json=cardExpiryDate"`
 	xxx_hidden_CardInsertionTime      *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=card_insertion_time,json=cardInsertionTime"`
 	xxx_hidden_OdometerAtInsertionKm  int32                  `protobuf:"varint,5,opt,name=odometer_at_insertion_km,json=odometerAtInsertionKm"`
 	xxx_hidden_CardSlotNumber         CardSlotNumber         `protobuf:"varint,6,opt,name=card_slot_number,json=cardSlotNumber,enum=wayplatform.connect.tachograph.dd.v1.CardSlotNumber"`
@@ -100,7 +100,7 @@ func (x *VuCardIWRecord) GetFullCardNumber() *FullCardNumber {
 	return nil
 }
 
-func (x *VuCardIWRecord) GetCardExpiryDate() *Date {
+func (x *VuCardIWRecord) GetCardExpiryDate() *timestamppb.Timestamp {
 	if x != nil {
 		return x.xxx_hidden_CardExpiryDate
 	}
@@ -173,7 +173,7 @@ func (x *VuCardIWRecord) SetFullCardNumber(v *FullCardNumber) {
 	x.xxx_hidden_FullCardNumber = v
 }
 
-func (x *VuCardIWRecord) SetCardExpiryDate(v *Date) {
+func (x *VuCardIWRecord) SetCardExpiryDate(v *timestamppb.Timestamp) {
 	x.xxx_hidden_CardExpiryDate = v
 }
 
@@ -356,8 +356,8 @@ type VuCardIWRecord_builder struct {
 	FullCardNumber *FullCardNumber
 	// The expiry date of the card.
 	//
-	// See Data Dictionary, Section 2.57, `Datef`.
-	CardExpiryDate *Date
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	CardExpiryDate *timestamppb.Timestamp
 	// The time the card was inserted.
 	//
 	// See Data Dictionary, Section 2.162, `TimeReal`.
@@ -428,11 +428,11 @@ var File_wayplatform_connect_tachograph_dd_v1_vu_card_iw_record_proto protorefle
 
 const file_wayplatform_connect_tachograph_dd_v1_vu_card_iw_record_proto_rawDesc = "" +
 	"\n" +
-	"<wayplatform/connect/tachograph/dd/v1/vu_card_iw_record.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a;wayplatform/connect/tachograph/dd/v1/card_slot_number.proto\x1a/wayplatform/connect/tachograph/dd/v1/date.proto\x1a;wayplatform/connect/tachograph/dd/v1/full_card_number.proto\x1a6wayplatform/connect/tachograph/dd/v1/holder_name.proto\x1a@wayplatform/connect/tachograph/dd/v1/previous_vehicle_info.proto\"\xc6\x06\n" +
+	"<wayplatform/connect/tachograph/dd/v1/vu_card_iw_record.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a;wayplatform/connect/tachograph/dd/v1/card_slot_number.proto\x1a;wayplatform/connect/tachograph/dd/v1/full_card_number.proto\x1a6wayplatform/connect/tachograph/dd/v1/holder_name.proto\x1a@wayplatform/connect/tachograph/dd/v1/previous_vehicle_info.proto\"\xb6\x06\n" +
 	"\x0eVuCardIWRecord\x12Z\n" +
 	"\x10card_holder_name\x18\x01 \x01(\v20.wayplatform.connect.tachograph.dd.v1.HolderNameR\x0ecardHolderName\x12^\n" +
-	"\x10full_card_number\x18\x02 \x01(\v24.wayplatform.connect.tachograph.dd.v1.FullCardNumberR\x0efullCardNumber\x12T\n" +
-	"\x10card_expiry_date\x18\x03 \x01(\v2*.wayplatform.connect.tachograph.dd.v1.DateR\x0ecardExpiryDate\x12J\n" +
+	"\x10full_card_number\x18\x02 \x01(\v24.wayplatform.connect.tachograph.dd.v1.FullCardNumberR\x0efullCardNumber\x12D\n" +
+	"\x10card_expiry_date\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\x0ecardExpiryDate\x12J\n" +
 	"\x13card_insertion_time\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\x11cardInsertionTime\x127\n" +
 	"\x18odometer_at_insertion_km\x18\x05 \x01(\x05R\x15odometerAtInsertionKm\x12^\n" +
 	"\x10card_slot_number\x18\x06 \x01(\x0e24.wayplatform.connect.tachograph.dd.v1.CardSlotNumberR\x0ecardSlotNumber\x12L\n" +
@@ -449,19 +449,18 @@ var file_wayplatform_connect_tachograph_dd_v1_vu_card_iw_record_proto_goTypes = 
 	(*VuCardIWRecord)(nil),        // 0: wayplatform.connect.tachograph.dd.v1.VuCardIWRecord
 	(*HolderName)(nil),            // 1: wayplatform.connect.tachograph.dd.v1.HolderName
 	(*FullCardNumber)(nil),        // 2: wayplatform.connect.tachograph.dd.v1.FullCardNumber
-	(*Date)(nil),                  // 3: wayplatform.connect.tachograph.dd.v1.Date
-	(*timestamppb.Timestamp)(nil), // 4: google.protobuf.Timestamp
-	(CardSlotNumber)(0),           // 5: wayplatform.connect.tachograph.dd.v1.CardSlotNumber
-	(*PreviousVehicleInfo)(nil),   // 6: wayplatform.connect.tachograph.dd.v1.PreviousVehicleInfo
+	(*timestamppb.Timestamp)(nil), // 3: google.protobuf.Timestamp
+	(CardSlotNumber)(0),           // 4: wayplatform.connect.tachograph.dd.v1.CardSlotNumber
+	(*PreviousVehicleInfo)(nil),   // 5: wayplatform.connect.tachograph.dd.v1.PreviousVehicleInfo
 }
 var file_wayplatform_connect_tachograph_dd_v1_vu_card_iw_record_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.dd.v1.VuCardIWRecord.card_holder_name:type_name -> wayplatform.connect.tachograph.dd.v1.HolderName
 	2, // 1: wayplatform.connect.tachograph.dd.v1.VuCardIWRecord.full_card_number:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumber
-	3, // 2: wayplatform.connect.tachograph.dd.v1.VuCardIWRecord.card_expiry_date:type_name -> wayplatform.connect.tachograph.dd.v1.Date
-	4, // 3: wayplatform.connect.tachograph.dd.v1.VuCardIWRecord.card_insertion_time:type_name -> google.protobuf.Timestamp
-	5, // 4: wayplatform.connect.tachograph.dd.v1.VuCardIWRecord.card_slot_number:type_name -> wayplatform.connect.tachograph.dd.v1.CardSlotNumber
-	4, // 5: wayplatform.connect.tachograph.dd.v1.VuCardIWRecord.card_withdrawal_time:type_name -> google.protobuf.Timestamp
-	6, // 6: wayplatform.connect.tachograph.dd.v1.VuCardIWRecord.previous_vehicle_info:type_name -> wayplatform.connect.tachograph.dd.v1.PreviousVehicleInfo
+	3, // 2: wayplatform.connect.tachograph.dd.v1.VuCardIWRecord.card_expiry_date:type_name -> google.protobuf.Timestamp
+	3, // 3: wayplatform.connect.tachograph.dd.v1.VuCardIWRecord.card_insertion_time:type_name -> google.protobuf.Timestamp
+	4, // 4: wayplatform.connect.tachograph.dd.v1.VuCardIWRecord.card_slot_number:type_name -> wayplatform.connect.tachograph.dd.v1.CardSlotNumber
+	3, // 5: wayplatform.connect.tachograph.dd.v1.VuCardIWRecord.card_withdrawal_time:type_name -> google.protobuf.Timestamp
+	5, // 6: wayplatform.connect.tachograph.dd.v1.VuCardIWRecord.previous_vehicle_info:type_name -> wayplatform.connect.tachograph.dd.v1.PreviousVehicleInfo
 	7, // [7:7] is the sub-list for method output_type
 	7, // [7:7] is the sub-list for method input_type
 	7, // [7:7] is the sub-list for extension type_name
@@ -475,7 +474,6 @@ func file_wayplatform_connect_tachograph_dd_v1_vu_card_iw_record_proto_init() {
 		return
 	}
 	file_wayplatform_connect_tachograph_dd_v1_card_slot_number_proto_init()
-	file_wayplatform_connect_tachograph_dd_v1_date_proto_init()
 	file_wayplatform_connect_tachograph_dd_v1_full_card_number_proto_init()
 	file_wayplatform_connect_tachograph_dd_v1_holder_name_proto_init()
 	file_wayplatform_connect_tachograph_dd_v1_previous_vehicle_info_proto_init()

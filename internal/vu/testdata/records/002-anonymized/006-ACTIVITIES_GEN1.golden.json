@@ -39,12 +39,7 @@
         },
         "rawData": "AQAqKioqKioqKioqKioqKioq"
       },
-      "cardExpiryDate": {
-        "rawData": "ICUSMQ==",
-        "year": 2025,
-        "month": 12,
-        "day": 31
-      },
+      "cardExpiryDate": "2025-12-31T23:59:59Z",
       "cardInsertionTime": "2020-01-01T00:00:00Z",
       "odometerAtInsertionKm": 857000,
       "cardSlotNumber": "DRIVER_SLOT",
@@ -64,7 +59,7 @@
         "rawData": "EgEqKioqKioqKioqKioqXgvhAA=="
       },
       "manualInputFlag": true,
-      "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqICUSMV4L4QANE6gAXgvhAA0TqBIBKioqKioqKioqKioqKl4L4QAB"
+      "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqaVW4/14L4QANE6gAXgvhAA0TqBIBKioqKioqKioqKioqKl4L4QAB"
     },
     {
       "cardHolderName": {
@@ -103,12 +98,7 @@
         },
         "rawData": "AQAqKioqKioqKioqKioqKioq"
       },
-      "cardExpiryDate": {
-        "rawData": "ICUSMQ==",
-        "year": 2025,
-        "month": 12,
-        "day": 31
-      },
+      "cardExpiryDate": "2025-12-31T23:59:59Z",
       "cardInsertionTime": "2020-01-01T00:00:00Z",
       "odometerAtInsertionKm": 857000,
       "cardSlotNumber": "DRIVER_SLOT",
@@ -128,7 +118,7 @@
         "rawData": "EgEqKioqKioqKioqKioqXgvhAA=="
       },
       "manualInputFlag": true,
-      "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqICUSMV4L4QANE6gAXgvhAP//KBIBKioqKioqKioqKioqKl4L4QAB"
+      "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqaVW4/14L4QANE6gAXgvhAP//KBIBKioqKioqKioqKioqKl4L4QAB"
     }
   ],
   "activityChanges": [
@@ -1322,5 +1312,5 @@
     }
   ],
   "signature": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
-  "rawData": "aMQAuQ0XXAACASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqICUSMV4L4QANE6gAXgvhAA0TqBIBKioqKioqKioqKioqKl4L4QABASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqICUSMV4L4QANE6gAXgvhAP//KBIBKioqKioqKioqKioqKl4L4QABAIwYABAIGAoACxAPGBAQERgTEBQgGDDaEN0Y3wDuEPgZDgEPETIZMxFHGUwBTxFQGVUBVxldEWABYhlmEWgZcQF4EXkZghGaGakBrxGwGbURwxnHEc4Z1RHZGd4R4hntEe4Z+QH8Ef0aBwIOGi8SOAI6EkAaQQJDGkoCTRJbGlwSZBpmEmgacQJ2EncagRKKGpICnqgAoAywD6gQoBqw2qjboO6o+KD5qQ6hEKkyoUepTKFQqVShV6ldoWKpZqFosXCpcaF4sYGpgqGasaepqaGvqbWhw6nHoc6x1KnVodmp3qHiqe2h7rH4qfmh/LIEqgaiD6ovojqqO6I8qkCiRKpKok2yW6pcomiycKpxoneqgKKKspGqkqKgAgEAKioqKioqKioqKioqKioqKl4L4QABEgANE6gBACoqKioqKioqKioqKioqKipeC+EAABIADROoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+  "rawData": "aMQAuQ0XXAACASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqaVW4/14L4QANE6gAXgvhAA0TqBIBKioqKioqKioqKioqKl4L4QABASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqaVW4/14L4QANE6gAXgvhAP//KBIBKioqKioqKioqKioqKl4L4QABAIwYABAIGAoACxAPGBAQERgTEBQgGDDaEN0Y3wDuEPgZDgEPETIZMxFHGUwBTxFQGVUBVxldEWABYhlmEWgZcQF4EXkZghGaGakBrxGwGbURwxnHEc4Z1RHZGd4R4hntEe4Z+QH8Ef0aBwIOGi8SOAI6EkAaQQJDGkoCTRJbGlwSZBpmEmgacQJ2EncagRKKGpICnqgAoAywD6gQoBqw2qjboO6o+KD5qQ6hEKkyoUepTKFQqVShV6ldoWKpZqFosXCpcaF4sYGpgqGasaepqaGvqbWhw6nHoc6x1KnVodmp3qHiqe2h7rH4qfmh/LIEqgaiD6ovojqqO6I8qkCiRKpKok2yW6pcomiycKpxoneqgKKKspGqkqKgAgEAKioqKioqKioqKioqKioqKl4L4QABEgANE6gBACoqKioqKioqKioqKioqKipeC+EAABIADROoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
 }

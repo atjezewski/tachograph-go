@@ -512,11 +512,7 @@ func (opts AnonymizeOptions) anonymizeActivitiesGen2V2(activities *vuv1.Activiti
 		anonCardIW[i].SetFullCardNumber(&ddv1.FullCardNumberAndGeneration{})
 
 		// Use fixed dates
-		testDate := &ddv1.Date{}
-		testDate.SetYear(2030)
-		testDate.SetMonth(12)
-		testDate.SetDay(31)
-		anonCardIW[i].SetCardExpiryDate(testDate)
+		anonCardIW[i].SetCardExpiryDate(timestamppb.New(time.Date(2030, 12, 31, 23, 59, 59, 0, time.UTC)))
 		anonCardIW[i].SetCardInsertionTime(timestamppb.New(baseTime.Add(time.Duration(i*2) * time.Hour)))
 		anonCardIW[i].SetCardWithdrawalTime(timestamppb.New(baseTime.Add(time.Duration(i*2+1) * time.Hour)))
 

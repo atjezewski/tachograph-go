@@ -15,7 +15,7 @@ import (
 //	VuCardIWRecord ::= SEQUENCE {
 //	    cardHolderName                     HolderName,
 //	    fullCardNumber                     FullCardNumber,
-//	    cardExpiryDate                     Datef,
+//	    cardExpiryDate                     TimeReal,
 //	    cardInsertionTime                  TimeReal,
 //	    vehicleOdometerValueAtInsertion    OdometerShort,
 //	    cardSlotNumber                     CardSlotNumber,
@@ -28,7 +28,7 @@ import (
 // Binary Layout (fixed length, 129 bytes):
 //   - Bytes 0-71: cardHolderName (HolderName)
 //   - Bytes 72-89: fullCardNumber (FullCardNumber)
-//   - Bytes 90-93: cardExpiryDate (Datef)
+//   - Bytes 90-93: cardExpiryDate (TimeReal)
 //   - Bytes 94-97: cardInsertionTime (TimeReal)
 //   - Bytes 98-100: vehicleOdometerValueAtInsertion (OdometerShort)
 //   - Byte 101: cardSlotNumber (CardSlotNumber)
@@ -52,7 +52,6 @@ func (opts UnmarshalOptions) UnmarshalVuCardIWRecord(data []byte) (*ddv1.VuCardI
 
 		lenHolderName          = 72
 		lenFullCardNumber      = 18
-		lenDatef               = 4
 		lenTimeReal            = 4
 		lenOdometerShort       = 3
 		lenCardSlotNumber      = 1
@@ -84,7 +83,7 @@ func (opts UnmarshalOptions) UnmarshalVuCardIWRecord(data []byte) (*ddv1.VuCardI
 	record.SetFullCardNumber(fullCardNumber)
 
 	// cardExpiryDate (4 bytes)
-	expiryDate, err := opts.UnmarshalDate(data[idxCardExpiryDate : idxCardExpiryDate+lenDatef])
+	expiryDate, err := opts.UnmarshalTimeReal(data[idxCardExpiryDate : idxCardExpiryDate+lenTimeReal])
 	if err != nil {
 		return nil, fmt.Errorf("unmarshal card expiry date: %w", err)
 	}
@@ -172,7 +171,7 @@ func (opts MarshalOptions) MarshalVuCardIWRecord(record *ddv1.VuCardIWRecord) ([
 	offset += 18
 
 	// cardExpiryDate (4 bytes)
-	expiryDateBytes, err := opts.MarshalDate(record.GetCardExpiryDate())
+	expiryDateBytes, err := opts.MarshalTimeReal(record.GetCardExpiryDate())
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal card expiry date: %w", err)
 	}

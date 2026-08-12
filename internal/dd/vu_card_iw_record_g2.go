@@ -15,7 +15,7 @@ import (
 //	VuCardIWRecord ::= SEQUENCE {
 //	    cardHolderName                     HolderName,
 //	    fullCardNumberAndGeneration        FullCardNumberAndGeneration,
-//	    cardExpiryDate                     Datef,
+//	    cardExpiryDate                     TimeReal,
 //	    cardInsertionTime                  TimeReal,
 //	    vehicleOdometerValueAtInsertion    OdometerShort,
 //	    cardSlotNumber                     CardSlotNumber,
@@ -28,7 +28,7 @@ import (
 // Binary Layout (fixed length, 131 bytes):
 //   - Bytes 0-71: cardHolderName (HolderName)
 //   - Bytes 72-90: fullCardNumberAndGeneration (FullCardNumberAndGeneration, 19 bytes)
-//   - Bytes 91-94: cardExpiryDate (Datef)
+//   - Bytes 91-94: cardExpiryDate (TimeReal)
 //   - Bytes 95-98: cardInsertionTime (TimeReal)
 //   - Bytes 99-101: vehicleOdometerValueAtInsertion (OdometerShort)
 //   - Byte 102: cardSlotNumber (CardSlotNumber)
@@ -52,7 +52,6 @@ func (opts UnmarshalOptions) UnmarshalVuCardIWRecordG2(data []byte) (*ddv1.VuCar
 
 		lenHolderName                  = 72
 		lenFullCardNumberAndGeneration = 19
-		lenDatef                       = 4
 		lenTimeReal                    = 4
 		lenOdometerShort               = 3
 		lenCardSlotNumber              = 1
@@ -84,7 +83,7 @@ func (opts UnmarshalOptions) UnmarshalVuCardIWRecordG2(data []byte) (*ddv1.VuCar
 	record.SetFullCardNumber(fullCardNumber)
 
 	// cardExpiryDate (4 bytes)
-	expiryDate, err := opts.UnmarshalDate(data[idxCardExpiryDate : idxCardExpiryDate+lenDatef])
+	expiryDate, err := opts.UnmarshalTimeReal(data[idxCardExpiryDate : idxCardExpiryDate+lenTimeReal])
 	if err != nil {
 		return nil, fmt.Errorf("unmarshal card expiry date: %w", err)
 	}
@@ -176,7 +175,7 @@ func (opts MarshalOptions) MarshalVuCardIWRecordG2(record *ddv1.VuCardIWRecordG2
 	offset += 19
 
 	// cardExpiryDate (4 bytes)
-	expiryDateBytes, err := opts.MarshalDate(record.GetCardExpiryDate())
+	expiryDateBytes, err := opts.MarshalTimeReal(record.GetCardExpiryDate())
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal card expiry date: %w", err)
 	}

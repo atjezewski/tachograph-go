@@ -39,12 +39,7 @@
         },
         "rawData": "AQAqKioqKioqKioqKioqKioq"
       },
-      "cardExpiryDate": {
-        "rawData": "ICUSMQ==",
-        "year": 2025,
-        "month": 12,
-        "day": 31
-      },
+      "cardExpiryDate": "2025-12-31T23:59:59Z",
       "cardInsertionTime": "2020-01-01T00:00:00Z",
       "odometerAtInsertionKm": 857000,
       "cardSlotNumber": "DRIVER_SLOT",
@@ -64,7 +59,7 @@
         "rawData": "EgEqKioqKioqKioqKioqXgvhAA=="
       },
       "manualInputFlag": true,
-      "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqICUSMV4L4QANE6gAXgvhAA0TqBIBKioqKioqKioqKioqKl4L4QAB"
+      "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqaVW4/14L4QANE6gAXgvhAA0TqBIBKioqKioqKioqKioqKl4L4QAB"
     },
     {
       "cardHolderName": {
@@ -103,12 +98,7 @@
         },
         "rawData": "AQAqKioqKioqKioqKioqKioq"
       },
-      "cardExpiryDate": {
-        "rawData": "ICUSMQ==",
-        "year": 2025,
-        "month": 12,
-        "day": 31
-      },
+      "cardExpiryDate": "2025-12-31T23:59:59Z",
       "cardInsertionTime": "2020-01-01T00:00:00Z",
       "odometerAtInsertionKm": 857000,
       "cardSlotNumber": "DRIVER_SLOT",
@@ -128,7 +118,7 @@
         "rawData": "EgEqKioqKioqKioqKioqXgvhAA=="
       },
       "manualInputFlag": true,
-      "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqICUSMV4L4QANE6gAXgvhAA0TqBIBKioqKioqKioqKioqKl4L4QAB"
+      "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqaVW4/14L4QANE6gAXgvhAA0TqBIBKioqKioqKioqKioqKl4L4QAB"
     }
   ],
   "activityChanges": [
@@ -1034,5 +1024,5 @@
     }
   ],
   "signature": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
-  "rawData": "aMNifw0W+AACASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqICUSMV4L4QANE6gAXgvhAA0TqBIBKioqKioqKioqKioqKl4L4QABASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqICUSMV4L4QANE6gAXgvhAA0TqBIBKioqKioqKioqKioqKl4L4QABAGgYAAAMGBIQExgVIBczWjtbM1w7XhNgA2ETbhtvE5QblhOiA6QbrgOvG8QDxRPJG8oTzxvRA9QT2BvZA94T4hvjBCAUQBxBFFcEWBxxBHIUhByGFLsEvBzFBMYczxTTBNQc6ATpHPEFLhUyBTMVYx1kBXUVkB2SqACgDagSoBizWqtbo2Kzbqtvo6SrrqOwq8OjxavJo9Sr2KPes+Kr46QhrECkWKxxpHK0hKyFpLysxaTGrM+01KTVrOik6azxpS61Mq0zpTS1Y61kpXe1kK2SAgEAKioqKioqKioqKioqKioqKl4L4QABEgANE6gBACoqKioqKioqKioqKioqKipeC+EAABIADROoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+  "rawData": "aMNifw0W+AACASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqaVW4/14L4QANE6gAXgvhAA0TqBIBKioqKioqKioqKioqKl4L4QABASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqaVW4/14L4QANE6gAXgvhAA0TqBIBKioqKioqKioqKioqKl4L4QABAGgYAAAMGBIQExgVIBczWjtbM1w7XhNgA2ETbhtvE5QblhOiA6QbrgOvG8QDxRPJG8oTzxvRA9QT2BvZA94T4hvjBCAUQBxBFFcEWBxxBHIUhByGFLsEvBzFBMYczxTTBNQc6ATpHPEFLhUyBTMVYx1kBXUVkB2SqACgDagSoBizWqtbo2Kzbqtvo6SrrqOwq8OjxavJo9Sr2KPes+Kr46QhrECkWKxxpHK0hKyFpLysxaTGrM+01KTVrOik6azxpS61Mq0zpTS1Y61kpXe1kK2SAgEAKioqKioqKioqKioqKioqKl4L4QABEgANE6gBACoqKioqKioqKioqKioqKipeC+EAABIADROoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
 }

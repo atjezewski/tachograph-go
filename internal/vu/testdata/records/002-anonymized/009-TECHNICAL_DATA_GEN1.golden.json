@@ -100,12 +100,7 @@
         },
         "rawData": "AgAqKioqKioqKioqKioqKioq"
       },
-      "workshopCardExpiryDate": {
-        "rawData": "ICUSMQ==",
-        "year": 2025,
-        "month": 12,
-        "day": 31
-      },
+      "workshopCardExpiryDate": "2025-12-31T23:59:59Z",
       "vin": {
         "length": 17,
         "value": "*****************",
@@ -134,7 +129,7 @@
       "oldTimeValue": "2020-01-01T00:00:00Z",
       "newTimeValue": "2020-01-01T00:00:00Z",
       "nextCalibrationDate": "2020-01-01T00:00:00Z",
-      "rawData": "AQEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgIAKioqKioqKioqKioqKioqKiAlEjEqKioqKioqKioqKioqKioqKgABKioqKioqKioqKioqKh1HHUdegDMxNS82MCBSMjIuNSAgIFoAAAD//yheC+EAXgvhAF4L4QA="
+      "rawData": "AQEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgIAKioqKioqKioqKioqKioqKmlVuP8qKioqKioqKioqKioqKioqKgABKioqKioqKioqKioqKh1HHUdegDMxNS82MCBSMjIuNSAgIFoAAAD//yheC+EAXgvhAF4L4QA="
     },
     {
       "purpose": "CALIBRATION_PURPOSE_RESERVED",
@@ -177,12 +172,7 @@
         },
         "rawData": "AgAqKioqKioqKioqKioqKioq"
       },
-      "workshopCardExpiryDate": {
-        "rawData": "ICUSMQ==",
-        "year": 2025,
-        "month": 12,
-        "day": 31
-      },
+      "workshopCardExpiryDate": "2025-12-31T23:59:59Z",
       "vin": {
         "length": 17,
         "value": "*****************",
@@ -211,7 +201,7 @@
       "oldTimeValue": "2020-01-01T00:00:00Z",
       "newTimeValue": "2020-01-01T00:00:00Z",
       "nextCalibrationDate": "2020-01-01T00:00:00Z",
-      "rawData": "AgEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgIAKioqKioqKioqKioqKioqKiAlEjEqKioqKioqKioqKioqKioqKhIBKioqKioqKioqKioqKh3OHc5egDMxNS82MCBSMjIuNSAgIFoAAAD//yheC+EAXgvhAF4L4QA="
+      "rawData": "AgEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgIAKioqKioqKioqKioqKioqKmlVuP8qKioqKioqKioqKioqKioqKhIBKioqKioqKioqKioqKh3OHc5egDMxNS82MCBSMjIuNSAgIFoAAAD//yheC+EAXgvhAF4L4QA="
     },
     {
       "purpose": "ACTIVATION",
@@ -254,12 +244,7 @@
         },
         "rawData": "AgAqKioqKioqKioqKioqKioq"
       },
-      "workshopCardExpiryDate": {
-        "rawData": "ICUSMQ==",
-        "year": 2025,
-        "month": 12,
-        "day": 31
-      },
+      "workshopCardExpiryDate": "2025-12-31T23:59:59Z",
       "vin": {
         "length": 17,
         "value": "*****************",
@@ -288,7 +273,7 @@
       "oldTimeValue": "2020-01-01T00:00:00Z",
       "newTimeValue": "2020-01-01T00:00:00Z",
       "nextCalibrationDate": "2020-01-01T00:00:00Z",
-      "rawData": "AwEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgIAKioqKioqKioqKioqKioqKiAlEjEqKioqKioqKioqKioqKioqKhIBKioqKioqKioqKioqKh3OHc5egDMxNS82MCBSMjIuNSAgIFoAAAD//yheC+EAXgvhAF4L4QA="
+      "rawData": "AwEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgIAKioqKioqKioqKioqKioqKmlVuP8qKioqKioqKioqKioqKioqKhIBKioqKioqKioqKioqKh3OHc5egDMxNS82MCBSMjIuNSAgIFoAAAD//yheC+EAXgvhAF4L4QA="
     },
     {
       "purpose": "FIRST_INSTALLATION",
@@ -331,12 +316,7 @@
         },
         "rawData": "AgAqKioqKioqKioqKioqKioq"
       },
-      "workshopCardExpiryDate": {
-        "rawData": "ICUSMQ==",
-        "year": 2025,
-        "month": 12,
-        "day": 31
-      },
+      "workshopCardExpiryDate": "2025-12-31T23:59:59Z",
       "vin": {
         "length": 17,
         "value": "*****************",
@@ -365,7 +345,7 @@
       "oldTimeValue": "2020-01-01T00:00:00Z",
       "newTimeValue": "2020-01-01T00:00:00Z",
       "nextCalibrationDate": "2020-01-01T00:00:00Z",
-      "rawData": "BAEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgIAKioqKioqKioqKioqKioqKiAlEjEqKioqKioqKioqKioqKioqKhIBKioqKioqKioqKioqKh3OHc5egDMxNS82MCBSMjIuNSAgIFoAAAD//yheC+EAXgvhAF4L4QA="
+      "rawData": "BAEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgIAKioqKioqKioqKioqKioqKmlVuP8qKioqKioqKioqKioqKioqKhIBKioqKioqKioqKioqKh3OHc5egDMxNS82MCBSMjIuNSAgIFoAAAD//yheC+EAXgvhAF4L4QA="
     },
     {
       "purpose": "FIRST_INSTALLATION",
@@ -408,12 +388,7 @@
         },
         "rawData": "AgAqKioqKioqKioqKioqKioq"
       },
-      "workshopCardExpiryDate": {
-        "rawData": "ICUSMQ==",
-        "year": 2025,
-        "month": 12,
-        "day": 31
-      },
+      "workshopCardExpiryDate": "2025-12-31T23:59:59Z",
       "vin": {
         "length": 17,
         "value": "*****************",
@@ -442,7 +417,7 @@
       "oldTimeValue": "2020-01-01T00:00:00Z",
       "newTimeValue": "2020-01-01T00:00:00Z",
       "nextCalibrationDate": "2020-01-01T00:00:00Z",
-      "rawData": "BAEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgIAKioqKioqKioqKioqKioqKiAlEjEqKioqKioqKioqKioqKioqKhIBKioqKioqKioqKioqKh5NHk1eYDMxNS82MCBSMjIuNSAgIFoDkhD//yheC+EAXgvhAF4L4QA="
+      "rawData": "BAEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgIAKioqKioqKioqKioqKioqKmlVuP8qKioqKioqKioqKioqKioqKhIBKioqKioqKioqKioqKh5NHk1eYDMxNS82MCBSMjIuNSAgIFoDkhD//yheC+EAXgvhAF4L4QA="
     },
     {
       "purpose": "FIRST_INSTALLATION",
@@ -485,12 +460,7 @@
         },
         "rawData": "AgAqKioqKioqKioqKioqKioq"
       },
-      "workshopCardExpiryDate": {
-        "rawData": "ICUSMQ==",
-        "year": 2025,
-        "month": 12,
-        "day": 31
-      },
+      "workshopCardExpiryDate": "2025-12-31T23:59:59Z",
       "vin": {
         "length": 17,
         "value": "*****************",
@@ -519,7 +489,7 @@
       "oldTimeValue": "2020-01-01T00:00:00Z",
       "newTimeValue": "2020-01-01T00:00:00Z",
       "nextCalibrationDate": "2020-01-01T00:00:00Z",
-      "rawData": "BAEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgIAKioqKioqKioqKioqKioqKiAlEjEqKioqKioqKioqKioqKioqKhIBKioqKioqKioqKioqKh4kHiRcEDMxNS82MCBSMjIuNSAgIFoG9UD//yheC+EAXgvhAF4L4QA="
+      "rawData": "BAEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgIAKioqKioqKioqKioqKioqKmlVuP8qKioqKioqKioqKioqKioqKhIBKioqKioqKioqKioqKh4kHiRcEDMxNS82MCBSMjIuNSAgIFoG9UD//yheC+EAXgvhAF4L4QA="
     },
     {
       "purpose": "FIRST_INSTALLATION",
@@ -562,12 +532,7 @@
         },
         "rawData": "AgAqKioqKioqKioqKioqKioq"
       },
-      "workshopCardExpiryDate": {
-        "rawData": "ICUSMQ==",
-        "year": 2025,
-        "month": 12,
-        "day": 31
-      },
+      "workshopCardExpiryDate": "2025-12-31T23:59:59Z",
       "vin": {
         "length": 17,
         "value": "*****************",
@@ -596,9 +561,9 @@
       "oldTimeValue": "2020-01-01T00:00:00Z",
       "newTimeValue": "2020-01-01T00:00:00Z",
       "nextCalibrationDate": "2020-01-01T00:00:00Z",
-      "rawData": "BAEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgIAKioqKioqKioqKioqKioqKiAlEjEqKioqKioqKioqKioqKioqKhIBKioqKioqKioqKioqKh5CHkJYsDMxNS82MCBSMjIuNSAgIFoK+Jj//yheC+EAXgvhAF4L4QA="
+      "rawData": "BAEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgIAKioqKioqKioqKioqKioqKmlVuP8qKioqKioqKioqKioqKioqKhIBKioqKioqKioqKioqKh5CHkJYsDMxNS82MCBSMjIuNSAgIFoK+Jj//yheC+EAXgvhAF4L4QA="
     }
   ],
   "signature": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
-  "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgAAAAAAAAahKioqKlohostaIJuAVEVTVDAwMDEAAAAAAAAHoVNFTlNPUjAxaG0hWQcBASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAgAqKioqKioqKioqKioqKioqICUSMSoqKioqKioqKioqKioqKioqAAEqKioqKioqKioqKioqHUcdR16AMzE1LzYwIFIyMi41ICAgWgAAAP//KF4L4QBeC+EAXgvhAAIBKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioBKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioCACoqKioqKioqKioqKioqKiogJRIxKioqKioqKioqKioqKioqKioSASoqKioqKioqKioqKiodzh3OXoAzMTUvNjAgUjIyLjUgICBaAAAA//8oXgvhAF4L4QBeC+EAAwEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgIAKioqKioqKioqKioqKioqKiAlEjEqKioqKioqKioqKioqKioqKhIBKioqKioqKioqKioqKh3OHc5egDMxNS82MCBSMjIuNSAgIFoAAAD//yheC+EAXgvhAF4L4QAEASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAgAqKioqKioqKioqKioqKioqICUSMSoqKioqKioqKioqKioqKioqEgEqKioqKioqKioqKioqHc4dzl6AMzE1LzYwIFIyMi41ICAgWgAAAP//KF4L4QBeC+EAXgvhAAQBKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioBKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioCACoqKioqKioqKioqKioqKiogJRIxKioqKioqKioqKioqKioqKioSASoqKioqKioqKioqKioeTR5NXmAzMTUvNjAgUjIyLjUgICBaA5IQ//8oXgvhAF4L4QBeC+EABAEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgIAKioqKioqKioqKioqKioqKiAlEjEqKioqKioqKioqKioqKioqKhIBKioqKioqKioqKioqKh4kHiRcEDMxNS82MCBSMjIuNSAgIFoG9UD//yheC+EAXgvhAF4L4QAEASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAgAqKioqKioqKioqKioqKioqICUSMSoqKioqKioqKioqKioqKioqEgEqKioqKioqKioqKioqHkIeQliwMzE1LzYwIFIyMi41ICAgWgr4mP//KF4L4QBeC+EAXgvhAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+  "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgAAAAAAAAahKioqKlohostaIJuAVEVTVDAwMDEAAAAAAAAHoVNFTlNPUjAxaG0hWQcBASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAgAqKioqKioqKioqKioqKioqaVW4/yoqKioqKioqKioqKioqKioqAAEqKioqKioqKioqKioqHUcdR16AMzE1LzYwIFIyMi41ICAgWgAAAP//KF4L4QBeC+EAXgvhAAIBKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioBKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioCACoqKioqKioqKioqKioqKippVbj/KioqKioqKioqKioqKioqKioSASoqKioqKioqKioqKiodzh3OXoAzMTUvNjAgUjIyLjUgICBaAAAA//8oXgvhAF4L4QBeC+EAAwEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgIAKioqKioqKioqKioqKioqKmlVuP8qKioqKioqKioqKioqKioqKhIBKioqKioqKioqKioqKh3OHc5egDMxNS82MCBSMjIuNSAgIFoAAAD//yheC+EAXgvhAF4L4QAEASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAgAqKioqKioqKioqKioqKioqaVW4/yoqKioqKioqKioqKioqKioqEgEqKioqKioqKioqKioqHc4dzl6AMzE1LzYwIFIyMi41ICAgWgAAAP//KF4L4QBeC+EAXgvhAAQBKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioBKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioCACoqKioqKioqKioqKioqKippVbj/KioqKioqKioqKioqKioqKioSASoqKioqKioqKioqKioeTR5NXmAzMTUvNjAgUjIyLjUgICBaA5IQ//8oXgvhAF4L4QBeC+EABAEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgIAKioqKioqKioqKioqKioqKmlVuP8qKioqKioqKioqKioqKioqKhIBKioqKioqKioqKioqKh4kHiRcEDMxNS82MCBSMjIuNSAgIFoG9UD//yheC+EAXgvhAF4L4QAEASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAgAqKioqKioqKioqKioqKioqaVW4/yoqKioqKioqKioqKioqKioqEgEqKioqKioqKioqKioqHkIeQliwMzE1LzYwIFIyMi41ICAgWgr4mP//KF4L4QBeC+EAXgvhAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
 }

@@ -35,7 +35,7 @@ const (
 //	VuCardIWRecord ::= SEQUENCE {
 //	    cardHolderName                     HolderName,                         -- 72 bytes
 //	    fullCardNumberAndGeneration        FullCardNumberAndGeneration,        -- 20 bytes
-//	    cardExpiryDate                     Datef,                              -- 4 bytes
+//	    cardExpiryDate                     TimeReal,                           -- 4 bytes
 //	    cardInsertionTime                  TimeReal,                           -- 4 bytes
 //	    vehicleOdometerValueAtInsertion    OdometerShort,                      -- 3 bytes
 //	    cardSlotNumber                     CardSlotNumber,                     -- 1 byte
@@ -52,7 +52,7 @@ type VuCardIWRecordG2 struct {
 	state                             protoimpl.MessageState       `protogen:"opaque.v1"`
 	xxx_hidden_CardHolderName         *HolderName                  `protobuf:"bytes,1,opt,name=card_holder_name,json=cardHolderName"`
 	xxx_hidden_FullCardNumber         *FullCardNumberAndGeneration `protobuf:"bytes,2,opt,name=full_card_number,json=fullCardNumber"`
-	xxx_hidden_CardExpiryDate         *Date                        `protobuf:"bytes,3,opt,name=card_expiry_date,json=cardExpiryDate"`
+	xxx_hidden_CardExpiryDate         *timestamppb.Timestamp       `protobuf:"bytes,3,opt,name=card_expiry_date,json=cardExpiryDate"`
 	xxx_hidden_CardInsertionTime      *timestamppb.Timestamp       `protobuf:"bytes,4,opt,name=card_insertion_time,json=cardInsertionTime"`
 	xxx_hidden_OdometerAtInsertionKm  int32                        `protobuf:"varint,5,opt,name=odometer_at_insertion_km,json=odometerAtInsertionKm"`
 	xxx_hidden_CardSlotNumber         CardSlotNumber               `protobuf:"varint,6,opt,name=card_slot_number,json=cardSlotNumber,enum=wayplatform.connect.tachograph.dd.v1.CardSlotNumber"`
@@ -106,7 +106,7 @@ func (x *VuCardIWRecordG2) GetFullCardNumber() *FullCardNumberAndGeneration {
 	return nil
 }
 
-func (x *VuCardIWRecordG2) GetCardExpiryDate() *Date {
+func (x *VuCardIWRecordG2) GetCardExpiryDate() *timestamppb.Timestamp {
 	if x != nil {
 		return x.xxx_hidden_CardExpiryDate
 	}
@@ -179,7 +179,7 @@ func (x *VuCardIWRecordG2) SetFullCardNumber(v *FullCardNumberAndGeneration) {
 	x.xxx_hidden_FullCardNumber = v
 }
 
-func (x *VuCardIWRecordG2) SetCardExpiryDate(v *Date) {
+func (x *VuCardIWRecordG2) SetCardExpiryDate(v *timestamppb.Timestamp) {
 	x.xxx_hidden_CardExpiryDate = v
 }
 
@@ -356,8 +356,8 @@ type VuCardIWRecordG2_builder struct {
 	CardHolderName *HolderName
 	// Full card number including generation information
 	FullCardNumber *FullCardNumberAndGeneration
-	// Card expiry date
-	CardExpiryDate *Date
+	// Card expiry date and time
+	CardExpiryDate *timestamppb.Timestamp
 	// Date and time when the card was inserted
 	CardInsertionTime *timestamppb.Timestamp
 	// Vehicle odometer value (in km) at card insertion
@@ -413,11 +413,11 @@ var File_wayplatform_connect_tachograph_dd_v1_vu_card_iw_record_g2_proto protore
 
 const file_wayplatform_connect_tachograph_dd_v1_vu_card_iw_record_g2_proto_rawDesc = "" +
 	"\n" +
-	"?wayplatform/connect/tachograph/dd/v1/vu_card_iw_record_g2.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a;wayplatform/connect/tachograph/dd/v1/card_slot_number.proto\x1a/wayplatform/connect/tachograph/dd/v1/date.proto\x1aJwayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto\x1a6wayplatform/connect/tachograph/dd/v1/holder_name.proto\x1aCwayplatform/connect/tachograph/dd/v1/previous_vehicle_info_g2.proto\"\xd7\x06\n" +
+	"?wayplatform/connect/tachograph/dd/v1/vu_card_iw_record_g2.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a;wayplatform/connect/tachograph/dd/v1/card_slot_number.proto\x1aJwayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto\x1a6wayplatform/connect/tachograph/dd/v1/holder_name.proto\x1aCwayplatform/connect/tachograph/dd/v1/previous_vehicle_info_g2.proto\"\xc7\x06\n" +
 	"\x10VuCardIWRecordG2\x12Z\n" +
 	"\x10card_holder_name\x18\x01 \x01(\v20.wayplatform.connect.tachograph.dd.v1.HolderNameR\x0ecardHolderName\x12k\n" +
-	"\x10full_card_number\x18\x02 \x01(\v2A.wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGenerationR\x0efullCardNumber\x12T\n" +
-	"\x10card_expiry_date\x18\x03 \x01(\v2*.wayplatform.connect.tachograph.dd.v1.DateR\x0ecardExpiryDate\x12J\n" +
+	"\x10full_card_number\x18\x02 \x01(\v2A.wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGenerationR\x0efullCardNumber\x12D\n" +
+	"\x10card_expiry_date\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\x0ecardExpiryDate\x12J\n" +
 	"\x13card_insertion_time\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\x11cardInsertionTime\x127\n" +
 	"\x18odometer_at_insertion_km\x18\x05 \x01(\x05R\x15odometerAtInsertionKm\x12^\n" +
 	"\x10card_slot_number\x18\x06 \x01(\x0e24.wayplatform.connect.tachograph.dd.v1.CardSlotNumberR\x0ecardSlotNumber\x12L\n" +
@@ -434,19 +434,18 @@ var file_wayplatform_connect_tachograph_dd_v1_vu_card_iw_record_g2_proto_goTypes
 	(*VuCardIWRecordG2)(nil),            // 0: wayplatform.connect.tachograph.dd.v1.VuCardIWRecordG2
 	(*HolderName)(nil),                  // 1: wayplatform.connect.tachograph.dd.v1.HolderName
 	(*FullCardNumberAndGeneration)(nil), // 2: wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
-	(*Date)(nil),                        // 3: wayplatform.connect.tachograph.dd.v1.Date
-	(*timestamppb.Timestamp)(nil),       // 4: google.protobuf.Timestamp
-	(CardSlotNumber)(0),                 // 5: wayplatform.connect.tachograph.dd.v1.CardSlotNumber
-	(*PreviousVehicleInfoG2)(nil),       // 6: wayplatform.connect.tachograph.dd.v1.PreviousVehicleInfoG2
+	(*timestamppb.Timestamp)(nil),       // 3: google.protobuf.Timestamp
+	(CardSlotNumber)(0),                 // 4: wayplatform.connect.tachograph.dd.v1.CardSlotNumber
+	(*PreviousVehicleInfoG2)(nil),       // 5: wayplatform.connect.tachograph.dd.v1.PreviousVehicleInfoG2
 }
 var file_wayplatform_connect_tachograph_dd_v1_vu_card_iw_record_g2_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.dd.v1.VuCardIWRecordG2.card_holder_name:type_name -> wayplatform.connect.tachograph.dd.v1.HolderName
 	2, // 1: wayplatform.connect.tachograph.dd.v1.VuCardIWRecordG2.full_card_number:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
-	3, // 2: wayplatform.connect.tachograph.dd.v1.VuCardIWRecordG2.card_expiry_date:type_name -> wayplatform.connect.tachograph.dd.v1.Date
-	4, // 3: wayplatform.connect.tachograph.dd.v1.VuCardIWRecordG2.card_insertion_time:type_name -> google.protobuf.Timestamp
-	5, // 4: wayplatform.connect.tachograph.dd.v1.VuCardIWRecordG2.card_slot_number:type_name -> wayplatform.connect.tachograph.dd.v1.CardSlotNumber
-	4, // 5: wayplatform.connect.tachograph.dd.v1.VuCardIWRecordG2.card_withdrawal_time:type_name -> google.protobuf.Timestamp
-	6, // 6: wayplatform.connect.tachograph.dd.v1.VuCardIWRecordG2.previous_vehicle_info:type_name -> wayplatform.connect.tachograph.dd.v1.PreviousVehicleInfoG2
+	3, // 2: wayplatform.connect.tachograph.dd.v1.VuCardIWRecordG2.card_expiry_date:type_name -> google.protobuf.Timestamp
+	3, // 3: wayplatform.connect.tachograph.dd.v1.VuCardIWRecordG2.card_insertion_time:type_name -> google.protobuf.Timestamp
+	4, // 4: wayplatform.connect.tachograph.dd.v1.VuCardIWRecordG2.card_slot_number:type_name -> wayplatform.connect.tachograph.dd.v1.CardSlotNumber
+	3, // 5: wayplatform.connect.tachograph.dd.v1.VuCardIWRecordG2.card_withdrawal_time:type_name -> google.protobuf.Timestamp
+	5, // 6: wayplatform.connect.tachograph.dd.v1.VuCardIWRecordG2.previous_vehicle_info:type_name -> wayplatform.connect.tachograph.dd.v1.PreviousVehicleInfoG2
 	7, // [7:7] is the sub-list for method output_type
 	7, // [7:7] is the sub-list for method input_type
 	7, // [7:7] is the sub-list for extension type_name
@@ -460,7 +459,6 @@ func file_wayplatform_connect_tachograph_dd_v1_vu_card_iw_record_g2_proto_init()
 		return
 	}
 	file_wayplatform_connect_tachograph_dd_v1_card_slot_number_proto_init()
-	file_wayplatform_connect_tachograph_dd_v1_date_proto_init()
 	file_wayplatform_connect_tachograph_dd_v1_full_card_number_and_generation_proto_init()
 	file_wayplatform_connect_tachograph_dd_v1_holder_name_proto_init()
 	file_wayplatform_connect_tachograph_dd_v1_previous_vehicle_info_g2_proto_init()

@@ -4,7 +4,6 @@ package wayplatform.connect.tachograph.dd.v1;
 
 import "google/protobuf/timestamp.proto";
 import "wayplatform/connect/tachograph/dd/v1/calibration_purpose.proto";
-import "wayplatform/connect/tachograph/dd/v1/date.proto";
 import "wayplatform/connect/tachograph/dd/v1/full_card_number.proto";
 import "wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto";
 import "wayplatform/connect/tachograph/dd/v1/string_value.proto";
@@ -21,7 +20,7 @@ import "wayplatform/connect/tachograph/dd/v1/vehicle_registration_identification
 //         workshopName Name,
 //         workshopAddress Address,
 //         workshopCardNumber FullCardNumber,
-//         workshopCardExpiryDate Datef,
+//         workshopCardExpiryDate TimeReal,
 //         vehicleIdentificationNumber VehicleIdentificationNumber,
 //         vehicleRegistrationIdentification VehicleRegistrationIdentification,
 //         wVehicleCharacteristicConstant W-VehicleCharacteristicConstant,
@@ -41,7 +40,7 @@ import "wayplatform/connect/tachograph/dd/v1/vehicle_registration_identification
 //   - Workshop Name (36 bytes): StringValue (1 byte code page + 35 bytes data)
 //   - Workshop Address (36 bytes): StringValue (1 byte code page + 35 bytes data)
 //   - Workshop Card Number (18 bytes): FullCardNumber
-//   - Workshop Card Expiry Date (4 bytes): Datef (BCD-encoded date)
+//   - Workshop Card Expiry Date (4 bytes): TimeReal
 //   - Vehicle Identification Number (17 bytes): IA5String (VIN)
 //   - Vehicle Registration (15 bytes): VehicleRegistrationIdentification
 //   - W-Vehicle Characteristic Constant (2 bytes): uint16
@@ -104,12 +103,12 @@ message VuCalibrationRecord {
 
   // The expiry date of the workshop card.
   //
-  // See Data Dictionary, Section 2.57, `Datef`.
+  // See Data Dictionary, Section 2.162, `TimeReal`.
   //
   // ASN.1 Specification:
   //
-  //     Datef ::= OCTET STRING (SIZE(4))
-  Date workshop_card_expiry_date = 6;
+  //     TimeReal ::= INTEGER (0..2^32-1)
+  google.protobuf.Timestamp workshop_card_expiry_date = 6;
 
   // The Vehicle Identification Number (VIN).
   //

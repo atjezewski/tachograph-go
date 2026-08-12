@@ -39,12 +39,7 @@
         },
         "rawData": "AQAqKioqKioqKioqKioqKioq"
       },
-      "cardExpiryDate": {
-        "rawData": "ICUSMQ==",
-        "year": 2025,
-        "month": 12,
-        "day": 31
-      },
+      "cardExpiryDate": "2025-12-31T23:59:59Z",
       "cardInsertionTime": "2020-01-01T00:00:00Z",
       "odometerAtInsertionKm": 388000,
       "cardSlotNumber": "DRIVER_SLOT",
@@ -64,7 +59,7 @@
         "rawData": "EgEqKioqKioqKioqKioqXgvhAA=="
       },
       "manualInputFlag": false,
-      "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqICUSMV4L4QAF66AAXgvhAAXroBIBKioqKioqKioqKioqKl4L4QAA"
+      "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqaVW4/14L4QAF66AAXgvhAAXroBIBKioqKioqKioqKioqKl4L4QAA"
     }
   ],
   "activityChanges": [
@@ -1025,5 +1020,5 @@
     }
   ],
   "signature": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
-  "rawData": "aMIQ/wXt9wABASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqICUSMV4L4QAF66AAXgvhAAXroBIBKioqKioqKioqKioqKl4L4QAAAHMgABDyGPQA+BEmGScBRRlMEVkZXBFfGWURZhloEWoZbQFvGXERcxl1EXYZeBF7GX8BgBmCEYQZigGMGY8RkBmTAZcZnAGzEccZyBHiGeQB6hnuAfAZ9gH4GfwB/hoBAgkaDgIRGhUCFxJ0GnUCehKIGokCixqSEpoangKjGqkSqgKtEsEawgLcGvQS+yL8oACw8qjzoPipJqFFqUyhb6lxoYCpgqGMqY+hl6mcobOpx6Hqqe6h8Kn2ofip/KH+qgGiCaoOohGqFaIXsnSqdaJ6qoiii6qSoqOqqaKtssGqwqLcqvSi/QEBACoqKioqKioqKioqKioqKipeC+EAARIABeugAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+  "rawData": "aMIQ/wXt9wABASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqaVW4/14L4QAF66AAXgvhAAXroBIBKioqKioqKioqKioqKl4L4QAAAHMgABDyGPQA+BEmGScBRRlMEVkZXBFfGWURZhloEWoZbQFvGXERcxl1EXYZeBF7GX8BgBmCEYQZigGMGY8RkBmTAZcZnAGzEccZyBHiGeQB6hnuAfAZ9gH4GfwB/hoBAgkaDgIRGhUCFxJ0GnUCehKIGokCixqSEpoangKjGqkSqgKtEsEawgLcGvQS+yL8oACw8qjzoPipJqFFqUyhb6lxoYCpgqGMqY+hl6mcobOpx6Hqqe6h8Kn2ofip/KH+qgGiCaoOohGqFaIXsnSqdaJ6qoiii6qSoqOqqaKtssGqwqLcqvSi/QEBACoqKioqKioqKioqKioqKipeC+EAARIABeugAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
 }

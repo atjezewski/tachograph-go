@@ -4,7 +4,6 @@ package wayplatform.connect.tachograph.dd.v1;
 
 import "google/protobuf/timestamp.proto";
 import "wayplatform/connect/tachograph/dd/v1/card_slot_number.proto";
-import "wayplatform/connect/tachograph/dd/v1/date.proto";
 import "wayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto";
 import "wayplatform/connect/tachograph/dd/v1/holder_name.proto";
 import "wayplatform/connect/tachograph/dd/v1/previous_vehicle_info_g2.proto";
@@ -23,7 +22,7 @@ import "wayplatform/connect/tachograph/dd/v1/previous_vehicle_info_g2.proto";
 //   VuCardIWRecord ::= SEQUENCE {
 //       cardHolderName                     HolderName,                         -- 72 bytes
 //       fullCardNumberAndGeneration        FullCardNumberAndGeneration,        -- 20 bytes
-//       cardExpiryDate                     Datef,                              -- 4 bytes
+//       cardExpiryDate                     TimeReal,                           -- 4 bytes
 //       cardInsertionTime                  TimeReal,                           -- 4 bytes
 //       vehicleOdometerValueAtInsertion    OdometerShort,                      -- 3 bytes
 //       cardSlotNumber                     CardSlotNumber,                     -- 1 byte
@@ -43,8 +42,8 @@ message VuCardIWRecordG2 {
   // Full card number including generation information
   FullCardNumberAndGeneration full_card_number = 2;
 
-  // Card expiry date
-  Date card_expiry_date = 3;
+  // Card expiry date and time
+  google.protobuf.Timestamp card_expiry_date = 3;
 
   // Date and time when the card was inserted
   google.protobuf.Timestamp card_insertion_time = 4;

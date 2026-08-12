@@ -477,7 +477,7 @@ func (b0 Activities_builder) Build() *Activities {
 //	VuCardIWRecord ::= SEQUENCE {
 //	    cardHolderName HolderName,
 //	    fullCardNumber FullCardNumber,
-//	    cardExpiryDate Datef,
+//	    cardExpiryDate TimeReal,
 //	    cardInsertionTime TimeReal,
 //	    vehicleOdometerValueAtInsertion OdometerShort,
 //	    cardSlotNumber CardSlotNumber,
@@ -492,7 +492,7 @@ type Activities_CardIWRecord struct {
 	state                                  protoimpl.MessageState          `protogen:"opaque.v1"`
 	xxx_hidden_CardHolderName              *v1.HolderName                  `protobuf:"bytes,1,opt,name=card_holder_name,json=cardHolderName"`
 	xxx_hidden_FullCardNumberAndGeneration *v1.FullCardNumberAndGeneration `protobuf:"bytes,2,opt,name=full_card_number_and_generation,json=fullCardNumberAndGeneration"`
-	xxx_hidden_CardExpiryDate              *v1.Date                        `protobuf:"bytes,3,opt,name=card_expiry_date,json=cardExpiryDate"`
+	xxx_hidden_CardExpiryDate              *timestamppb.Timestamp          `protobuf:"bytes,3,opt,name=card_expiry_date,json=cardExpiryDate"`
 	xxx_hidden_CardInsertionTime           *timestamppb.Timestamp          `protobuf:"bytes,4,opt,name=card_insertion_time,json=cardInsertionTime"`
 	xxx_hidden_OdometerAtInsertionKm       int32                           `protobuf:"varint,5,opt,name=odometer_at_insertion_km,json=odometerAtInsertionKm"`
 	xxx_hidden_CardSlotNumber              v1.CardSlotNumber               `protobuf:"varint,6,opt,name=card_slot_number,json=cardSlotNumber,enum=wayplatform.connect.tachograph.dd.v1.CardSlotNumber"`
@@ -545,7 +545,7 @@ func (x *Activities_CardIWRecord) GetFullCardNumberAndGeneration() *v1.FullCardN
 	return nil
 }
 
-func (x *Activities_CardIWRecord) GetCardExpiryDate() *v1.Date {
+func (x *Activities_CardIWRecord) GetCardExpiryDate() *timestamppb.Timestamp {
 	if x != nil {
 		return x.xxx_hidden_CardExpiryDate
 	}
@@ -611,7 +611,7 @@ func (x *Activities_CardIWRecord) SetFullCardNumberAndGeneration(v *v1.FullCardN
 	x.xxx_hidden_FullCardNumberAndGeneration = v
 }
 
-func (x *Activities_CardIWRecord) SetCardExpiryDate(v *v1.Date) {
+func (x *Activities_CardIWRecord) SetCardExpiryDate(v *timestamppb.Timestamp) {
 	x.xxx_hidden_CardExpiryDate = v
 }
 
@@ -776,11 +776,11 @@ type Activities_CardIWRecord_builder struct {
 	FullCardNumberAndGeneration *v1.FullCardNumberAndGeneration
 	// The expiry date of the card.
 	//
-	// See Data Dictionary, Section 2.57, `Datef`.
+	// See Data Dictionary, Section 2.162, `TimeReal`.
 	// ASN.1 Definition:
 	//
-	//	Datef ::= OCTET STRING(SIZE(4))
-	CardExpiryDate *v1.Date
+	//	TimeReal ::= INTEGER (0..2^32-1)
+	CardExpiryDate *timestamppb.Timestamp
 	// The time the card was inserted.
 	//
 	// See Data Dictionary, Section 2.162, `TimeReal`.
@@ -1807,7 +1807,7 @@ var File_wayplatform_connect_tachograph_vu_v1_activities_proto protoreflect.File
 
 const file_wayplatform_connect_tachograph_vu_v1_activities_proto_rawDesc = "" +
 	"\n" +
-	"5wayplatform/connect/tachograph/vu/v1/activities.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a?wayplatform/connect/tachograph/dd/v1/activity_change_info.proto\x1a;wayplatform/connect/tachograph/dd/v1/card_slot_number.proto\x1a/wayplatform/connect/tachograph/dd/v1/date.proto\x1aGwayplatform/connect/tachograph/dd/v1/entry_type_daily_work_period.proto\x1aJwayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\x1a:wayplatform/connect/tachograph/dd/v1/geo_coordinates.proto\x1a6wayplatform/connect/tachograph/dd/v1/holder_name.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\x1a9wayplatform/connect/tachograph/dd/v1/operation_type.proto\x1aIwayplatform/connect/tachograph/dd/v1/position_authentication_status.proto\x1a@wayplatform/connect/tachograph/dd/v1/previous_vehicle_info.proto\x1aDwayplatform/connect/tachograph/dd/v1/specific_condition_record.proto\x1a2wayplatform/connect/tachograph/dd/v1/version.proto\"\xf4\x1d\n" +
+	"5wayplatform/connect/tachograph/vu/v1/activities.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a?wayplatform/connect/tachograph/dd/v1/activity_change_info.proto\x1a;wayplatform/connect/tachograph/dd/v1/card_slot_number.proto\x1aGwayplatform/connect/tachograph/dd/v1/entry_type_daily_work_period.proto\x1aJwayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\x1a:wayplatform/connect/tachograph/dd/v1/geo_coordinates.proto\x1a6wayplatform/connect/tachograph/dd/v1/holder_name.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\x1a9wayplatform/connect/tachograph/dd/v1/operation_type.proto\x1aIwayplatform/connect/tachograph/dd/v1/position_authentication_status.proto\x1a@wayplatform/connect/tachograph/dd/v1/previous_vehicle_info.proto\x1aDwayplatform/connect/tachograph/dd/v1/specific_condition_record.proto\x1a2wayplatform/connect/tachograph/dd/v1/version.proto\"\xe4\x1d\n" +
 	"\n" +
 	"Activities\x12P\n" +
 	"\n" +
@@ -1827,11 +1827,11 @@ const file_wayplatform_connect_tachograph_vu_v1_activities_proto_rawDesc = "" +
 	"\x16load_unload_operations\x18\v \x03(\v2A.wayplatform.connect.tachograph.vu.v1.Activities.LoadUnloadRecordR\x14loadUnloadOperations\x12%\n" +
 	"\x0esignature_gen1\x18\f \x01(\fR\rsignatureGen1\x12%\n" +
 	"\x0esignature_gen2\x18\r \x01(\fR\rsignatureGen2\x12\x19\n" +
-	"\braw_data\x18\x0e \x01(\fR\arawData\x1a\xd3\x06\n" +
+	"\braw_data\x18\x0e \x01(\fR\arawData\x1a\xc3\x06\n" +
 	"\fCardIWRecord\x12Z\n" +
 	"\x10card_holder_name\x18\x01 \x01(\v20.wayplatform.connect.tachograph.dd.v1.HolderNameR\x0ecardHolderName\x12\x87\x01\n" +
-	"\x1ffull_card_number_and_generation\x18\x02 \x01(\v2A.wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGenerationR\x1bfullCardNumberAndGeneration\x12T\n" +
-	"\x10card_expiry_date\x18\x03 \x01(\v2*.wayplatform.connect.tachograph.dd.v1.DateR\x0ecardExpiryDate\x12J\n" +
+	"\x1ffull_card_number_and_generation\x18\x02 \x01(\v2A.wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGenerationR\x1bfullCardNumberAndGeneration\x12D\n" +
+	"\x10card_expiry_date\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\x0ecardExpiryDate\x12J\n" +
 	"\x13card_insertion_time\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\x11cardInsertionTime\x127\n" +
 	"\x18odometer_at_insertion_km\x18\x05 \x01(\x05R\x15odometerAtInsertionKm\x12^\n" +
 	"\x10card_slot_number\x18\x06 \x01(\x0e24.wayplatform.connect.tachograph.dd.v1.CardSlotNumberR\x0ecardSlotNumber\x12L\n" +
@@ -1889,14 +1889,13 @@ var file_wayplatform_connect_tachograph_vu_v1_activities_proto_goTypes = []any{
 	(*v1.SpecificConditionRecord)(nil),      // 10: wayplatform.connect.tachograph.dd.v1.SpecificConditionRecord
 	(*v1.HolderName)(nil),                   // 11: wayplatform.connect.tachograph.dd.v1.HolderName
 	(*v1.FullCardNumberAndGeneration)(nil),  // 12: wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
-	(*v1.Date)(nil),                         // 13: wayplatform.connect.tachograph.dd.v1.Date
-	(v1.CardSlotNumber)(0),                  // 14: wayplatform.connect.tachograph.dd.v1.CardSlotNumber
-	(*v1.PreviousVehicleInfo)(nil),          // 15: wayplatform.connect.tachograph.dd.v1.PreviousVehicleInfo
-	(v1.EntryTypeDailyWorkPeriod)(0),        // 16: wayplatform.connect.tachograph.dd.v1.EntryTypeDailyWorkPeriod
-	(v1.NationNumeric)(0),                   // 17: wayplatform.connect.tachograph.dd.v1.NationNumeric
-	(*v1.GeoCoordinates)(nil),               // 18: wayplatform.connect.tachograph.dd.v1.GeoCoordinates
-	(v1.PositionAuthenticationStatus)(0),    // 19: wayplatform.connect.tachograph.dd.v1.PositionAuthenticationStatus
-	(v1.OperationType)(0),                   // 20: wayplatform.connect.tachograph.dd.v1.OperationType
+	(v1.CardSlotNumber)(0),                  // 13: wayplatform.connect.tachograph.dd.v1.CardSlotNumber
+	(*v1.PreviousVehicleInfo)(nil),          // 14: wayplatform.connect.tachograph.dd.v1.PreviousVehicleInfo
+	(v1.EntryTypeDailyWorkPeriod)(0),        // 15: wayplatform.connect.tachograph.dd.v1.EntryTypeDailyWorkPeriod
+	(v1.NationNumeric)(0),                   // 16: wayplatform.connect.tachograph.dd.v1.NationNumeric
+	(*v1.GeoCoordinates)(nil),               // 17: wayplatform.connect.tachograph.dd.v1.GeoCoordinates
+	(v1.PositionAuthenticationStatus)(0),    // 18: wayplatform.connect.tachograph.dd.v1.PositionAuthenticationStatus
+	(v1.OperationType)(0),                   // 19: wayplatform.connect.tachograph.dd.v1.OperationType
 }
 var file_wayplatform_connect_tachograph_vu_v1_activities_proto_depIdxs = []int32{
 	6,  // 0: wayplatform.connect.tachograph.vu.v1.Activities.generation:type_name -> wayplatform.connect.tachograph.dd.v1.Generation
@@ -1911,24 +1910,24 @@ var file_wayplatform_connect_tachograph_vu_v1_activities_proto_depIdxs = []int32
 	5,  // 9: wayplatform.connect.tachograph.vu.v1.Activities.load_unload_operations:type_name -> wayplatform.connect.tachograph.vu.v1.Activities.LoadUnloadRecord
 	11, // 10: wayplatform.connect.tachograph.vu.v1.Activities.CardIWRecord.card_holder_name:type_name -> wayplatform.connect.tachograph.dd.v1.HolderName
 	12, // 11: wayplatform.connect.tachograph.vu.v1.Activities.CardIWRecord.full_card_number_and_generation:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
-	13, // 12: wayplatform.connect.tachograph.vu.v1.Activities.CardIWRecord.card_expiry_date:type_name -> wayplatform.connect.tachograph.dd.v1.Date
+	8,  // 12: wayplatform.connect.tachograph.vu.v1.Activities.CardIWRecord.card_expiry_date:type_name -> google.protobuf.Timestamp
 	8,  // 13: wayplatform.connect.tachograph.vu.v1.Activities.CardIWRecord.card_insertion_time:type_name -> google.protobuf.Timestamp
-	14, // 14: wayplatform.connect.tachograph.vu.v1.Activities.CardIWRecord.card_slot_number:type_name -> wayplatform.connect.tachograph.dd.v1.CardSlotNumber
+	13, // 14: wayplatform.connect.tachograph.vu.v1.Activities.CardIWRecord.card_slot_number:type_name -> wayplatform.connect.tachograph.dd.v1.CardSlotNumber
 	8,  // 15: wayplatform.connect.tachograph.vu.v1.Activities.CardIWRecord.card_withdrawal_time:type_name -> google.protobuf.Timestamp
-	15, // 16: wayplatform.connect.tachograph.vu.v1.Activities.CardIWRecord.previous_vehicle_info:type_name -> wayplatform.connect.tachograph.dd.v1.PreviousVehicleInfo
+	14, // 16: wayplatform.connect.tachograph.vu.v1.Activities.CardIWRecord.previous_vehicle_info:type_name -> wayplatform.connect.tachograph.dd.v1.PreviousVehicleInfo
 	8,  // 17: wayplatform.connect.tachograph.vu.v1.Activities.PlaceRecord.entry_time:type_name -> google.protobuf.Timestamp
-	16, // 18: wayplatform.connect.tachograph.vu.v1.Activities.PlaceRecord.entry_type:type_name -> wayplatform.connect.tachograph.dd.v1.EntryTypeDailyWorkPeriod
-	17, // 19: wayplatform.connect.tachograph.vu.v1.Activities.PlaceRecord.country:type_name -> wayplatform.connect.tachograph.dd.v1.NationNumeric
+	15, // 18: wayplatform.connect.tachograph.vu.v1.Activities.PlaceRecord.entry_type:type_name -> wayplatform.connect.tachograph.dd.v1.EntryTypeDailyWorkPeriod
+	16, // 19: wayplatform.connect.tachograph.vu.v1.Activities.PlaceRecord.country:type_name -> wayplatform.connect.tachograph.dd.v1.NationNumeric
 	8,  // 20: wayplatform.connect.tachograph.vu.v1.Activities.GnssRecord.timestamp:type_name -> google.protobuf.Timestamp
-	18, // 21: wayplatform.connect.tachograph.vu.v1.Activities.GnssRecord.geo_coordinates:type_name -> wayplatform.connect.tachograph.dd.v1.GeoCoordinates
-	19, // 22: wayplatform.connect.tachograph.vu.v1.Activities.GnssRecord.authentication_status:type_name -> wayplatform.connect.tachograph.dd.v1.PositionAuthenticationStatus
+	17, // 21: wayplatform.connect.tachograph.vu.v1.Activities.GnssRecord.geo_coordinates:type_name -> wayplatform.connect.tachograph.dd.v1.GeoCoordinates
+	18, // 22: wayplatform.connect.tachograph.vu.v1.Activities.GnssRecord.authentication_status:type_name -> wayplatform.connect.tachograph.dd.v1.PositionAuthenticationStatus
 	12, // 23: wayplatform.connect.tachograph.vu.v1.Activities.BorderCrossingRecord.card_number_driver_slot:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
 	12, // 24: wayplatform.connect.tachograph.vu.v1.Activities.BorderCrossingRecord.card_number_codriver_slot:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
-	17, // 25: wayplatform.connect.tachograph.vu.v1.Activities.BorderCrossingRecord.country_left:type_name -> wayplatform.connect.tachograph.dd.v1.NationNumeric
-	17, // 26: wayplatform.connect.tachograph.vu.v1.Activities.BorderCrossingRecord.country_entered:type_name -> wayplatform.connect.tachograph.dd.v1.NationNumeric
+	16, // 25: wayplatform.connect.tachograph.vu.v1.Activities.BorderCrossingRecord.country_left:type_name -> wayplatform.connect.tachograph.dd.v1.NationNumeric
+	16, // 26: wayplatform.connect.tachograph.vu.v1.Activities.BorderCrossingRecord.country_entered:type_name -> wayplatform.connect.tachograph.dd.v1.NationNumeric
 	3,  // 27: wayplatform.connect.tachograph.vu.v1.Activities.BorderCrossingRecord.place_record:type_name -> wayplatform.connect.tachograph.vu.v1.Activities.GnssRecord
 	8,  // 28: wayplatform.connect.tachograph.vu.v1.Activities.LoadUnloadRecord.timestamp:type_name -> google.protobuf.Timestamp
-	20, // 29: wayplatform.connect.tachograph.vu.v1.Activities.LoadUnloadRecord.operation_type:type_name -> wayplatform.connect.tachograph.dd.v1.OperationType
+	19, // 29: wayplatform.connect.tachograph.vu.v1.Activities.LoadUnloadRecord.operation_type:type_name -> wayplatform.connect.tachograph.dd.v1.OperationType
 	12, // 30: wayplatform.connect.tachograph.vu.v1.Activities.LoadUnloadRecord.card_number_driver_slot:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
 	12, // 31: wayplatform.connect.tachograph.vu.v1.Activities.LoadUnloadRecord.card_number_codriver_slot:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
 	3,  // 32: wayplatform.connect.tachograph.vu.v1.Activities.LoadUnloadRecord.place_record:type_name -> wayplatform.connect.tachograph.vu.v1.Activities.GnssRecord

@@ -39,12 +39,7 @@
         },
         "rawData": "AQAqKioqKioqKioqKioqKioq"
       },
-      "cardExpiryDate": {
-        "rawData": "ICUSMQ==",
-        "year": 2025,
-        "month": 12,
-        "day": 31
-      },
+      "cardExpiryDate": "2025-12-31T23:59:59Z",
       "cardInsertionTime": "2020-01-01T00:00:00Z",
       "odometerAtInsertionKm": 856000,
       "cardSlotNumber": "DRIVER_SLOT",
@@ -64,7 +59,7 @@
         "rawData": "EgEqKioqKioqKioqKioqXgvhAA=="
       },
       "manualInputFlag": true,
-      "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqICUSMV4L4QAND8AAXgvhAA0PwBIBKioqKioqKioqKioqKl4L4QAB"
+      "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqaVW4/14L4QAND8AAXgvhAA0PwBIBKioqKioqKioqKioqKl4L4QAB"
     },
     {
       "cardHolderName": {
@@ -103,12 +98,7 @@
         },
         "rawData": "AQAqKioqKioqKioqKioqKioq"
       },
-      "cardExpiryDate": {
-        "rawData": "ICUSMQ==",
-        "year": 2025,
-        "month": 12,
-        "day": 31
-      },
+      "cardExpiryDate": "2025-12-31T23:59:59Z",
       "cardInsertionTime": "2020-01-01T00:00:00Z",
       "odometerAtInsertionKm": 856000,
       "cardSlotNumber": "DRIVER_SLOT",
@@ -128,7 +118,7 @@
         "rawData": "EgEqKioqKioqKioqKioqXgvhAA=="
       },
       "manualInputFlag": true,
-      "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqICUSMV4L4QAND8AAXgvhAA0TqBIBKioqKioqKioqKioqKl4L4QAB"
+      "rawData": "ASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqaVW4/14L4QAND8AAXgvhAA0TqBIBKioqKioqKioqKioqKl4L4QAB"
     }
   ],
   "activityChanges": [
@@ -1740,5 +1730,5 @@
     }
   ],
   "signature": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=",
-  "rawData": "aL9t/w0UCwACASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqICUSMV4L4QAND8AAXgvhAA0PwBIBKioqKioqKioqKioqKl4L4QABASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqICUSMV4L4QAND8AAXgvhAA0TqBIBKioqKioqKioqKioqKl4L4QABALggAADdEN4Y4QDmGPgA/BEBGQIRAxkFAQ0ZGgEhESkBKhErAS0RUBlSAWwRexl9AYARjBmNEZEBkhmbAaIZqAGwGbURzQHREdkZ2wHmEfMZ9QH3Gf8SAwIGGhYSIBoiAiMaJxIpAioSLhovEjIaNAI7GkYCThJrGm0Ccxp3AnkagwKcGqACrhq1AsUayBLRAtIa2hLmAucbAgMcGygTKhssMzYTOBs5AzwbQhN1A3YTnBueA98cChQqBCscLgQxFDgcOSQ+NEMkRDRdJGOgALDeqN+g56j4oPyxAakCoQ6pGqEhsSmhKqkroS6pUKFssXupfaGAsYypjaGSqZuhoqmoobCptaHSsdmp26HnsfOp9aH3qf+iBqoJogqqFqIkqieiKqouojuqRqJOsmuqbKJzqnaieqqDopyqoKKvqrWixarIotKq2aLnqwKjHasoozyrQqN3s5yrnaPgrAqkK6wupDK0OKw5pD60Q6REtF2kYwQBACoqKioqKioqKioqKioqKipeC+EAABIADQ/AAQAqKioqKioqKioqKioqKioqXgvhAAESAA0PwAEAKioqKioqKioqKioqKioqKl4L4QAAEgAND8ABACoqKioqKioqKioqKioqKipeC+EAARIADROoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+  "rawData": "aL9t/w0UCwACASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqaVW4/14L4QAND8AAXgvhAA0PwBIBKioqKioqKioqKioqKl4L4QABASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAQAqKioqKioqKioqKioqKioqaVW4/14L4QAND8AAXgvhAA0TqBIBKioqKioqKioqKioqKl4L4QABALggAADdEN4Y4QDmGPgA/BEBGQIRAxkFAQ0ZGgEhESkBKhErAS0RUBlSAWwRexl9AYARjBmNEZEBkhmbAaIZqAGwGbURzQHREdkZ2wHmEfMZ9QH3Gf8SAwIGGhYSIBoiAiMaJxIpAioSLhovEjIaNAI7GkYCThJrGm0Ccxp3AnkagwKcGqACrhq1AsUayBLRAtIa2hLmAucbAgMcGygTKhssMzYTOBs5AzwbQhN1A3YTnBueA98cChQqBCscLgQxFDgcOSQ+NEMkRDRdJGOgALDeqN+g56j4oPyxAakCoQ6pGqEhsSmhKqkroS6pUKFssXupfaGAsYypjaGSqZuhoqmoobCptaHSsdmp26HnsfOp9aH3qf+iBqoJogqqFqIkqieiKqouojuqRqJOsmuqbKJzqnaieqqDopyqoKKvqrWixarIotKq2aLnqwKjHasoozyrQqN3s5yrnaPgrAqkK6wupDK0OKw5pD60Q6REtF2kYwQBACoqKioqKioqKioqKioqKipeC+EAABIADQ/AAQAqKioqKioqKioqKioqKioqXgvhAAESAA0PwAEAKioqKioqKioqKioqKioqKl4L4QAAEgAND8ABACoqKioqKioqKioqKioqKipeC+EAARIADROoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
 }
