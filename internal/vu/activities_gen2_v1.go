@@ -87,17 +87,12 @@ func unmarshalActivitiesGen2V1(value []byte) (*vuv1.ActivitiesGen2V1, error) {
 	activities.SetActivityChanges(activityChanges)
 	offset += bytesRead
 
-	// VuPlaceDailyWorkPeriodRecordArray (Gen2v1 - 41 bytes per record)
+	// VuPlaceDailyWorkPeriodRecordArray (Gen2v1 - 40 bytes per record)
 	vuPlaceRecords, bytesRead, err := parseVuPlaceDailyWorkPeriodRecordArrayG2(data, offset)
 	if err != nil {
 		return nil, fmt.Errorf("parse VuPlaceDailyWorkPeriodRecordArray: %w", err)
 	}
-	// Extract PlaceRecordG2 from VuPlaceDailyWorkPeriodRecordG2 wrapper
-	placeRecords := make([]*ddv1.PlaceRecordG2, 0, len(vuPlaceRecords))
-	for _, vuPlaceRec := range vuPlaceRecords {
-		placeRecords = append(placeRecords, vuPlaceRec.GetPlaceRecord())
-	}
-	activities.SetPlaces(placeRecords)
+	activities.SetPlaces(vuPlaceRecords)
 	offset += bytesRead
 
 	// VuGNSSADRecordArray (Gen2v1 - 58 bytes per record)
@@ -515,19 +510,12 @@ func marshalActivityChangeInfos(records []*ddv1.ActivityChangeInfo) ([]byte, err
 }
 
 // marshalPlaceRecordsG2V1 marshals PlaceRecords for Gen2v1.
-func marshalPlaceRecordsG2V1(records []*ddv1.PlaceRecordG2) ([]byte, error) {
+func marshalPlaceRecordsG2V1(records []*ddv1.VuPlaceDailyWorkPeriodRecordG2) ([]byte, error) {
 	var result []byte
 	var opts dd.MarshalOptions
 
-	for i, placeRec := range records {
-		// Wrap in VuPlaceDailyWorkPeriodRecordG2 (40 bytes = 19 bytes FullCardNumberAndGeneration + 21 bytes PlaceRecordG2)
-		ddRecord := &ddv1.VuPlaceDailyWorkPeriodRecordG2{}
-		// Note: VU place records include a card number, but Gen2v1 proto doesn't expose it
-		// Use empty/zero card number for now
-		ddRecord.SetFullCardNumber(&ddv1.FullCardNumberAndGeneration{})
-		ddRecord.SetPlaceRecord(placeRec)
-
-		recordData, err := opts.MarshalVuPlaceDailyWorkPeriodRecordG2(ddRecord)
+	for i, record := range records {
+		recordData, err := opts.MarshalVuPlaceDailyWorkPeriodRecordG2(record)
 		if err != nil {
 			return nil, fmt.Errorf("marshal PlaceRecord %d: %w", i, err)
 		}
@@ -642,9 +630,12 @@ func (opts AnonymizeOptions) anonymizeActivitiesGen2V1(activities *vuv1.Activiti
 	result.SetActivityChanges(anonActivityChanges)
 
 	// Anonymize places
-	anonPlaces := make([]*ddv1.PlaceRecordG2, len(activities.GetPlaces()))
-	for i, place := range activities.GetPlaces() {
-		anonPlaces[i] = ddOpts.AnonymizePlaceRecordG2(place)
+	anonPlaces := make([]*ddv1.VuPlaceDailyWorkPeriodRecordG2, len(activities.GetPlaces()))
+	for i, record := range activities.GetPlaces() {
+		anonRecord := &ddv1.VuPlaceDailyWorkPeriodRecordG2{}
+		anonRecord.SetFullCardNumber(ddOpts.AnonymizeFullCardNumberAndGeneration(record.GetFullCardNumber()))
+		anonRecord.SetPlaceRecord(ddOpts.AnonymizePlaceRecordG2(record.GetPlaceRecord()))
+		anonPlaces[i] = anonRecord
 	}
 	result.SetPlaces(anonPlaces)
 

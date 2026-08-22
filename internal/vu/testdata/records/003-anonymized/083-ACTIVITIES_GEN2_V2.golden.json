@@ -663,94 +663,154 @@
   ],
   "places": [
     {
-      "entryTypeDailyWorkPeriod": "END",
-      "dailyWorkPeriodCountry": "FINLAND",
-      "dailyWorkPeriodRegion": "AQ==",
-      "vehicleOdometerKm": 332800,
-      "entryGnssPlaceRecord": {
-        "timestamp": "2026-02-25T03:26:53Z",
-        "gnssAccuracy": 7,
-        "geoCoordinates": {
-          "latitude": 60100,
-          "longitude": 24560
-        }
+      "fullCardNumber": {
+        "fullCardNumber": {
+          "rawData": "AAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        "generation": "GENERATION_UNSPECIFIED"
       },
-      "rawData": "AAAAAAESAQUUAGmea/0HAOrEAF/w"
+      "placeAuthRecord": {
+        "entryTypeDailyWorkPeriod": "END",
+        "dailyWorkPeriodCountry": "FINLAND",
+        "dailyWorkPeriodRegion": "AQ==",
+        "vehicleOdometerKm": 332800,
+        "entryGnssPlaceAuthRecord": {
+          "timestamp": "2026-02-25T03:26:53Z",
+          "gnssAccuracy": 7,
+          "geoCoordinates": {
+            "latitude": 60100,
+            "longitude": 24560
+          },
+          "authenticationStatus": "NOT_AUTHENTICATED"
+        },
+        "rawData": "AAAAAAESAQUUAGmea/0HAOrEAF/wAA=="
+      },
+      "rawData": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABEgEFFABpnmv9BwDqxABf8AA="
     },
     {
-      "entryTypeDailyWorkPeriod": "BEGIN",
-      "dailyWorkPeriodCountry": "FINLAND",
-      "dailyWorkPeriodRegion": "AQ==",
-      "vehicleOdometerKm": 332800,
-      "entryGnssPlaceRecord": {
-        "timestamp": "2026-02-25T05:01:46Z",
-        "gnssAccuracy": 29,
-        "geoCoordinates": {
-          "latitude": 60100,
-          "longitude": 24560
-        }
+      "fullCardNumber": {
+        "fullCardNumber": {
+          "rawData": "AAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        "generation": "GENERATION_UNSPECIFIED"
       },
-      "rawData": "AAAAAAASAQUUAGmegjodAOrEAF/w"
+      "placeAuthRecord": {
+        "entryTypeDailyWorkPeriod": "BEGIN",
+        "dailyWorkPeriodCountry": "FINLAND",
+        "dailyWorkPeriodRegion": "AQ==",
+        "vehicleOdometerKm": 332800,
+        "entryGnssPlaceAuthRecord": {
+          "timestamp": "2026-02-25T05:01:46Z",
+          "gnssAccuracy": 29,
+          "geoCoordinates": {
+            "latitude": 60100,
+            "longitude": 24560
+          },
+          "authenticationStatus": "NOT_AUTHENTICATED"
+        },
+        "rawData": "AAAAAAASAQUUAGmegjodAOrEAF/wAA=="
+      },
+      "rawData": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEgEFFABpnoI6HQDqxABf8AA="
     },
     {
-      "entryTypeDailyWorkPeriod": "END",
-      "dailyWorkPeriodCountry": "FINLAND",
-      "dailyWorkPeriodRegion": "AQ==",
-      "vehicleOdometerKm": 332800,
-      "entryGnssPlaceRecord": {
-        "timestamp": "2026-02-25T07:05:36Z",
-        "gnssAccuracy": 8,
-        "geoCoordinates": {
-          "latitude": 60100,
-          "longitude": 24560
-        }
+      "fullCardNumber": {
+        "fullCardNumber": {
+          "rawData": "AAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        "generation": "GENERATION_UNSPECIFIED"
       },
-      "rawData": "AAAAAAESAQUUAGmen0AIAOrEAF/w"
+      "placeAuthRecord": {
+        "entryTypeDailyWorkPeriod": "END",
+        "dailyWorkPeriodCountry": "FINLAND",
+        "dailyWorkPeriodRegion": "AQ==",
+        "vehicleOdometerKm": 332800,
+        "entryGnssPlaceAuthRecord": {
+          "timestamp": "2026-02-25T07:05:36Z",
+          "gnssAccuracy": 8,
+          "geoCoordinates": {
+            "latitude": 60100,
+            "longitude": 24560
+          },
+          "authenticationStatus": "NOT_AUTHENTICATED"
+        },
+        "rawData": "AAAAAAESAQUUAGmen0AIAOrEAF/wAA=="
+      },
+      "rawData": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABEgEFFABpnp9ACADqxABf8AA="
     },
     {
-      "entryTypeDailyWorkPeriod": "BEGIN",
-      "dailyWorkPeriodCountry": "FINLAND",
-      "dailyWorkPeriodRegion": "AQ==",
-      "vehicleOdometerKm": 332800,
-      "entryGnssPlaceRecord": {
-        "timestamp": "2026-02-25T07:10:25Z",
-        "gnssAccuracy": 10,
-        "geoCoordinates": {
-          "latitude": 60100,
-          "longitude": 24560
-        }
+      "fullCardNumber": {
+        "fullCardNumber": {
+          "rawData": "AAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        "generation": "GENERATION_UNSPECIFIED"
       },
-      "rawData": "AAAAAAASAQUUAGmeoGEKAOrEAF/w"
+      "placeAuthRecord": {
+        "entryTypeDailyWorkPeriod": "BEGIN",
+        "dailyWorkPeriodCountry": "FINLAND",
+        "dailyWorkPeriodRegion": "AQ==",
+        "vehicleOdometerKm": 332800,
+        "entryGnssPlaceAuthRecord": {
+          "timestamp": "2026-02-25T07:10:25Z",
+          "gnssAccuracy": 10,
+          "geoCoordinates": {
+            "latitude": 60100,
+            "longitude": 24560
+          },
+          "authenticationStatus": "NOT_AUTHENTICATED"
+        },
+        "rawData": "AAAAAAASAQUUAGmeoGEKAOrEAF/wAA=="
+      },
+      "rawData": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEgEFFABpnqBhCgDqxABf8AA="
     },
     {
-      "entryTypeDailyWorkPeriod": "END",
-      "dailyWorkPeriodCountry": "FINLAND",
-      "dailyWorkPeriodRegion": "AQ==",
-      "vehicleOdometerKm": 333000,
-      "entryGnssPlaceRecord": {
-        "timestamp": "2026-02-25T16:52:54Z",
-        "gnssAccuracy": 7,
-        "geoCoordinates": {
-          "latitude": 60100,
-          "longitude": 24560
-        }
+      "fullCardNumber": {
+        "fullCardNumber": {
+          "rawData": "AAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        "generation": "GENERATION_UNSPECIFIED"
       },
-      "rawData": "AAAAAAESAQUUyGmfKOYHAOrEAF/w"
+      "placeAuthRecord": {
+        "entryTypeDailyWorkPeriod": "END",
+        "dailyWorkPeriodCountry": "FINLAND",
+        "dailyWorkPeriodRegion": "AQ==",
+        "vehicleOdometerKm": 333000,
+        "entryGnssPlaceAuthRecord": {
+          "timestamp": "2026-02-25T16:52:54Z",
+          "gnssAccuracy": 7,
+          "geoCoordinates": {
+            "latitude": 60100,
+            "longitude": 24560
+          },
+          "authenticationStatus": "NOT_AUTHENTICATED"
+        },
+        "rawData": "AAAAAAESAQUUyGmfKOYHAOrEAF/wAA=="
+      },
+      "rawData": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABEgEFFMhpnyjmBwDqxABf8AA="
     },
     {
-      "entryTypeDailyWorkPeriod": "BEGIN",
-      "dailyWorkPeriodCountry": "FINLAND",
-      "dailyWorkPeriodRegion": "AQ==",
-      "vehicleOdometerKm": 333000,
-      "entryGnssPlaceRecord": {
-        "timestamp": "2026-02-25T17:14:47Z",
-        "gnssAccuracy": 7,
-        "geoCoordinates": {
-          "latitude": 60100,
-          "longitude": 24560
-        }
+      "fullCardNumber": {
+        "fullCardNumber": {
+          "rawData": "AAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        "generation": "GENERATION_UNSPECIFIED"
       },
-      "rawData": "AAAAAAASAQUUyGmfLgcHAOrEAF/w"
+      "placeAuthRecord": {
+        "entryTypeDailyWorkPeriod": "BEGIN",
+        "dailyWorkPeriodCountry": "FINLAND",
+        "dailyWorkPeriodRegion": "AQ==",
+        "vehicleOdometerKm": 333000,
+        "entryGnssPlaceAuthRecord": {
+          "timestamp": "2026-02-25T17:14:47Z",
+          "gnssAccuracy": 7,
+          "geoCoordinates": {
+            "latitude": 60100,
+            "longitude": 24560
+          },
+          "authenticationStatus": "NOT_AUTHENTICATED"
+        },
+        "rawData": "AAAAAAASAQUUyGmfLgcHAOrEAF/wAA=="
+      },
+      "rawData": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEgEFFMhpny4HBwDqxABf8AA="
     }
   ],
   "gnssAccumulatedDriving": [

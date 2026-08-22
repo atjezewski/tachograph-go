@@ -6,7 +6,6 @@ import "google/protobuf/timestamp.proto";
 import "wayplatform/connect/tachograph/dd/v1/entry_type_daily_work_period.proto";
 import "wayplatform/connect/tachograph/dd/v1/gnss_place_auth_record.proto";
 import "wayplatform/connect/tachograph/dd/v1/nation_numeric.proto";
-import "wayplatform/connect/tachograph/dd/v1/region_numeric.proto";
 
 // PlaceAuthRecord represents a Place Authentication record (Generation 2, version 2).
 //
@@ -38,7 +37,7 @@ message PlaceAuthRecord {
   NationNumeric daily_work_period_country = 3;
 
   // Region entered
-  RegionNumeric daily_work_period_region = 4;
+  bytes daily_work_period_region = 4;
 
   // Vehicle odometer value (in km) at the time of place entry
   int32 vehicle_odometer_km = 5;

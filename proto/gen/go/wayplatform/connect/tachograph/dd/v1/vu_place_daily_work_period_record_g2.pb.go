@@ -39,7 +39,7 @@ const (
 // Generation Differences:
 // - Gen1: Uses FullCardNumber (18 bytes) and PlaceRecord (10 bytes) = 28 bytes
 // - Gen2v1: Uses FullCardNumberAndGeneration (20 bytes) and PlaceRecordG2 (21 bytes) = 41 bytes
-// - Gen2v2: Uses FullCardNumberAndGeneration (20 bytes) and PlaceAuthRecord (22 bytes) = 42 bytes
+// - Gen2v1: Uses FullCardNumberAndGeneration (19 bytes) and PlaceRecordG2 (21 bytes) = 40 bytes
 type VuPlaceDailyWorkPeriodRecordG2 struct {
 	state                     protoimpl.MessageState       `protogen:"opaque.v1"`
 	xxx_hidden_FullCardNumber *FullCardNumberAndGeneration `protobuf:"bytes,1,opt,name=full_card_number,json=fullCardNumber"`

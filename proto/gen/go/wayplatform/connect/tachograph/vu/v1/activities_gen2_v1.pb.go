@@ -42,17 +42,17 @@ const (
 //	    signatureRecordArray SignatureRecordArray
 //	}
 type ActivitiesGen2V1 struct {
-	state                             protoimpl.MessageState         `protogen:"opaque.v1"`
-	xxx_hidden_DateOfDay              *timestamppb.Timestamp         `protobuf:"bytes,1,opt,name=date_of_day,json=dateOfDay"`
-	xxx_hidden_OdometerMidnightKm     int32                          `protobuf:"varint,2,opt,name=odometer_midnight_km,json=odometerMidnightKm"`
-	xxx_hidden_CardIwData             *[]*v1.VuCardIWRecordG2        `protobuf:"bytes,3,rep,name=card_iw_data,json=cardIwData"`
-	xxx_hidden_ActivityChanges        *[]*v1.ActivityChangeInfo      `protobuf:"bytes,4,rep,name=activity_changes,json=activityChanges"`
-	xxx_hidden_Places                 *[]*v1.PlaceRecordG2           `protobuf:"bytes,5,rep,name=places"`
-	xxx_hidden_GnssAccumulatedDriving *[]*v1.VuGNSSADRecord          `protobuf:"bytes,6,rep,name=gnss_accumulated_driving,json=gnssAccumulatedDriving"`
-	xxx_hidden_SpecificConditions     *[]*v1.SpecificConditionRecord `protobuf:"bytes,7,rep,name=specific_conditions,json=specificConditions"`
-	xxx_hidden_Signature              []byte                         `protobuf:"bytes,8,opt,name=signature"`
-	xxx_hidden_RawData                []byte                         `protobuf:"bytes,9,opt,name=raw_data,json=rawData"`
-	xxx_hidden_Authentication         *v11.Authentication            `protobuf:"bytes,99,opt,name=authentication"`
+	state                             protoimpl.MessageState                `protogen:"opaque.v1"`
+	xxx_hidden_DateOfDay              *timestamppb.Timestamp                `protobuf:"bytes,1,opt,name=date_of_day,json=dateOfDay"`
+	xxx_hidden_OdometerMidnightKm     int32                                 `protobuf:"varint,2,opt,name=odometer_midnight_km,json=odometerMidnightKm"`
+	xxx_hidden_CardIwData             *[]*v1.VuCardIWRecordG2               `protobuf:"bytes,3,rep,name=card_iw_data,json=cardIwData"`
+	xxx_hidden_ActivityChanges        *[]*v1.ActivityChangeInfo             `protobuf:"bytes,4,rep,name=activity_changes,json=activityChanges"`
+	xxx_hidden_Places                 *[]*v1.VuPlaceDailyWorkPeriodRecordG2 `protobuf:"bytes,5,rep,name=places"`
+	xxx_hidden_GnssAccumulatedDriving *[]*v1.VuGNSSADRecord                 `protobuf:"bytes,6,rep,name=gnss_accumulated_driving,json=gnssAccumulatedDriving"`
+	xxx_hidden_SpecificConditions     *[]*v1.SpecificConditionRecord        `protobuf:"bytes,7,rep,name=specific_conditions,json=specificConditions"`
+	xxx_hidden_Signature              []byte                                `protobuf:"bytes,8,opt,name=signature"`
+	xxx_hidden_RawData                []byte                                `protobuf:"bytes,9,opt,name=raw_data,json=rawData"`
+	xxx_hidden_Authentication         *v11.Authentication                   `protobuf:"bytes,99,opt,name=authentication"`
 	XXX_raceDetectHookData            protoimpl.RaceDetectHookData
 	XXX_presence                      [1]uint32
 	unknownFields                     protoimpl.UnknownFields
@@ -116,7 +116,7 @@ func (x *ActivitiesGen2V1) GetActivityChanges() []*v1.ActivityChangeInfo {
 	return nil
 }
 
-func (x *ActivitiesGen2V1) GetPlaces() []*v1.PlaceRecordG2 {
+func (x *ActivitiesGen2V1) GetPlaces() []*v1.VuPlaceDailyWorkPeriodRecordG2 {
 	if x != nil {
 		if x.xxx_hidden_Places != nil {
 			return *x.xxx_hidden_Places
@@ -181,7 +181,7 @@ func (x *ActivitiesGen2V1) SetActivityChanges(v []*v1.ActivityChangeInfo) {
 	x.xxx_hidden_ActivityChanges = &v
 }
 
-func (x *ActivitiesGen2V1) SetPlaces(v []*v1.PlaceRecordG2) {
+func (x *ActivitiesGen2V1) SetPlaces(v []*v1.VuPlaceDailyWorkPeriodRecordG2) {
 	x.xxx_hidden_Places = &v
 }
 
@@ -293,7 +293,7 @@ type ActivitiesGen2V1_builder struct {
 	// Daily work period place entries.
 	//
 	// See Data Dictionary, Section 2.220, `VuPlaceDailyWorkPeriodRecordArray`.
-	Places []*v1.PlaceRecordG2
+	Places []*v1.VuPlaceDailyWorkPeriodRecordG2
 	// GNSS positions recorded at 3-hour accumulated driving time intervals.
 	//
 	// See Data Dictionary, Section 2.204, `VuGNSSADRecordArray`.
@@ -345,14 +345,14 @@ var File_wayplatform_connect_tachograph_vu_v1_activities_gen2_v1_proto protorefl
 
 const file_wayplatform_connect_tachograph_vu_v1_activities_gen2_v1_proto_rawDesc = "" +
 	"\n" +
-	"=wayplatform/connect/tachograph/vu/v1/activities_gen2_v1.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a?wayplatform/connect/tachograph/dd/v1/activity_change_info.proto\x1a:wayplatform/connect/tachograph/dd/v1/place_record_g2.proto\x1aDwayplatform/connect/tachograph/dd/v1/specific_condition_record.proto\x1a?wayplatform/connect/tachograph/dd/v1/vu_card_iw_record_g2.proto\x1a<wayplatform/connect/tachograph/dd/v1/vu_gnss_ad_record.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\"\x89\x06\n" +
+	"=wayplatform/connect/tachograph/vu/v1/activities_gen2_v1.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a?wayplatform/connect/tachograph/dd/v1/activity_change_info.proto\x1aDwayplatform/connect/tachograph/dd/v1/specific_condition_record.proto\x1a?wayplatform/connect/tachograph/dd/v1/vu_card_iw_record_g2.proto\x1a<wayplatform/connect/tachograph/dd/v1/vu_gnss_ad_record.proto\x1aOwayplatform/connect/tachograph/dd/v1/vu_place_daily_work_period_record_g2.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\"\x9a\x06\n" +
 	"\x10ActivitiesGen2V1\x12:\n" +
 	"\vdate_of_day\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tdateOfDay\x120\n" +
 	"\x14odometer_midnight_km\x18\x02 \x01(\x05R\x12odometerMidnightKm\x12X\n" +
 	"\fcard_iw_data\x18\x03 \x03(\v26.wayplatform.connect.tachograph.dd.v1.VuCardIWRecordG2R\n" +
 	"cardIwData\x12c\n" +
-	"\x10activity_changes\x18\x04 \x03(\v28.wayplatform.connect.tachograph.dd.v1.ActivityChangeInfoR\x0factivityChanges\x12K\n" +
-	"\x06places\x18\x05 \x03(\v23.wayplatform.connect.tachograph.dd.v1.PlaceRecordG2R\x06places\x12n\n" +
+	"\x10activity_changes\x18\x04 \x03(\v28.wayplatform.connect.tachograph.dd.v1.ActivityChangeInfoR\x0factivityChanges\x12\\\n" +
+	"\x06places\x18\x05 \x03(\v2D.wayplatform.connect.tachograph.dd.v1.VuPlaceDailyWorkPeriodRecordG2R\x06places\x12n\n" +
 	"\x18gnss_accumulated_driving\x18\x06 \x03(\v24.wayplatform.connect.tachograph.dd.v1.VuGNSSADRecordR\x16gnssAccumulatedDriving\x12n\n" +
 	"\x13specific_conditions\x18\a \x03(\v2=.wayplatform.connect.tachograph.dd.v1.SpecificConditionRecordR\x12specificConditions\x12\x1c\n" +
 	"\tsignature\x18\b \x01(\fR\tsignature\x12\x19\n" +
@@ -362,20 +362,20 @@ const file_wayplatform_connect_tachograph_vu_v1_activities_gen2_v1_proto_rawDesc
 
 var file_wayplatform_connect_tachograph_vu_v1_activities_gen2_v1_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_wayplatform_connect_tachograph_vu_v1_activities_gen2_v1_proto_goTypes = []any{
-	(*ActivitiesGen2V1)(nil),           // 0: wayplatform.connect.tachograph.vu.v1.ActivitiesGen2V1
-	(*timestamppb.Timestamp)(nil),      // 1: google.protobuf.Timestamp
-	(*v1.VuCardIWRecordG2)(nil),        // 2: wayplatform.connect.tachograph.dd.v1.VuCardIWRecordG2
-	(*v1.ActivityChangeInfo)(nil),      // 3: wayplatform.connect.tachograph.dd.v1.ActivityChangeInfo
-	(*v1.PlaceRecordG2)(nil),           // 4: wayplatform.connect.tachograph.dd.v1.PlaceRecordG2
-	(*v1.VuGNSSADRecord)(nil),          // 5: wayplatform.connect.tachograph.dd.v1.VuGNSSADRecord
-	(*v1.SpecificConditionRecord)(nil), // 6: wayplatform.connect.tachograph.dd.v1.SpecificConditionRecord
-	(*v11.Authentication)(nil),         // 7: wayplatform.connect.tachograph.security.v1.Authentication
+	(*ActivitiesGen2V1)(nil),                  // 0: wayplatform.connect.tachograph.vu.v1.ActivitiesGen2V1
+	(*timestamppb.Timestamp)(nil),             // 1: google.protobuf.Timestamp
+	(*v1.VuCardIWRecordG2)(nil),               // 2: wayplatform.connect.tachograph.dd.v1.VuCardIWRecordG2
+	(*v1.ActivityChangeInfo)(nil),             // 3: wayplatform.connect.tachograph.dd.v1.ActivityChangeInfo
+	(*v1.VuPlaceDailyWorkPeriodRecordG2)(nil), // 4: wayplatform.connect.tachograph.dd.v1.VuPlaceDailyWorkPeriodRecordG2
+	(*v1.VuGNSSADRecord)(nil),                 // 5: wayplatform.connect.tachograph.dd.v1.VuGNSSADRecord
+	(*v1.SpecificConditionRecord)(nil),        // 6: wayplatform.connect.tachograph.dd.v1.SpecificConditionRecord
+	(*v11.Authentication)(nil),                // 7: wayplatform.connect.tachograph.security.v1.Authentication
 }
 var file_wayplatform_connect_tachograph_vu_v1_activities_gen2_v1_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.vu.v1.ActivitiesGen2V1.date_of_day:type_name -> google.protobuf.Timestamp
 	2, // 1: wayplatform.connect.tachograph.vu.v1.ActivitiesGen2V1.card_iw_data:type_name -> wayplatform.connect.tachograph.dd.v1.VuCardIWRecordG2
 	3, // 2: wayplatform.connect.tachograph.vu.v1.ActivitiesGen2V1.activity_changes:type_name -> wayplatform.connect.tachograph.dd.v1.ActivityChangeInfo
-	4, // 3: wayplatform.connect.tachograph.vu.v1.ActivitiesGen2V1.places:type_name -> wayplatform.connect.tachograph.dd.v1.PlaceRecordG2
+	4, // 3: wayplatform.connect.tachograph.vu.v1.ActivitiesGen2V1.places:type_name -> wayplatform.connect.tachograph.dd.v1.VuPlaceDailyWorkPeriodRecordG2
 	5, // 4: wayplatform.connect.tachograph.vu.v1.ActivitiesGen2V1.gnss_accumulated_driving:type_name -> wayplatform.connect.tachograph.dd.v1.VuGNSSADRecord
 	6, // 5: wayplatform.connect.tachograph.vu.v1.ActivitiesGen2V1.specific_conditions:type_name -> wayplatform.connect.tachograph.dd.v1.SpecificConditionRecord
 	7, // 6: wayplatform.connect.tachograph.vu.v1.ActivitiesGen2V1.authentication:type_name -> wayplatform.connect.tachograph.security.v1.Authentication

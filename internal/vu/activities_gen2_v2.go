@@ -239,12 +239,7 @@ func (opts MarshalOptions) MarshalActivitiesGen2V2(activities *vuv1.ActivitiesGe
 
 // parseVuPlaceDailyWorkPeriodRecordArrayG2V2 parses a VuPlaceDailyWorkPeriodRecordArray
 // (Gen2v2 - 41 bytes per record: FCAN(19) + PlaceAuthRecord(22)).
-//
-// The first 21 bytes of PlaceAuthRecord are layout-compatible with PlaceRecordG2 — both
-// share TimeReal(4)+EntryType(1)+Country(1)+Region(1)+Odometer(3)+GNSSPlaceRecord(11) — so
-// we extract a PlaceRecordG2 from bytes [19:40], discarding the FCAN prefix and the last
-// byte of PlaceAuthRecord (GNSS authentication status).
-func parseVuPlaceDailyWorkPeriodRecordArrayG2V2(data []byte, offset int) ([]*ddv1.PlaceRecordG2, int, error) {
+func parseVuPlaceDailyWorkPeriodRecordArrayG2V2(data []byte, offset int) ([]*ddv1.VuPlaceDailyWorkPeriodRecordG2V2, int, error) {
 	_, recordSize, noOfRecords, headerSize, err := parseRecordArrayHeader(data, offset)
 	if err != nil {
 		return nil, 0, err
@@ -257,7 +252,7 @@ func parseVuPlaceDailyWorkPeriodRecordArrayG2V2(data []byte, offset int) ([]*ddv
 
 	opts := dd.UnmarshalOptions{PreserveRawData: true}
 
-	records := make([]*ddv1.PlaceRecordG2, 0, noOfRecords)
+	records := make([]*ddv1.VuPlaceDailyWorkPeriodRecordG2V2, 0, noOfRecords)
 	recordStart := offset + headerSize
 
 	for i := uint16(0); i < noOfRecords; i++ {
@@ -266,14 +261,12 @@ func parseVuPlaceDailyWorkPeriodRecordArrayG2V2(data []byte, offset int) ([]*ddv
 			return nil, 0, fmt.Errorf("insufficient data for VuPlaceDailyWorkPeriodRecord %d", i)
 		}
 
-		// Skip 19-byte FCAN; parse bytes [19:40] as PlaceRecordG2 (21 bytes).
-		// Byte [40] is the GNSS auth status byte from PlaceAuthRecord — intentionally discarded.
-		placeRec, err := opts.UnmarshalPlaceRecordG2(data[recordStart+19 : recordStart+40])
+		record, err := opts.UnmarshalVuPlaceDailyWorkPeriodRecordG2V2(data[recordStart:recordEnd])
 		if err != nil {
 			return nil, 0, fmt.Errorf("unmarshal VuPlaceDailyWorkPeriodRecord %d: %w", i, err)
 		}
 
-		records = append(records, placeRec)
+		records = append(records, record)
 		recordStart = recordEnd
 	}
 
@@ -397,23 +390,16 @@ func marshalCardIWRecordsG2V2(records []*ddv1.VuCardIWRecordG2) ([]byte, error) 
 	return marshalCardIWRecordsG2(records)
 }
 
-// marshalPlaceRecordsG2V2 marshals PlaceRecords for Gen2v2 (41 bytes each: FCAN(19) + PlaceAuthRecord(22)).
-//
-// The inverse of parseVuPlaceDailyWorkPeriodRecordArrayG2V2: places PlaceRecordG2 bytes at
-// offset 19, with a zero FCAN prefix and a zero GNSS auth status byte appended.
-func marshalPlaceRecordsG2V2(records []*ddv1.PlaceRecordG2) ([]byte, error) {
+// marshalPlaceRecordsG2V2 marshals place records for Gen2v2.
+func marshalPlaceRecordsG2V2(records []*ddv1.VuPlaceDailyWorkPeriodRecordG2V2) ([]byte, error) {
 	var opts dd.MarshalOptions
 	result := make([]byte, 0, len(records)*41)
-	for i, placeRec := range records {
-		placeBytes, err := opts.MarshalPlaceRecordG2(placeRec)
+	for i, record := range records {
+		recordData, err := opts.MarshalVuPlaceDailyWorkPeriodRecordG2V2(record)
 		if err != nil {
 			return nil, fmt.Errorf("marshal PlaceRecord %d: %w", i, err)
 		}
-		var rec [41]byte
-		// [0:19] = FCAN (zero = no card inserted)
-		copy(rec[19:40], placeBytes) // PlaceRecordG2(21) → PlaceAuthRecord[0:21]
-		// rec[40] = 0 (GNSS auth status, not authenticated)
-		result = append(result, rec[:]...)
+		result = append(result, recordData...)
 	}
 	return result, nil
 }
@@ -538,10 +524,13 @@ func (opts AnonymizeOptions) anonymizeActivitiesGen2V2(activities *vuv1.Activiti
 	}
 	result.SetActivityChanges(anonActivityChanges)
 
-	// Anonymize places (same as V1)
-	anonPlaces := make([]*ddv1.PlaceRecordG2, len(activities.GetPlaces()))
-	for i, place := range activities.GetPlaces() {
-		anonPlaces[i] = ddOpts.AnonymizePlaceRecordG2(place)
+	// Anonymize places
+	anonPlaces := make([]*ddv1.VuPlaceDailyWorkPeriodRecordG2V2, len(activities.GetPlaces()))
+	for i, record := range activities.GetPlaces() {
+		anonRecord := &ddv1.VuPlaceDailyWorkPeriodRecordG2V2{}
+		anonRecord.SetFullCardNumber(ddOpts.AnonymizeFullCardNumberAndGeneration(record.GetFullCardNumber()))
+		anonRecord.SetPlaceAuthRecord(ddOpts.AnonymizePlaceAuthRecord(record.GetPlaceAuthRecord()))
+		anonPlaces[i] = anonRecord
 	}
 	result.SetPlaces(anonPlaces)
 

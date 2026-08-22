@@ -4,12 +4,12 @@ package wayplatform.connect.tachograph.vu.v1;
 
 import "google/protobuf/timestamp.proto";
 import "wayplatform/connect/tachograph/dd/v1/activity_change_info.proto";
-import "wayplatform/connect/tachograph/dd/v1/place_record_g2.proto";
 import "wayplatform/connect/tachograph/dd/v1/specific_condition_record.proto";
 import "wayplatform/connect/tachograph/dd/v1/vu_border_crossing_record.proto";
 import "wayplatform/connect/tachograph/dd/v1/vu_card_iw_record_g2.proto";
 import "wayplatform/connect/tachograph/dd/v1/vu_gnss_ad_record_g2.proto";
 import "wayplatform/connect/tachograph/dd/v1/vu_load_unload_record.proto";
+import "wayplatform/connect/tachograph/dd/v1/vu_place_daily_work_period_record_g2v2.proto";
 import "wayplatform/connect/tachograph/security/v1/authentication.proto";
 
 // Activities data for Generation 2, Version 2 VU downloads.
@@ -56,7 +56,7 @@ message ActivitiesGen2V2 {
   // Daily work period place entries.
   //
   // See Data Dictionary, Section 2.220, `VuPlaceDailyWorkPeriodRecordArray`.
-  repeated dd.v1.PlaceRecordG2 places = 5;
+  repeated dd.v1.VuPlaceDailyWorkPeriodRecordG2V2 places = 5;
 
   // GNSS positions recorded at 3-hour accumulated driving time intervals.
   //

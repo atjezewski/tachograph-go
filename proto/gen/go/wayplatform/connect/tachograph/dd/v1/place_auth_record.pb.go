@@ -45,7 +45,7 @@ type PlaceAuthRecord struct {
 	xxx_hidden_EntryTime                *timestamppb.Timestamp   `protobuf:"bytes,1,opt,name=entry_time,json=entryTime"`
 	xxx_hidden_EntryTypeDailyWorkPeriod EntryTypeDailyWorkPeriod `protobuf:"varint,2,opt,name=entry_type_daily_work_period,json=entryTypeDailyWorkPeriod,enum=wayplatform.connect.tachograph.dd.v1.EntryTypeDailyWorkPeriod"`
 	xxx_hidden_DailyWorkPeriodCountry   NationNumeric            `protobuf:"varint,3,opt,name=daily_work_period_country,json=dailyWorkPeriodCountry,enum=wayplatform.connect.tachograph.dd.v1.NationNumeric"`
-	xxx_hidden_DailyWorkPeriodRegion    RegionNumeric            `protobuf:"varint,4,opt,name=daily_work_period_region,json=dailyWorkPeriodRegion,enum=wayplatform.connect.tachograph.dd.v1.RegionNumeric"`
+	xxx_hidden_DailyWorkPeriodRegion    []byte                   `protobuf:"bytes,4,opt,name=daily_work_period_region,json=dailyWorkPeriodRegion"`
 	xxx_hidden_VehicleOdometerKm        int32                    `protobuf:"varint,5,opt,name=vehicle_odometer_km,json=vehicleOdometerKm"`
 	xxx_hidden_EntryGnssPlaceAuthRecord *GNSSPlaceAuthRecord     `protobuf:"bytes,6,opt,name=entry_gnss_place_auth_record,json=entryGnssPlaceAuthRecord"`
 	xxx_hidden_RawData                  []byte                   `protobuf:"bytes,7,opt,name=raw_data,json=rawData"`
@@ -105,13 +105,11 @@ func (x *PlaceAuthRecord) GetDailyWorkPeriodCountry() NationNumeric {
 	return NationNumeric_NATION_NUMERIC_UNSPECIFIED
 }
 
-func (x *PlaceAuthRecord) GetDailyWorkPeriodRegion() RegionNumeric {
+func (x *PlaceAuthRecord) GetDailyWorkPeriodRegion() []byte {
 	if x != nil {
-		if protoimpl.X.Present(&(x.XXX_presence[0]), 3) {
-			return x.xxx_hidden_DailyWorkPeriodRegion
-		}
+		return x.xxx_hidden_DailyWorkPeriodRegion
 	}
-	return RegionNumeric_REGION_NUMERIC_UNSPECIFIED
+	return nil
 }
 
 func (x *PlaceAuthRecord) GetVehicleOdometerKm() int32 {
@@ -149,7 +147,10 @@ func (x *PlaceAuthRecord) SetDailyWorkPeriodCountry(v NationNumeric) {
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 7)
 }
 
-func (x *PlaceAuthRecord) SetDailyWorkPeriodRegion(v RegionNumeric) {
+func (x *PlaceAuthRecord) SetDailyWorkPeriodRegion(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
 	x.xxx_hidden_DailyWorkPeriodRegion = v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 7)
 }
@@ -236,7 +237,7 @@ func (x *PlaceAuthRecord) ClearDailyWorkPeriodCountry() {
 
 func (x *PlaceAuthRecord) ClearDailyWorkPeriodRegion() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
-	x.xxx_hidden_DailyWorkPeriodRegion = RegionNumeric_REGION_NUMERIC_UNSPECIFIED
+	x.xxx_hidden_DailyWorkPeriodRegion = nil
 }
 
 func (x *PlaceAuthRecord) ClearVehicleOdometerKm() {
@@ -263,7 +264,7 @@ type PlaceAuthRecord_builder struct {
 	// Country entered
 	DailyWorkPeriodCountry *NationNumeric
 	// Region entered
-	DailyWorkPeriodRegion *RegionNumeric
+	DailyWorkPeriodRegion []byte
 	// Vehicle odometer value (in km) at the time of place entry
 	VehicleOdometerKm *int32
 	// Recorded location, GNSS authentication status and position determination time
@@ -287,7 +288,7 @@ func (b0 PlaceAuthRecord_builder) Build() *PlaceAuthRecord {
 	}
 	if b.DailyWorkPeriodRegion != nil {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 7)
-		x.xxx_hidden_DailyWorkPeriodRegion = *b.DailyWorkPeriodRegion
+		x.xxx_hidden_DailyWorkPeriodRegion = b.DailyWorkPeriodRegion
 	}
 	if b.VehicleOdometerKm != nil {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 7)
@@ -305,13 +306,13 @@ var File_wayplatform_connect_tachograph_dd_v1_place_auth_record_proto protorefle
 
 const file_wayplatform_connect_tachograph_dd_v1_place_auth_record_proto_rawDesc = "" +
 	"\n" +
-	"<wayplatform/connect/tachograph/dd/v1/place_auth_record.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aGwayplatform/connect/tachograph/dd/v1/entry_type_daily_work_period.proto\x1aAwayplatform/connect/tachograph/dd/v1/gnss_place_auth_record.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\x1a9wayplatform/connect/tachograph/dd/v1/region_numeric.proto\"\xf0\x04\n" +
+	"<wayplatform/connect/tachograph/dd/v1/place_auth_record.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aGwayplatform/connect/tachograph/dd/v1/entry_type_daily_work_period.proto\x1aAwayplatform/connect/tachograph/dd/v1/gnss_place_auth_record.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\"\xbb\x04\n" +
 	"\x0fPlaceAuthRecord\x129\n" +
 	"\n" +
 	"entry_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tentryTime\x12~\n" +
 	"\x1centry_type_daily_work_period\x18\x02 \x01(\x0e2>.wayplatform.connect.tachograph.dd.v1.EntryTypeDailyWorkPeriodR\x18entryTypeDailyWorkPeriod\x12n\n" +
-	"\x19daily_work_period_country\x18\x03 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.NationNumericR\x16dailyWorkPeriodCountry\x12l\n" +
-	"\x18daily_work_period_region\x18\x04 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.RegionNumericR\x15dailyWorkPeriodRegion\x12.\n" +
+	"\x19daily_work_period_country\x18\x03 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.NationNumericR\x16dailyWorkPeriodCountry\x127\n" +
+	"\x18daily_work_period_region\x18\x04 \x01(\fR\x15dailyWorkPeriodRegion\x12.\n" +
 	"\x13vehicle_odometer_km\x18\x05 \x01(\x05R\x11vehicleOdometerKm\x12y\n" +
 	"\x1centry_gnss_place_auth_record\x18\x06 \x01(\v29.wayplatform.connect.tachograph.dd.v1.GNSSPlaceAuthRecordR\x18entryGnssPlaceAuthRecord\x12\x19\n" +
 	"\braw_data\x18\a \x01(\fR\arawDataB\xd3\x02\n" +
@@ -323,20 +324,18 @@ var file_wayplatform_connect_tachograph_dd_v1_place_auth_record_proto_goTypes = 
 	(*timestamppb.Timestamp)(nil), // 1: google.protobuf.Timestamp
 	(EntryTypeDailyWorkPeriod)(0), // 2: wayplatform.connect.tachograph.dd.v1.EntryTypeDailyWorkPeriod
 	(NationNumeric)(0),            // 3: wayplatform.connect.tachograph.dd.v1.NationNumeric
-	(RegionNumeric)(0),            // 4: wayplatform.connect.tachograph.dd.v1.RegionNumeric
-	(*GNSSPlaceAuthRecord)(nil),   // 5: wayplatform.connect.tachograph.dd.v1.GNSSPlaceAuthRecord
+	(*GNSSPlaceAuthRecord)(nil),   // 4: wayplatform.connect.tachograph.dd.v1.GNSSPlaceAuthRecord
 }
 var file_wayplatform_connect_tachograph_dd_v1_place_auth_record_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.dd.v1.PlaceAuthRecord.entry_time:type_name -> google.protobuf.Timestamp
 	2, // 1: wayplatform.connect.tachograph.dd.v1.PlaceAuthRecord.entry_type_daily_work_period:type_name -> wayplatform.connect.tachograph.dd.v1.EntryTypeDailyWorkPeriod
 	3, // 2: wayplatform.connect.tachograph.dd.v1.PlaceAuthRecord.daily_work_period_country:type_name -> wayplatform.connect.tachograph.dd.v1.NationNumeric
-	4, // 3: wayplatform.connect.tachograph.dd.v1.PlaceAuthRecord.daily_work_period_region:type_name -> wayplatform.connect.tachograph.dd.v1.RegionNumeric
-	5, // 4: wayplatform.connect.tachograph.dd.v1.PlaceAuthRecord.entry_gnss_place_auth_record:type_name -> wayplatform.connect.tachograph.dd.v1.GNSSPlaceAuthRecord
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	4, // 3: wayplatform.connect.tachograph.dd.v1.PlaceAuthRecord.entry_gnss_place_auth_record:type_name -> wayplatform.connect.tachograph.dd.v1.GNSSPlaceAuthRecord
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_dd_v1_place_auth_record_proto_init() }
@@ -347,7 +346,6 @@ func file_wayplatform_connect_tachograph_dd_v1_place_auth_record_proto_init() {
 	file_wayplatform_connect_tachograph_dd_v1_entry_type_daily_work_period_proto_init()
 	file_wayplatform_connect_tachograph_dd_v1_gnss_place_auth_record_proto_init()
 	file_wayplatform_connect_tachograph_dd_v1_nation_numeric_proto_init()
-	file_wayplatform_connect_tachograph_dd_v1_region_numeric_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

@@ -76,12 +76,8 @@ func (opts UnmarshalOptions) UnmarshalPlaceAuthRecord(data []byte) (*ddv1.PlaceA
 	}
 	record.SetDailyWorkPeriodCountry(dailyWorkPeriodCountry)
 
-	// dailyWorkPeriodRegion (1 byte)
-	dailyWorkPeriodRegion, err := UnmarshalEnum[ddv1.RegionNumeric](data[idxDailyWorkPeriodRegion])
-	if err != nil {
-		return nil, fmt.Errorf("unmarshal daily work period region: %w", err)
-	}
-	record.SetDailyWorkPeriodRegion(dailyWorkPeriodRegion)
+	// dailyWorkPeriodRegion (1 byte, country-specific code)
+	record.SetDailyWorkPeriodRegion([]byte{data[idxDailyWorkPeriodRegion]})
 
 	// vehicleOdometerValue (3 bytes)
 	vehicleOdometerValue, err := opts.UnmarshalOdometer(data[idxVehicleOdometerValue : idxVehicleOdometerValue+lenOdometerShort])
@@ -138,9 +134,11 @@ func (opts MarshalOptions) MarshalPlaceAuthRecord(record *ddv1.PlaceAuthRecord) 
 	canvas[offset] = dailyWorkPeriodCountryByte
 	offset += 1
 
-	// dailyWorkPeriodRegion (1 byte)
-	dailyWorkPeriodRegionByte, _ := MarshalEnum(record.GetDailyWorkPeriodRegion())
-	canvas[offset] = dailyWorkPeriodRegionByte
+	// dailyWorkPeriodRegion (1 byte, country-specific code)
+	dailyWorkPeriodRegion := record.GetDailyWorkPeriodRegion()
+	if len(dailyWorkPeriodRegion) > 0 {
+		canvas[offset] = dailyWorkPeriodRegion[0]
+	}
 	offset += 1
 
 	// vehicleOdometerValue (3 bytes)
@@ -159,4 +157,36 @@ func (opts MarshalOptions) MarshalPlaceAuthRecord(record *ddv1.PlaceAuthRecord) 
 	copy(canvas[offset:offset+12], entryGNSSPlaceAuthRecordBytes)
 
 	return canvas[:], nil
+}
+
+// AnonymizePlaceAuthRecord creates an anonymized copy while preserving the
+// position authentication result and replacing location data.
+func (opts AnonymizeOptions) AnonymizePlaceAuthRecord(record *ddv1.PlaceAuthRecord) *ddv1.PlaceAuthRecord {
+	if record == nil {
+		return nil
+	}
+
+	result := &ddv1.PlaceAuthRecord{}
+	result.SetEntryTime(record.GetEntryTime())
+	result.SetEntryTypeDailyWorkPeriod(record.GetEntryTypeDailyWorkPeriod())
+	result.SetDailyWorkPeriodCountry(ddv1.NationNumeric_FINLAND)
+	result.SetDailyWorkPeriodRegion([]byte{0x01})
+	result.SetVehicleOdometerKm((record.GetVehicleOdometerKm() / 100) * 100)
+
+	if gnss := record.GetEntryGnssPlaceAuthRecord(); gnss != nil {
+		anonGNSS := &ddv1.GNSSPlaceAuthRecord{}
+		anonGNSS.SetTimestamp(gnss.GetTimestamp())
+		anonGNSS.SetGnssAccuracy(gnss.GetGnssAccuracy())
+		coords := &ddv1.GeoCoordinates{}
+		coords.SetLatitude(60100)
+		coords.SetLongitude(24560)
+		anonGNSS.SetGeoCoordinates(coords)
+		anonGNSS.SetAuthenticationStatus(gnss.GetAuthenticationStatus())
+		if gnss.HasUnrecognizedAuthenticationStatus() {
+			anonGNSS.SetUnrecognizedAuthenticationStatus(gnss.GetUnrecognizedAuthenticationStatus())
+		}
+		result.SetEntryGnssPlaceAuthRecord(anonGNSS)
+	}
+
+	return result
 }
