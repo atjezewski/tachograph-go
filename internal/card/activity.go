@@ -302,8 +302,10 @@ func (it *cyclicRecordIterator) Next() bool {
 	if len(it.buffer) == 0 {
 		return false // No data to parse
 	}
-	// Validate current position for reading header
-	if it.currentPos < 0 || it.currentPos+4 > len(it.buffer) {
+	// Validate current position. Only the position itself is bounded here: the
+	// buffer is cyclic, so a record header may legitimately straddle its end and
+	// is read with wrap-around below.
+	if it.currentPos < 0 || it.currentPos >= len(it.buffer) {
 		return false // Invalid position for header
 	}
 	// Cycle detection: if we've already visited this position, stop.
@@ -312,13 +314,17 @@ func (it *cyclicRecordIterator) Next() bool {
 	}
 	it.seen[it.currentPos] = struct{}{}
 	// Read record header (4 bytes: prevRecordLength + currentRecordLength)
-	prevRecordLength := int(binary.BigEndian.Uint16(it.buffer[it.currentPos : it.currentPos+2]))
-	currentRecordLength := int(binary.BigEndian.Uint16(it.buffer[it.currentPos+2 : it.currentPos+4]))
+	var header [4]byte
+	for i := range header {
+		header[i] = it.byteAt(it.currentPos + i)
+	}
+	prevRecordLength := int(binary.BigEndian.Uint16(header[0:2]))
+	currentRecordLength := int(binary.BigEndian.Uint16(header[2:4]))
 	if currentRecordLength == 0 {
 		return false // Zero-length record signifies end of chain
 	}
 	// Validate record length
-	if currentRecordLength < 4 {
+	if currentRecordLength < 4 || currentRecordLength > len(it.buffer) {
 		it.err = fmt.Errorf("invalid record length %d at position %d", currentRecordLength, it.currentPos)
 		return false
 	}
@@ -328,7 +334,7 @@ func (it *cyclicRecordIterator) Next() bool {
 	// Extract record bytes, handling buffer wrap-around
 	it.recordBytes = make([]byte, currentRecordLength)
 	for i := 0; i < currentRecordLength; i++ {
-		it.recordBytes[i] = it.buffer[(it.currentPos+i)%len(it.buffer)]
+		it.recordBytes[i] = it.byteAt(it.currentPos + i)
 	}
 	it.recordCount++
 	// Move to previous record for next iteration.
@@ -345,6 +351,14 @@ func (it *cyclicRecordIterator) Next() bool {
 		}
 	}
 	return true
+}
+
+// byteAt reads one byte of the cyclic buffer, wrapping around at its end.
+// Positions passed in must be non-negative and may exceed the buffer length by
+// less than one full turn, which is what happens when a record — or its header —
+// straddles the end of the buffer.
+func (it *cyclicRecordIterator) byteAt(pos int) byte {
+	return it.buffer[pos%len(it.buffer)]
 }
 
 // Record returns the bytes of the current record along with its position and length
