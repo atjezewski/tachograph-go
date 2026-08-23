@@ -556,6 +556,101 @@ func (opts ParseOptions) ParseRawDriverCardFile(input *cardv1.RawCardFile) (*car
 			}
 			tachographG2DF.SetApplicationIdentificationV2(appIdV2)
 
+		case cardv1.ElementaryFileType_EF_PLACES_AUTHENTICATION:
+			placesAuth, err := unmarshalOpts.unmarshalPlacesAuthentication(record.GetValue())
+			if err != nil {
+				return nil, err
+			}
+			if signature != nil {
+				placesAuth.SetSignature(signature)
+			}
+			// Propagate authentication
+			if auth := record.GetAuthentication(); auth != nil {
+				placesAuth.SetAuthentication(auth)
+			}
+
+			// Only Gen2
+			if tachographG2DF == nil {
+				tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
+			}
+			tachographG2DF.SetPlacesAuthentication(placesAuth)
+
+		case cardv1.ElementaryFileType_EF_GNSS_PLACES_AUTHENTICATION:
+			gnssPlacesAuth, err := unmarshalOpts.unmarshalGnssPlacesAuthentication(record.GetValue())
+			if err != nil {
+				return nil, err
+			}
+			if signature != nil {
+				gnssPlacesAuth.SetSignature(signature)
+			}
+			// Propagate authentication
+			if auth := record.GetAuthentication(); auth != nil {
+				gnssPlacesAuth.SetAuthentication(auth)
+			}
+
+			// Only Gen2
+			if tachographG2DF == nil {
+				tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
+			}
+			tachographG2DF.SetGnssPlacesAuthentication(gnssPlacesAuth)
+
+		case cardv1.ElementaryFileType_EF_BORDER_CROSSINGS:
+			borderCrossings, err := unmarshalOpts.unmarshalBorderCrossings(record.GetValue())
+			if err != nil {
+				return nil, err
+			}
+			if signature != nil {
+				borderCrossings.SetSignature(signature)
+			}
+			// Propagate authentication
+			if auth := record.GetAuthentication(); auth != nil {
+				borderCrossings.SetAuthentication(auth)
+			}
+
+			// Only Gen2
+			if tachographG2DF == nil {
+				tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
+			}
+			tachographG2DF.SetBorderCrossings(borderCrossings)
+
+		case cardv1.ElementaryFileType_EF_LOAD_UNLOAD_OPERATIONS:
+			loadUnload, err := unmarshalOpts.unmarshalLoadUnloadOperations(record.GetValue())
+			if err != nil {
+				return nil, err
+			}
+			if signature != nil {
+				loadUnload.SetSignature(signature)
+			}
+			// Propagate authentication
+			if auth := record.GetAuthentication(); auth != nil {
+				loadUnload.SetAuthentication(auth)
+			}
+
+			// Only Gen2
+			if tachographG2DF == nil {
+				tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
+			}
+			tachographG2DF.SetLoadUnloadOperations(loadUnload)
+
+		case cardv1.ElementaryFileType_EF_LOAD_TYPE_ENTRIES:
+			loadTypeEntries, err := unmarshalOpts.unmarshalLoadTypeEntries(record.GetValue())
+			if err != nil {
+				return nil, err
+			}
+			if signature != nil {
+				loadTypeEntries.SetSignature(signature)
+			}
+			// Propagate authentication
+			if auth := record.GetAuthentication(); auth != nil {
+				loadTypeEntries.SetAuthentication(auth)
+			}
+
+			// Only Gen2
+			if tachographG2DF == nil {
+				tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
+			}
+			tachographG2DF.SetLoadTypeEntries(loadTypeEntries)
+
 		case cardv1.ElementaryFileType_EF_CARD_CERTIFICATE:
 			// Gen1: Card authentication certificate
 			// Only appears in Gen1 DF (Tachograph)
@@ -718,6 +813,12 @@ func (opts ParseOptions) ParseRawDriverCardFile(input *cardv1.RawCardFile) (*car
 				}
 				tachographG2DF.SetLinkCertificate(cert)
 			}
+
+		default:
+			// An elementary file this parser has no semantic model for. It is
+			// skipped rather than rejected, so that a card carrying a file we do
+			// not know about still parses; the bytes remain available on the
+			// RawCardFile this was parsed from.
 		}
 	}
 
@@ -1060,6 +1161,86 @@ func appendDriverCard(dst []byte, card *cardv1.DriverCardFile) ([]byte, error) {
 				cardv1.ElementaryFileType_EF_APPLICATION_IDENTIFICATION_V2,
 				dataBytes,
 				appIdV2.GetSignature(),
+				0x02) // Gen2
+			if err != nil {
+				return nil, err
+			}
+		}
+
+		// PlacesAuthentication (Gen2v2)
+		if placesAuth := tachographG2.GetPlacesAuthentication(); placesAuth != nil {
+			dataBytes, err := opts.MarshalPlacesAuthentication(placesAuth)
+			if err != nil {
+				return nil, err
+			}
+			dst, err = appendTlvBlock(dst,
+				cardv1.ElementaryFileType_EF_PLACES_AUTHENTICATION,
+				dataBytes,
+				placesAuth.GetSignature(),
+				0x02) // Gen2
+			if err != nil {
+				return nil, err
+			}
+		}
+
+		// GnssPlacesAuthentication (Gen2v2)
+		if gnssPlacesAuth := tachographG2.GetGnssPlacesAuthentication(); gnssPlacesAuth != nil {
+			dataBytes, err := opts.MarshalGnssPlacesAuthentication(gnssPlacesAuth)
+			if err != nil {
+				return nil, err
+			}
+			dst, err = appendTlvBlock(dst,
+				cardv1.ElementaryFileType_EF_GNSS_PLACES_AUTHENTICATION,
+				dataBytes,
+				gnssPlacesAuth.GetSignature(),
+				0x02) // Gen2
+			if err != nil {
+				return nil, err
+			}
+		}
+
+		// BorderCrossings (Gen2v2)
+		if borderCrossings := tachographG2.GetBorderCrossings(); borderCrossings != nil {
+			dataBytes, err := opts.MarshalBorderCrossings(borderCrossings)
+			if err != nil {
+				return nil, err
+			}
+			dst, err = appendTlvBlock(dst,
+				cardv1.ElementaryFileType_EF_BORDER_CROSSINGS,
+				dataBytes,
+				borderCrossings.GetSignature(),
+				0x02) // Gen2
+			if err != nil {
+				return nil, err
+			}
+		}
+
+		// LoadUnloadOperations (Gen2v2)
+		if loadUnload := tachographG2.GetLoadUnloadOperations(); loadUnload != nil {
+			dataBytes, err := opts.MarshalLoadUnloadOperations(loadUnload)
+			if err != nil {
+				return nil, err
+			}
+			dst, err = appendTlvBlock(dst,
+				cardv1.ElementaryFileType_EF_LOAD_UNLOAD_OPERATIONS,
+				dataBytes,
+				loadUnload.GetSignature(),
+				0x02) // Gen2
+			if err != nil {
+				return nil, err
+			}
+		}
+
+		// LoadTypeEntries (Gen2v2)
+		if loadTypeEntries := tachographG2.GetLoadTypeEntries(); loadTypeEntries != nil {
+			dataBytes, err := opts.MarshalLoadTypeEntries(loadTypeEntries)
+			if err != nil {
+				return nil, err
+			}
+			dst, err = appendTlvBlock(dst,
+				cardv1.ElementaryFileType_EF_LOAD_TYPE_ENTRIES,
+				dataBytes,
+				loadTypeEntries.GetSignature(),
 				0x02) // Gen2
 			if err != nil {
 				return nil, err

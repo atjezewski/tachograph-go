@@ -4,6 +4,7 @@ package wayplatform.connect.tachograph.card.v1;
 
 import "google/protobuf/timestamp.proto";
 import "wayplatform/connect/tachograph/dd/v1/load_type.proto";
+import "wayplatform/connect/tachograph/security/v1/authentication.proto";
 
 // Represents the content of the EF_Load_Type_Entries file.
 //
@@ -49,6 +50,9 @@ message LoadTypeEntries {
     //         not-defined(0), goods(1), passengers(2)
     //     } (0..255)
     wayplatform.connect.tachograph.dd.v1.LoadType load_type_entered = 2;
+
+    // Preserved raw protocol value when load_type_entered is UNRECOGNIZED.
+    int32 unrecognized_load_type_entered = 3;
   }
 
   // Index of the last updated record in the ring buffer.
@@ -63,4 +67,18 @@ message LoadTypeEntries {
   // The set of load type entry records.
   // Corresponds to `cardLoadTypeEntryRecords`.
   repeated Record records = 2;
+
+  // Signature data from the following file block, if tagged as a signature for
+  // this EF according to the card file format specification (Appendix 2).
+  //
+  // See Data Dictionary, Section 2.149, `Signature`.
+  //
+  // ASN.1 Definition (Gen2):
+  //
+  //     Signature ::= OCTET STRING (variable size, depends on elliptic curve)
+  bytes signature = 3;
+
+  // Result of cryptographic signature authentication for this Elementary File.
+  // Present when signature verification has been performed.
+  tachograph.security.v1.Authentication authentication = 99;
 }

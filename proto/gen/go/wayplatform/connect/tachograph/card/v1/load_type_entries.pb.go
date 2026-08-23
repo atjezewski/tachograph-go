@@ -7,7 +7,8 @@
 package cardv1
 
 import (
-	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
+	v11 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
+	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/security/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -41,6 +42,8 @@ type LoadTypeEntries struct {
 	state                        protoimpl.MessageState     `protogen:"opaque.v1"`
 	xxx_hidden_NewestRecordIndex int32                      `protobuf:"varint,1,opt,name=newest_record_index,json=newestRecordIndex"`
 	xxx_hidden_Records           *[]*LoadTypeEntries_Record `protobuf:"bytes,2,rep,name=records"`
+	xxx_hidden_Signature         []byte                     `protobuf:"bytes,3,opt,name=signature"`
+	xxx_hidden_Authentication    *v1.Authentication         `protobuf:"bytes,99,opt,name=authentication"`
 	XXX_raceDetectHookData       protoimpl.RaceDetectHookData
 	XXX_presence                 [1]uint32
 	unknownFields                protoimpl.UnknownFields
@@ -88,13 +91,39 @@ func (x *LoadTypeEntries) GetRecords() []*LoadTypeEntries_Record {
 	return nil
 }
 
+func (x *LoadTypeEntries) GetSignature() []byte {
+	if x != nil {
+		return x.xxx_hidden_Signature
+	}
+	return nil
+}
+
+func (x *LoadTypeEntries) GetAuthentication() *v1.Authentication {
+	if x != nil {
+		return x.xxx_hidden_Authentication
+	}
+	return nil
+}
+
 func (x *LoadTypeEntries) SetNewestRecordIndex(v int32) {
 	x.xxx_hidden_NewestRecordIndex = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 2)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 4)
 }
 
 func (x *LoadTypeEntries) SetRecords(v []*LoadTypeEntries_Record) {
 	x.xxx_hidden_Records = &v
+}
+
+func (x *LoadTypeEntries) SetSignature(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_Signature = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 4)
+}
+
+func (x *LoadTypeEntries) SetAuthentication(v *v1.Authentication) {
+	x.xxx_hidden_Authentication = v
 }
 
 func (x *LoadTypeEntries) HasNewestRecordIndex() bool {
@@ -104,9 +133,32 @@ func (x *LoadTypeEntries) HasNewestRecordIndex() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
 }
 
+func (x *LoadTypeEntries) HasSignature() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+}
+
+func (x *LoadTypeEntries) HasAuthentication() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_Authentication != nil
+}
+
 func (x *LoadTypeEntries) ClearNewestRecordIndex() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_NewestRecordIndex = 0
+}
+
+func (x *LoadTypeEntries) ClearSignature() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	x.xxx_hidden_Signature = nil
+}
+
+func (x *LoadTypeEntries) ClearAuthentication() {
+	x.xxx_hidden_Authentication = nil
 }
 
 type LoadTypeEntries_builder struct {
@@ -123,6 +175,18 @@ type LoadTypeEntries_builder struct {
 	// The set of load type entry records.
 	// Corresponds to `cardLoadTypeEntryRecords`.
 	Records []*LoadTypeEntries_Record
+	// Signature data from the following file block, if tagged as a signature for
+	// this EF according to the card file format specification (Appendix 2).
+	//
+	// See Data Dictionary, Section 2.149, `Signature`.
+	//
+	// ASN.1 Definition (Gen2):
+	//
+	//	Signature ::= OCTET STRING (variable size, depends on elliptic curve)
+	Signature []byte
+	// Result of cryptographic signature authentication for this Elementary File.
+	// Present when signature verification has been performed.
+	Authentication *v1.Authentication
 }
 
 func (b0 LoadTypeEntries_builder) Build() *LoadTypeEntries {
@@ -130,10 +194,15 @@ func (b0 LoadTypeEntries_builder) Build() *LoadTypeEntries {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.NewestRecordIndex != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 2)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 4)
 		x.xxx_hidden_NewestRecordIndex = *b.NewestRecordIndex
 	}
 	x.xxx_hidden_Records = &b.Records
+	if b.Signature != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 4)
+		x.xxx_hidden_Signature = b.Signature
+	}
+	x.xxx_hidden_Authentication = b.Authentication
 	return m0
 }
 
@@ -148,13 +217,14 @@ func (b0 LoadTypeEntries_builder) Build() *LoadTypeEntries {
 //	    loadTypeEntered LoadType
 //	}
 type LoadTypeEntries_Record struct {
-	state                      protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Timestamp       *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=timestamp"`
-	xxx_hidden_LoadTypeEntered v1.LoadType            `protobuf:"varint,2,opt,name=load_type_entered,json=loadTypeEntered,enum=wayplatform.connect.tachograph.dd.v1.LoadType"`
-	XXX_raceDetectHookData     protoimpl.RaceDetectHookData
-	XXX_presence               [1]uint32
-	unknownFields              protoimpl.UnknownFields
-	sizeCache                  protoimpl.SizeCache
+	state                                  protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Timestamp                   *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=timestamp"`
+	xxx_hidden_LoadTypeEntered             v11.LoadType           `protobuf:"varint,2,opt,name=load_type_entered,json=loadTypeEntered,enum=wayplatform.connect.tachograph.dd.v1.LoadType"`
+	xxx_hidden_UnrecognizedLoadTypeEntered int32                  `protobuf:"varint,3,opt,name=unrecognized_load_type_entered,json=unrecognizedLoadTypeEntered"`
+	XXX_raceDetectHookData                 protoimpl.RaceDetectHookData
+	XXX_presence                           [1]uint32
+	unknownFields                          protoimpl.UnknownFields
+	sizeCache                              protoimpl.SizeCache
 }
 
 func (x *LoadTypeEntries_Record) Reset() {
@@ -189,22 +259,34 @@ func (x *LoadTypeEntries_Record) GetTimestamp() *timestamppb.Timestamp {
 	return nil
 }
 
-func (x *LoadTypeEntries_Record) GetLoadTypeEntered() v1.LoadType {
+func (x *LoadTypeEntries_Record) GetLoadTypeEntered() v11.LoadType {
 	if x != nil {
 		if protoimpl.X.Present(&(x.XXX_presence[0]), 1) {
 			return x.xxx_hidden_LoadTypeEntered
 		}
 	}
-	return v1.LoadType(0)
+	return v11.LoadType(0)
+}
+
+func (x *LoadTypeEntries_Record) GetUnrecognizedLoadTypeEntered() int32 {
+	if x != nil {
+		return x.xxx_hidden_UnrecognizedLoadTypeEntered
+	}
+	return 0
 }
 
 func (x *LoadTypeEntries_Record) SetTimestamp(v *timestamppb.Timestamp) {
 	x.xxx_hidden_Timestamp = v
 }
 
-func (x *LoadTypeEntries_Record) SetLoadTypeEntered(v v1.LoadType) {
+func (x *LoadTypeEntries_Record) SetLoadTypeEntered(v v11.LoadType) {
 	x.xxx_hidden_LoadTypeEntered = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 2)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 3)
+}
+
+func (x *LoadTypeEntries_Record) SetUnrecognizedLoadTypeEntered(v int32) {
+	x.xxx_hidden_UnrecognizedLoadTypeEntered = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
 }
 
 func (x *LoadTypeEntries_Record) HasTimestamp() bool {
@@ -221,13 +303,25 @@ func (x *LoadTypeEntries_Record) HasLoadTypeEntered() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
 }
 
+func (x *LoadTypeEntries_Record) HasUnrecognizedLoadTypeEntered() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+}
+
 func (x *LoadTypeEntries_Record) ClearTimestamp() {
 	x.xxx_hidden_Timestamp = nil
 }
 
 func (x *LoadTypeEntries_Record) ClearLoadTypeEntered() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
-	x.xxx_hidden_LoadTypeEntered = v1.LoadType_LOAD_TYPE_UNSPECIFIED
+	x.xxx_hidden_LoadTypeEntered = v11.LoadType_LOAD_TYPE_UNSPECIFIED
+}
+
+func (x *LoadTypeEntries_Record) ClearUnrecognizedLoadTypeEntered() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	x.xxx_hidden_UnrecognizedLoadTypeEntered = 0
 }
 
 type LoadTypeEntries_Record_builder struct {
@@ -248,7 +342,9 @@ type LoadTypeEntries_Record_builder struct {
 	//	LoadType ::= INTEGER {
 	//	    not-defined(0), goods(1), passengers(2)
 	//	} (0..255)
-	LoadTypeEntered *v1.LoadType
+	LoadTypeEntered *v11.LoadType
+	// Preserved raw protocol value when load_type_entered is UNRECOGNIZED.
+	UnrecognizedLoadTypeEntered *int32
 }
 
 func (b0 LoadTypeEntries_Record_builder) Build() *LoadTypeEntries_Record {
@@ -257,8 +353,12 @@ func (b0 LoadTypeEntries_Record_builder) Build() *LoadTypeEntries_Record {
 	_, _ = b, x
 	x.xxx_hidden_Timestamp = b.Timestamp
 	if b.LoadTypeEntered != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 2)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 3)
 		x.xxx_hidden_LoadTypeEntered = *b.LoadTypeEntered
+	}
+	if b.UnrecognizedLoadTypeEntered != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
+		x.xxx_hidden_UnrecognizedLoadTypeEntered = *b.UnrecognizedLoadTypeEntered
 	}
 	return m0
 }
@@ -267,31 +367,36 @@ var File_wayplatform_connect_tachograph_card_v1_load_type_entries_proto protoref
 
 const file_wayplatform_connect_tachograph_card_v1_load_type_entries_proto_rawDesc = "" +
 	"\n" +
-	">wayplatform/connect/tachograph/card/v1/load_type_entries.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a4wayplatform/connect/tachograph/dd/v1/load_type.proto\"\xbc\x02\n" +
+	">wayplatform/connect/tachograph/card/v1/load_type_entries.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a4wayplatform/connect/tachograph/dd/v1/load_type.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\"\x83\x04\n" +
 	"\x0fLoadTypeEntries\x12.\n" +
 	"\x13newest_record_index\x18\x01 \x01(\x05R\x11newestRecordIndex\x12X\n" +
-	"\arecords\x18\x02 \x03(\v2>.wayplatform.connect.tachograph.card.v1.LoadTypeEntries.RecordR\arecords\x1a\x9e\x01\n" +
+	"\arecords\x18\x02 \x03(\v2>.wayplatform.connect.tachograph.card.v1.LoadTypeEntries.RecordR\arecords\x12\x1c\n" +
+	"\tsignature\x18\x03 \x01(\fR\tsignature\x12b\n" +
+	"\x0eauthentication\x18c \x01(\v2:.wayplatform.connect.tachograph.security.v1.AuthenticationR\x0eauthentication\x1a\xe3\x01\n" +
 	"\x06Record\x128\n" +
 	"\ttimestamp\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x12Z\n" +
-	"\x11load_type_entered\x18\x02 \x01(\x0e2..wayplatform.connect.tachograph.dd.v1.LoadTypeR\x0floadTypeEnteredB\xe1\x02\n" +
+	"\x11load_type_entered\x18\x02 \x01(\x0e2..wayplatform.connect.tachograph.dd.v1.LoadTypeR\x0floadTypeEntered\x12C\n" +
+	"\x1eunrecognized_load_type_entered\x18\x03 \x01(\x05R\x1bunrecognizedLoadTypeEnteredB\xe1\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x14LoadTypeEntriesProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_card_v1_load_type_entries_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_wayplatform_connect_tachograph_card_v1_load_type_entries_proto_goTypes = []any{
 	(*LoadTypeEntries)(nil),        // 0: wayplatform.connect.tachograph.card.v1.LoadTypeEntries
 	(*LoadTypeEntries_Record)(nil), // 1: wayplatform.connect.tachograph.card.v1.LoadTypeEntries.Record
-	(*timestamppb.Timestamp)(nil),  // 2: google.protobuf.Timestamp
-	(v1.LoadType)(0),               // 3: wayplatform.connect.tachograph.dd.v1.LoadType
+	(*v1.Authentication)(nil),      // 2: wayplatform.connect.tachograph.security.v1.Authentication
+	(*timestamppb.Timestamp)(nil),  // 3: google.protobuf.Timestamp
+	(v11.LoadType)(0),              // 4: wayplatform.connect.tachograph.dd.v1.LoadType
 }
 var file_wayplatform_connect_tachograph_card_v1_load_type_entries_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.card.v1.LoadTypeEntries.records:type_name -> wayplatform.connect.tachograph.card.v1.LoadTypeEntries.Record
-	2, // 1: wayplatform.connect.tachograph.card.v1.LoadTypeEntries.Record.timestamp:type_name -> google.protobuf.Timestamp
-	3, // 2: wayplatform.connect.tachograph.card.v1.LoadTypeEntries.Record.load_type_entered:type_name -> wayplatform.connect.tachograph.dd.v1.LoadType
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	2, // 1: wayplatform.connect.tachograph.card.v1.LoadTypeEntries.authentication:type_name -> wayplatform.connect.tachograph.security.v1.Authentication
+	3, // 2: wayplatform.connect.tachograph.card.v1.LoadTypeEntries.Record.timestamp:type_name -> google.protobuf.Timestamp
+	4, // 3: wayplatform.connect.tachograph.card.v1.LoadTypeEntries.Record.load_type_entered:type_name -> wayplatform.connect.tachograph.dd.v1.LoadType
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_card_v1_load_type_entries_proto_init() }

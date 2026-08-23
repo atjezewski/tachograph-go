@@ -7,7 +7,8 @@
 package cardv1
 
 import (
-	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
+	v11 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
+	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/security/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -42,6 +43,8 @@ type PlacesAuthentication struct {
 	state                        protoimpl.MessageState          `protogen:"opaque.v1"`
 	xxx_hidden_NewestRecordIndex int32                           `protobuf:"varint,1,opt,name=newest_record_index,json=newestRecordIndex"`
 	xxx_hidden_Records           *[]*PlacesAuthentication_Record `protobuf:"bytes,2,rep,name=records"`
+	xxx_hidden_Signature         []byte                          `protobuf:"bytes,3,opt,name=signature"`
+	xxx_hidden_Authentication    *v1.Authentication              `protobuf:"bytes,99,opt,name=authentication"`
 	XXX_raceDetectHookData       protoimpl.RaceDetectHookData
 	XXX_presence                 [1]uint32
 	unknownFields                protoimpl.UnknownFields
@@ -89,13 +92,39 @@ func (x *PlacesAuthentication) GetRecords() []*PlacesAuthentication_Record {
 	return nil
 }
 
+func (x *PlacesAuthentication) GetSignature() []byte {
+	if x != nil {
+		return x.xxx_hidden_Signature
+	}
+	return nil
+}
+
+func (x *PlacesAuthentication) GetAuthentication() *v1.Authentication {
+	if x != nil {
+		return x.xxx_hidden_Authentication
+	}
+	return nil
+}
+
 func (x *PlacesAuthentication) SetNewestRecordIndex(v int32) {
 	x.xxx_hidden_NewestRecordIndex = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 2)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 4)
 }
 
 func (x *PlacesAuthentication) SetRecords(v []*PlacesAuthentication_Record) {
 	x.xxx_hidden_Records = &v
+}
+
+func (x *PlacesAuthentication) SetSignature(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_Signature = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 4)
+}
+
+func (x *PlacesAuthentication) SetAuthentication(v *v1.Authentication) {
+	x.xxx_hidden_Authentication = v
 }
 
 func (x *PlacesAuthentication) HasNewestRecordIndex() bool {
@@ -105,9 +134,32 @@ func (x *PlacesAuthentication) HasNewestRecordIndex() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
 }
 
+func (x *PlacesAuthentication) HasSignature() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+}
+
+func (x *PlacesAuthentication) HasAuthentication() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_Authentication != nil
+}
+
 func (x *PlacesAuthentication) ClearNewestRecordIndex() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_NewestRecordIndex = 0
+}
+
+func (x *PlacesAuthentication) ClearSignature() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	x.xxx_hidden_Signature = nil
+}
+
+func (x *PlacesAuthentication) ClearAuthentication() {
+	x.xxx_hidden_Authentication = nil
 }
 
 type PlacesAuthentication_builder struct {
@@ -124,6 +176,18 @@ type PlacesAuthentication_builder struct {
 	// The set of place authentication status records.
 	// Corresponds to `placeAuthStatusRecords`.
 	Records []*PlacesAuthentication_Record
+	// Signature data from the following file block, if tagged as a signature for
+	// this EF according to the card file format specification (Appendix 2).
+	//
+	// See Data Dictionary, Section 2.149, `Signature`.
+	//
+	// ASN.1 Definition (Gen2):
+	//
+	//	Signature ::= OCTET STRING (variable size, depends on elliptic curve)
+	Signature []byte
+	// Result of cryptographic signature authentication for this Elementary File.
+	// Present when signature verification has been performed.
+	Authentication *v1.Authentication
 }
 
 func (b0 PlacesAuthentication_builder) Build() *PlacesAuthentication {
@@ -131,10 +195,15 @@ func (b0 PlacesAuthentication_builder) Build() *PlacesAuthentication {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.NewestRecordIndex != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 2)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 4)
 		x.xxx_hidden_NewestRecordIndex = *b.NewestRecordIndex
 	}
 	x.xxx_hidden_Records = &b.Records
+	if b.Signature != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 4)
+		x.xxx_hidden_Signature = b.Signature
+	}
+	x.xxx_hidden_Authentication = b.Authentication
 	return m0
 }
 
@@ -149,13 +218,14 @@ func (b0 PlacesAuthentication_builder) Build() *PlacesAuthentication {
 //	    authenticationStatus PositionAuthenticationStatus
 //	}
 type PlacesAuthentication_Record struct {
-	state                           protoimpl.MessageState          `protogen:"opaque.v1"`
-	xxx_hidden_EntryTime            *timestamppb.Timestamp          `protobuf:"bytes,1,opt,name=entry_time,json=entryTime"`
-	xxx_hidden_AuthenticationStatus v1.PositionAuthenticationStatus `protobuf:"varint,2,opt,name=authentication_status,json=authenticationStatus,enum=wayplatform.connect.tachograph.dd.v1.PositionAuthenticationStatus"`
-	XXX_raceDetectHookData          protoimpl.RaceDetectHookData
-	XXX_presence                    [1]uint32
-	unknownFields                   protoimpl.UnknownFields
-	sizeCache                       protoimpl.SizeCache
+	state                                       protoimpl.MessageState           `protogen:"opaque.v1"`
+	xxx_hidden_EntryTime                        *timestamppb.Timestamp           `protobuf:"bytes,1,opt,name=entry_time,json=entryTime"`
+	xxx_hidden_AuthenticationStatus             v11.PositionAuthenticationStatus `protobuf:"varint,2,opt,name=authentication_status,json=authenticationStatus,enum=wayplatform.connect.tachograph.dd.v1.PositionAuthenticationStatus"`
+	xxx_hidden_UnrecognizedAuthenticationStatus int32                            `protobuf:"varint,3,opt,name=unrecognized_authentication_status,json=unrecognizedAuthenticationStatus"`
+	XXX_raceDetectHookData                      protoimpl.RaceDetectHookData
+	XXX_presence                                [1]uint32
+	unknownFields                               protoimpl.UnknownFields
+	sizeCache                                   protoimpl.SizeCache
 }
 
 func (x *PlacesAuthentication_Record) Reset() {
@@ -190,22 +260,34 @@ func (x *PlacesAuthentication_Record) GetEntryTime() *timestamppb.Timestamp {
 	return nil
 }
 
-func (x *PlacesAuthentication_Record) GetAuthenticationStatus() v1.PositionAuthenticationStatus {
+func (x *PlacesAuthentication_Record) GetAuthenticationStatus() v11.PositionAuthenticationStatus {
 	if x != nil {
 		if protoimpl.X.Present(&(x.XXX_presence[0]), 1) {
 			return x.xxx_hidden_AuthenticationStatus
 		}
 	}
-	return v1.PositionAuthenticationStatus(0)
+	return v11.PositionAuthenticationStatus(0)
+}
+
+func (x *PlacesAuthentication_Record) GetUnrecognizedAuthenticationStatus() int32 {
+	if x != nil {
+		return x.xxx_hidden_UnrecognizedAuthenticationStatus
+	}
+	return 0
 }
 
 func (x *PlacesAuthentication_Record) SetEntryTime(v *timestamppb.Timestamp) {
 	x.xxx_hidden_EntryTime = v
 }
 
-func (x *PlacesAuthentication_Record) SetAuthenticationStatus(v v1.PositionAuthenticationStatus) {
+func (x *PlacesAuthentication_Record) SetAuthenticationStatus(v v11.PositionAuthenticationStatus) {
 	x.xxx_hidden_AuthenticationStatus = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 2)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 3)
+}
+
+func (x *PlacesAuthentication_Record) SetUnrecognizedAuthenticationStatus(v int32) {
+	x.xxx_hidden_UnrecognizedAuthenticationStatus = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
 }
 
 func (x *PlacesAuthentication_Record) HasEntryTime() bool {
@@ -222,13 +304,25 @@ func (x *PlacesAuthentication_Record) HasAuthenticationStatus() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
 }
 
+func (x *PlacesAuthentication_Record) HasUnrecognizedAuthenticationStatus() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+}
+
 func (x *PlacesAuthentication_Record) ClearEntryTime() {
 	x.xxx_hidden_EntryTime = nil
 }
 
 func (x *PlacesAuthentication_Record) ClearAuthenticationStatus() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
-	x.xxx_hidden_AuthenticationStatus = v1.PositionAuthenticationStatus_POSITION_AUTHENTICATION_STATUS_UNSPECIFIED
+	x.xxx_hidden_AuthenticationStatus = v11.PositionAuthenticationStatus_POSITION_AUTHENTICATION_STATUS_UNSPECIFIED
+}
+
+func (x *PlacesAuthentication_Record) ClearUnrecognizedAuthenticationStatus() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	x.xxx_hidden_UnrecognizedAuthenticationStatus = 0
 }
 
 type PlacesAuthentication_Record_builder struct {
@@ -252,7 +346,9 @@ type PlacesAuthentication_Record_builder struct {
 	//	    notAuthenticated(2),
 	//	    authenticationCorrupted(3)
 	//	} (0..255)
-	AuthenticationStatus *v1.PositionAuthenticationStatus
+	AuthenticationStatus *v11.PositionAuthenticationStatus
+	// Preserved raw protocol value when authentication_status is UNRECOGNIZED.
+	UnrecognizedAuthenticationStatus *int32
 }
 
 func (b0 PlacesAuthentication_Record_builder) Build() *PlacesAuthentication_Record {
@@ -261,8 +357,12 @@ func (b0 PlacesAuthentication_Record_builder) Build() *PlacesAuthentication_Reco
 	_, _ = b, x
 	x.xxx_hidden_EntryTime = b.EntryTime
 	if b.AuthenticationStatus != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 2)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 3)
 		x.xxx_hidden_AuthenticationStatus = *b.AuthenticationStatus
+	}
+	if b.UnrecognizedAuthenticationStatus != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
+		x.xxx_hidden_UnrecognizedAuthenticationStatus = *b.UnrecognizedAuthenticationStatus
 	}
 	return m0
 }
@@ -271,32 +371,37 @@ var File_wayplatform_connect_tachograph_card_v1_places_authentication_proto prot
 
 const file_wayplatform_connect_tachograph_card_v1_places_authentication_proto_rawDesc = "" +
 	"\n" +
-	"Bwayplatform/connect/tachograph/card/v1/places_authentication.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aIwayplatform/connect/tachograph/dd/v1/position_authentication_status.proto\"\xe4\x02\n" +
+	"Bwayplatform/connect/tachograph/card/v1/places_authentication.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aIwayplatform/connect/tachograph/dd/v1/position_authentication_status.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\"\xb4\x04\n" +
 	"\x14PlacesAuthentication\x12.\n" +
 	"\x13newest_record_index\x18\x01 \x01(\x05R\x11newestRecordIndex\x12]\n" +
-	"\arecords\x18\x02 \x03(\v2C.wayplatform.connect.tachograph.card.v1.PlacesAuthentication.RecordR\arecords\x1a\xbc\x01\n" +
+	"\arecords\x18\x02 \x03(\v2C.wayplatform.connect.tachograph.card.v1.PlacesAuthentication.RecordR\arecords\x12\x1c\n" +
+	"\tsignature\x18\x03 \x01(\fR\tsignature\x12b\n" +
+	"\x0eauthentication\x18c \x01(\v2:.wayplatform.connect.tachograph.security.v1.AuthenticationR\x0eauthentication\x1a\x8a\x02\n" +
 	"\x06Record\x129\n" +
 	"\n" +
 	"entry_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tentryTime\x12w\n" +
-	"\x15authentication_status\x18\x02 \x01(\x0e2B.wayplatform.connect.tachograph.dd.v1.PositionAuthenticationStatusR\x14authenticationStatusB\xe6\x02\n" +
+	"\x15authentication_status\x18\x02 \x01(\x0e2B.wayplatform.connect.tachograph.dd.v1.PositionAuthenticationStatusR\x14authenticationStatus\x12L\n" +
+	"\"unrecognized_authentication_status\x18\x03 \x01(\x05R unrecognizedAuthenticationStatusB\xe6\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x19PlacesAuthenticationProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_card_v1_places_authentication_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_wayplatform_connect_tachograph_card_v1_places_authentication_proto_goTypes = []any{
-	(*PlacesAuthentication)(nil),         // 0: wayplatform.connect.tachograph.card.v1.PlacesAuthentication
-	(*PlacesAuthentication_Record)(nil),  // 1: wayplatform.connect.tachograph.card.v1.PlacesAuthentication.Record
-	(*timestamppb.Timestamp)(nil),        // 2: google.protobuf.Timestamp
-	(v1.PositionAuthenticationStatus)(0), // 3: wayplatform.connect.tachograph.dd.v1.PositionAuthenticationStatus
+	(*PlacesAuthentication)(nil),          // 0: wayplatform.connect.tachograph.card.v1.PlacesAuthentication
+	(*PlacesAuthentication_Record)(nil),   // 1: wayplatform.connect.tachograph.card.v1.PlacesAuthentication.Record
+	(*v1.Authentication)(nil),             // 2: wayplatform.connect.tachograph.security.v1.Authentication
+	(*timestamppb.Timestamp)(nil),         // 3: google.protobuf.Timestamp
+	(v11.PositionAuthenticationStatus)(0), // 4: wayplatform.connect.tachograph.dd.v1.PositionAuthenticationStatus
 }
 var file_wayplatform_connect_tachograph_card_v1_places_authentication_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.card.v1.PlacesAuthentication.records:type_name -> wayplatform.connect.tachograph.card.v1.PlacesAuthentication.Record
-	2, // 1: wayplatform.connect.tachograph.card.v1.PlacesAuthentication.Record.entry_time:type_name -> google.protobuf.Timestamp
-	3, // 2: wayplatform.connect.tachograph.card.v1.PlacesAuthentication.Record.authentication_status:type_name -> wayplatform.connect.tachograph.dd.v1.PositionAuthenticationStatus
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	2, // 1: wayplatform.connect.tachograph.card.v1.PlacesAuthentication.authentication:type_name -> wayplatform.connect.tachograph.security.v1.Authentication
+	3, // 2: wayplatform.connect.tachograph.card.v1.PlacesAuthentication.Record.entry_time:type_name -> google.protobuf.Timestamp
+	4, // 3: wayplatform.connect.tachograph.card.v1.PlacesAuthentication.Record.authentication_status:type_name -> wayplatform.connect.tachograph.dd.v1.PositionAuthenticationStatus
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_card_v1_places_authentication_proto_init() }

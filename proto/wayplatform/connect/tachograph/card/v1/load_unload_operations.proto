@@ -5,6 +5,7 @@ package wayplatform.connect.tachograph.card.v1;
 import "google/protobuf/timestamp.proto";
 import "wayplatform/connect/tachograph/dd/v1/gnss_place_auth_record.proto";
 import "wayplatform/connect/tachograph/dd/v1/operation_type.proto";
+import "wayplatform/connect/tachograph/security/v1/authentication.proto";
 
 // Represents the content of the EF_Load_Unload_Operations file.
 //
@@ -46,6 +47,10 @@ message LoadUnloadOperations {
     // The type of operation performed.
     wayplatform.connect.tachograph.dd.v1.OperationType operation_type = 2;
 
+    // Preserved raw protocol value when operation_type is UNRECOGNIZED.
+    // Unused record slots carry '00'H, which the regulation reserves.
+    int32 unrecognized_operation_type = 5;
+
     // The authenticated position of the vehicle.
     //
     // See Data Dictionary, Section 2.79c, `GNSSPlaceAuthRecord`.
@@ -72,4 +77,18 @@ message LoadUnloadOperations {
   // The set of load/unload records.
   // Corresponds to `cardLoadUnloadRecords`.
   repeated Record records = 2;
+
+  // Signature data from the following file block, if tagged as a signature for
+  // this EF according to the card file format specification (Appendix 2).
+  //
+  // See Data Dictionary, Section 2.149, `Signature`.
+  //
+  // ASN.1 Definition (Gen2):
+  //
+  //     Signature ::= OCTET STRING (variable size, depends on elliptic curve)
+  bytes signature = 3;
+
+  // Result of cryptographic signature authentication for this Elementary File.
+  // Present when signature verification has been performed.
+  tachograph.security.v1.Authentication authentication = 99;
 }

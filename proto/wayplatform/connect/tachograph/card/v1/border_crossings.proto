@@ -4,6 +4,7 @@ package wayplatform.connect.tachograph.card.v1;
 
 import "wayplatform/connect/tachograph/dd/v1/gnss_place_auth_record.proto";
 import "wayplatform/connect/tachograph/dd/v1/nation_numeric.proto";
+import "wayplatform/connect/tachograph/security/v1/authentication.proto";
 
 // Represents the content of the EF_Border_Crossings file.
 //
@@ -43,6 +44,9 @@ message BorderCrossings {
     //     NationNumeric ::= INTEGER (0..255)
     wayplatform.connect.tachograph.dd.v1.NationNumeric country_left = 1;
 
+    // Preserved raw protocol value when country_left is UNRECOGNIZED.
+    int32 unrecognized_country_left = 5;
+
     // Country the vehicle is entering.
     //
     // See Data Dictionary, Section 2.101, `NationNumeric`.
@@ -50,6 +54,9 @@ message BorderCrossings {
     //
     //     NationNumeric ::= INTEGER (0..255)
     wayplatform.connect.tachograph.dd.v1.NationNumeric country_entered = 2;
+
+    // Preserved raw protocol value when country_entered is UNRECOGNIZED.
+    int32 unrecognized_country_entered = 6;
 
     // Authenticated position of the vehicle at the time of crossing.
     //
@@ -77,4 +84,18 @@ message BorderCrossings {
   // The set of border crossing records.
   // Corresponds to `cardBorderCrossingRecords`.
   repeated Record records = 2;
+
+  // Signature data from the following file block, if tagged as a signature for
+  // this EF according to the card file format specification (Appendix 2).
+  //
+  // See Data Dictionary, Section 2.149, `Signature`.
+  //
+  // ASN.1 Definition (Gen2):
+  //
+  //     Signature ::= OCTET STRING (variable size, depends on elliptic curve)
+  bytes signature = 3;
+
+  // Result of cryptographic signature authentication for this Elementary File.
+  // Present when signature verification has been performed.
+  tachograph.security.v1.Authentication authentication = 99;
 }

@@ -7,7 +7,8 @@
 package cardv1
 
 import (
-	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
+	v11 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
+	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/security/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -41,6 +42,8 @@ type BorderCrossings struct {
 	state                        protoimpl.MessageState     `protogen:"opaque.v1"`
 	xxx_hidden_NewestRecordIndex int32                      `protobuf:"varint,1,opt,name=newest_record_index,json=newestRecordIndex"`
 	xxx_hidden_Records           *[]*BorderCrossings_Record `protobuf:"bytes,2,rep,name=records"`
+	xxx_hidden_Signature         []byte                     `protobuf:"bytes,3,opt,name=signature"`
+	xxx_hidden_Authentication    *v1.Authentication         `protobuf:"bytes,99,opt,name=authentication"`
 	XXX_raceDetectHookData       protoimpl.RaceDetectHookData
 	XXX_presence                 [1]uint32
 	unknownFields                protoimpl.UnknownFields
@@ -88,13 +91,39 @@ func (x *BorderCrossings) GetRecords() []*BorderCrossings_Record {
 	return nil
 }
 
+func (x *BorderCrossings) GetSignature() []byte {
+	if x != nil {
+		return x.xxx_hidden_Signature
+	}
+	return nil
+}
+
+func (x *BorderCrossings) GetAuthentication() *v1.Authentication {
+	if x != nil {
+		return x.xxx_hidden_Authentication
+	}
+	return nil
+}
+
 func (x *BorderCrossings) SetNewestRecordIndex(v int32) {
 	x.xxx_hidden_NewestRecordIndex = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 2)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 4)
 }
 
 func (x *BorderCrossings) SetRecords(v []*BorderCrossings_Record) {
 	x.xxx_hidden_Records = &v
+}
+
+func (x *BorderCrossings) SetSignature(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_Signature = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 4)
+}
+
+func (x *BorderCrossings) SetAuthentication(v *v1.Authentication) {
+	x.xxx_hidden_Authentication = v
 }
 
 func (x *BorderCrossings) HasNewestRecordIndex() bool {
@@ -104,9 +133,32 @@ func (x *BorderCrossings) HasNewestRecordIndex() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
 }
 
+func (x *BorderCrossings) HasSignature() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+}
+
+func (x *BorderCrossings) HasAuthentication() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_Authentication != nil
+}
+
 func (x *BorderCrossings) ClearNewestRecordIndex() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_NewestRecordIndex = 0
+}
+
+func (x *BorderCrossings) ClearSignature() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	x.xxx_hidden_Signature = nil
+}
+
+func (x *BorderCrossings) ClearAuthentication() {
+	x.xxx_hidden_Authentication = nil
 }
 
 type BorderCrossings_builder struct {
@@ -123,6 +175,18 @@ type BorderCrossings_builder struct {
 	// The set of border crossing records.
 	// Corresponds to `cardBorderCrossingRecords`.
 	Records []*BorderCrossings_Record
+	// Signature data from the following file block, if tagged as a signature for
+	// this EF according to the card file format specification (Appendix 2).
+	//
+	// See Data Dictionary, Section 2.149, `Signature`.
+	//
+	// ASN.1 Definition (Gen2):
+	//
+	//	Signature ::= OCTET STRING (variable size, depends on elliptic curve)
+	Signature []byte
+	// Result of cryptographic signature authentication for this Elementary File.
+	// Present when signature verification has been performed.
+	Authentication *v1.Authentication
 }
 
 func (b0 BorderCrossings_builder) Build() *BorderCrossings {
@@ -130,10 +194,15 @@ func (b0 BorderCrossings_builder) Build() *BorderCrossings {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.NewestRecordIndex != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 2)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 4)
 		x.xxx_hidden_NewestRecordIndex = *b.NewestRecordIndex
 	}
 	x.xxx_hidden_Records = &b.Records
+	if b.Signature != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 4)
+		x.xxx_hidden_Signature = b.Signature
+	}
+	x.xxx_hidden_Authentication = b.Authentication
 	return m0
 }
 
@@ -150,15 +219,17 @@ func (b0 BorderCrossings_builder) Build() *BorderCrossings {
 //	    vehicleOdometerValue OdometerShort
 //	}
 type BorderCrossings_Record struct {
-	state                          protoimpl.MessageState  `protogen:"opaque.v1"`
-	xxx_hidden_CountryLeft         v1.NationNumeric        `protobuf:"varint,1,opt,name=country_left,json=countryLeft,enum=wayplatform.connect.tachograph.dd.v1.NationNumeric"`
-	xxx_hidden_CountryEntered      v1.NationNumeric        `protobuf:"varint,2,opt,name=country_entered,json=countryEntered,enum=wayplatform.connect.tachograph.dd.v1.NationNumeric"`
-	xxx_hidden_GnssPlaceAuthRecord *v1.GNSSPlaceAuthRecord `protobuf:"bytes,3,opt,name=gnss_place_auth_record,json=gnssPlaceAuthRecord"`
-	xxx_hidden_VehicleOdometerKm   int32                   `protobuf:"varint,4,opt,name=vehicle_odometer_km,json=vehicleOdometerKm"`
-	XXX_raceDetectHookData         protoimpl.RaceDetectHookData
-	XXX_presence                   [1]uint32
-	unknownFields                  protoimpl.UnknownFields
-	sizeCache                      protoimpl.SizeCache
+	state                                 protoimpl.MessageState   `protogen:"opaque.v1"`
+	xxx_hidden_CountryLeft                v11.NationNumeric        `protobuf:"varint,1,opt,name=country_left,json=countryLeft,enum=wayplatform.connect.tachograph.dd.v1.NationNumeric"`
+	xxx_hidden_UnrecognizedCountryLeft    int32                    `protobuf:"varint,5,opt,name=unrecognized_country_left,json=unrecognizedCountryLeft"`
+	xxx_hidden_CountryEntered             v11.NationNumeric        `protobuf:"varint,2,opt,name=country_entered,json=countryEntered,enum=wayplatform.connect.tachograph.dd.v1.NationNumeric"`
+	xxx_hidden_UnrecognizedCountryEntered int32                    `protobuf:"varint,6,opt,name=unrecognized_country_entered,json=unrecognizedCountryEntered"`
+	xxx_hidden_GnssPlaceAuthRecord        *v11.GNSSPlaceAuthRecord `protobuf:"bytes,3,opt,name=gnss_place_auth_record,json=gnssPlaceAuthRecord"`
+	xxx_hidden_VehicleOdometerKm          int32                    `protobuf:"varint,4,opt,name=vehicle_odometer_km,json=vehicleOdometerKm"`
+	XXX_raceDetectHookData                protoimpl.RaceDetectHookData
+	XXX_presence                          [1]uint32
+	unknownFields                         protoimpl.UnknownFields
+	sizeCache                             protoimpl.SizeCache
 }
 
 func (x *BorderCrossings_Record) Reset() {
@@ -186,25 +257,39 @@ func (x *BorderCrossings_Record) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *BorderCrossings_Record) GetCountryLeft() v1.NationNumeric {
+func (x *BorderCrossings_Record) GetCountryLeft() v11.NationNumeric {
 	if x != nil {
 		if protoimpl.X.Present(&(x.XXX_presence[0]), 0) {
 			return x.xxx_hidden_CountryLeft
 		}
 	}
-	return v1.NationNumeric(0)
+	return v11.NationNumeric(0)
 }
 
-func (x *BorderCrossings_Record) GetCountryEntered() v1.NationNumeric {
+func (x *BorderCrossings_Record) GetUnrecognizedCountryLeft() int32 {
 	if x != nil {
-		if protoimpl.X.Present(&(x.XXX_presence[0]), 1) {
+		return x.xxx_hidden_UnrecognizedCountryLeft
+	}
+	return 0
+}
+
+func (x *BorderCrossings_Record) GetCountryEntered() v11.NationNumeric {
+	if x != nil {
+		if protoimpl.X.Present(&(x.XXX_presence[0]), 2) {
 			return x.xxx_hidden_CountryEntered
 		}
 	}
-	return v1.NationNumeric(0)
+	return v11.NationNumeric(0)
 }
 
-func (x *BorderCrossings_Record) GetGnssPlaceAuthRecord() *v1.GNSSPlaceAuthRecord {
+func (x *BorderCrossings_Record) GetUnrecognizedCountryEntered() int32 {
+	if x != nil {
+		return x.xxx_hidden_UnrecognizedCountryEntered
+	}
+	return 0
+}
+
+func (x *BorderCrossings_Record) GetGnssPlaceAuthRecord() *v11.GNSSPlaceAuthRecord {
 	if x != nil {
 		return x.xxx_hidden_GnssPlaceAuthRecord
 	}
@@ -218,23 +303,33 @@ func (x *BorderCrossings_Record) GetVehicleOdometerKm() int32 {
 	return 0
 }
 
-func (x *BorderCrossings_Record) SetCountryLeft(v v1.NationNumeric) {
+func (x *BorderCrossings_Record) SetCountryLeft(v v11.NationNumeric) {
 	x.xxx_hidden_CountryLeft = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 4)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 6)
 }
 
-func (x *BorderCrossings_Record) SetCountryEntered(v v1.NationNumeric) {
+func (x *BorderCrossings_Record) SetUnrecognizedCountryLeft(v int32) {
+	x.xxx_hidden_UnrecognizedCountryLeft = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 6)
+}
+
+func (x *BorderCrossings_Record) SetCountryEntered(v v11.NationNumeric) {
 	x.xxx_hidden_CountryEntered = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 4)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 6)
 }
 
-func (x *BorderCrossings_Record) SetGnssPlaceAuthRecord(v *v1.GNSSPlaceAuthRecord) {
+func (x *BorderCrossings_Record) SetUnrecognizedCountryEntered(v int32) {
+	x.xxx_hidden_UnrecognizedCountryEntered = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 6)
+}
+
+func (x *BorderCrossings_Record) SetGnssPlaceAuthRecord(v *v11.GNSSPlaceAuthRecord) {
 	x.xxx_hidden_GnssPlaceAuthRecord = v
 }
 
 func (x *BorderCrossings_Record) SetVehicleOdometerKm(v int32) {
 	x.xxx_hidden_VehicleOdometerKm = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 4)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 6)
 }
 
 func (x *BorderCrossings_Record) HasCountryLeft() bool {
@@ -244,11 +339,25 @@ func (x *BorderCrossings_Record) HasCountryLeft() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
 }
 
-func (x *BorderCrossings_Record) HasCountryEntered() bool {
+func (x *BorderCrossings_Record) HasUnrecognizedCountryLeft() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
+}
+
+func (x *BorderCrossings_Record) HasCountryEntered() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+}
+
+func (x *BorderCrossings_Record) HasUnrecognizedCountryEntered() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
 }
 
 func (x *BorderCrossings_Record) HasGnssPlaceAuthRecord() bool {
@@ -262,17 +371,27 @@ func (x *BorderCrossings_Record) HasVehicleOdometerKm() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
 }
 
 func (x *BorderCrossings_Record) ClearCountryLeft() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
-	x.xxx_hidden_CountryLeft = v1.NationNumeric_NATION_NUMERIC_UNSPECIFIED
+	x.xxx_hidden_CountryLeft = v11.NationNumeric_NATION_NUMERIC_UNSPECIFIED
+}
+
+func (x *BorderCrossings_Record) ClearUnrecognizedCountryLeft() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
+	x.xxx_hidden_UnrecognizedCountryLeft = 0
 }
 
 func (x *BorderCrossings_Record) ClearCountryEntered() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
-	x.xxx_hidden_CountryEntered = v1.NationNumeric_NATION_NUMERIC_UNSPECIFIED
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	x.xxx_hidden_CountryEntered = v11.NationNumeric_NATION_NUMERIC_UNSPECIFIED
+}
+
+func (x *BorderCrossings_Record) ClearUnrecognizedCountryEntered() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
+	x.xxx_hidden_UnrecognizedCountryEntered = 0
 }
 
 func (x *BorderCrossings_Record) ClearGnssPlaceAuthRecord() {
@@ -280,7 +399,7 @@ func (x *BorderCrossings_Record) ClearGnssPlaceAuthRecord() {
 }
 
 func (x *BorderCrossings_Record) ClearVehicleOdometerKm() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 5)
 	x.xxx_hidden_VehicleOdometerKm = 0
 }
 
@@ -293,18 +412,22 @@ type BorderCrossings_Record_builder struct {
 	// ASN.1 Specification:
 	//
 	//	NationNumeric ::= INTEGER (0..255)
-	CountryLeft *v1.NationNumeric
+	CountryLeft *v11.NationNumeric
+	// Preserved raw protocol value when country_left is UNRECOGNIZED.
+	UnrecognizedCountryLeft *int32
 	// Country the vehicle is entering.
 	//
 	// See Data Dictionary, Section 2.101, `NationNumeric`.
 	// ASN.1 Specification:
 	//
 	//	NationNumeric ::= INTEGER (0..255)
-	CountryEntered *v1.NationNumeric
+	CountryEntered *v11.NationNumeric
+	// Preserved raw protocol value when country_entered is UNRECOGNIZED.
+	UnrecognizedCountryEntered *int32
 	// Authenticated position of the vehicle at the time of crossing.
 	//
 	// See Data Dictionary, Section 2.79c, `GNSSPlaceAuthRecord`.
-	GnssPlaceAuthRecord *v1.GNSSPlaceAuthRecord
+	GnssPlaceAuthRecord *v11.GNSSPlaceAuthRecord
 	// Odometer at the time of crossing, in kilometers.
 	//
 	// See Data Dictionary, Section 2.113, `OdometerShort`.
@@ -319,16 +442,24 @@ func (b0 BorderCrossings_Record_builder) Build() *BorderCrossings_Record {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.CountryLeft != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 4)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 6)
 		x.xxx_hidden_CountryLeft = *b.CountryLeft
 	}
+	if b.UnrecognizedCountryLeft != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 6)
+		x.xxx_hidden_UnrecognizedCountryLeft = *b.UnrecognizedCountryLeft
+	}
 	if b.CountryEntered != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 4)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 6)
 		x.xxx_hidden_CountryEntered = *b.CountryEntered
+	}
+	if b.UnrecognizedCountryEntered != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 6)
+		x.xxx_hidden_UnrecognizedCountryEntered = *b.UnrecognizedCountryEntered
 	}
 	x.xxx_hidden_GnssPlaceAuthRecord = b.GnssPlaceAuthRecord
 	if b.VehicleOdometerKm != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 4)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 6)
 		x.xxx_hidden_VehicleOdometerKm = *b.VehicleOdometerKm
 	}
 	return m0
@@ -338,34 +469,40 @@ var File_wayplatform_connect_tachograph_card_v1_border_crossings_proto protorefl
 
 const file_wayplatform_connect_tachograph_card_v1_border_crossings_proto_rawDesc = "" +
 	"\n" +
-	"=wayplatform/connect/tachograph/card/v1/border_crossings.proto\x12&wayplatform.connect.tachograph.card.v1\x1aAwayplatform/connect/tachograph/dd/v1/gnss_place_auth_record.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\"\xfc\x03\n" +
+	"=wayplatform/connect/tachograph/card/v1/border_crossings.proto\x12&wayplatform.connect.tachograph.card.v1\x1aAwayplatform/connect/tachograph/dd/v1/gnss_place_auth_record.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\"\xfc\x05\n" +
 	"\x0fBorderCrossings\x12.\n" +
 	"\x13newest_record_index\x18\x01 \x01(\x05R\x11newestRecordIndex\x12X\n" +
-	"\arecords\x18\x02 \x03(\v2>.wayplatform.connect.tachograph.card.v1.BorderCrossings.RecordR\arecords\x1a\xde\x02\n" +
+	"\arecords\x18\x02 \x03(\v2>.wayplatform.connect.tachograph.card.v1.BorderCrossings.RecordR\arecords\x12\x1c\n" +
+	"\tsignature\x18\x03 \x01(\fR\tsignature\x12b\n" +
+	"\x0eauthentication\x18c \x01(\v2:.wayplatform.connect.tachograph.security.v1.AuthenticationR\x0eauthentication\x1a\xdc\x03\n" +
 	"\x06Record\x12V\n" +
-	"\fcountry_left\x18\x01 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.NationNumericR\vcountryLeft\x12\\\n" +
-	"\x0fcountry_entered\x18\x02 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.NationNumericR\x0ecountryEntered\x12n\n" +
+	"\fcountry_left\x18\x01 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.NationNumericR\vcountryLeft\x12:\n" +
+	"\x19unrecognized_country_left\x18\x05 \x01(\x05R\x17unrecognizedCountryLeft\x12\\\n" +
+	"\x0fcountry_entered\x18\x02 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.NationNumericR\x0ecountryEntered\x12@\n" +
+	"\x1cunrecognized_country_entered\x18\x06 \x01(\x05R\x1aunrecognizedCountryEntered\x12n\n" +
 	"\x16gnss_place_auth_record\x18\x03 \x01(\v29.wayplatform.connect.tachograph.dd.v1.GNSSPlaceAuthRecordR\x13gnssPlaceAuthRecord\x12.\n" +
 	"\x13vehicle_odometer_km\x18\x04 \x01(\x05R\x11vehicleOdometerKmB\xe1\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x14BorderCrossingsProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_card_v1_border_crossings_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_wayplatform_connect_tachograph_card_v1_border_crossings_proto_goTypes = []any{
-	(*BorderCrossings)(nil),        // 0: wayplatform.connect.tachograph.card.v1.BorderCrossings
-	(*BorderCrossings_Record)(nil), // 1: wayplatform.connect.tachograph.card.v1.BorderCrossings.Record
-	(v1.NationNumeric)(0),          // 2: wayplatform.connect.tachograph.dd.v1.NationNumeric
-	(*v1.GNSSPlaceAuthRecord)(nil), // 3: wayplatform.connect.tachograph.dd.v1.GNSSPlaceAuthRecord
+	(*BorderCrossings)(nil),         // 0: wayplatform.connect.tachograph.card.v1.BorderCrossings
+	(*BorderCrossings_Record)(nil),  // 1: wayplatform.connect.tachograph.card.v1.BorderCrossings.Record
+	(*v1.Authentication)(nil),       // 2: wayplatform.connect.tachograph.security.v1.Authentication
+	(v11.NationNumeric)(0),          // 3: wayplatform.connect.tachograph.dd.v1.NationNumeric
+	(*v11.GNSSPlaceAuthRecord)(nil), // 4: wayplatform.connect.tachograph.dd.v1.GNSSPlaceAuthRecord
 }
 var file_wayplatform_connect_tachograph_card_v1_border_crossings_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.card.v1.BorderCrossings.records:type_name -> wayplatform.connect.tachograph.card.v1.BorderCrossings.Record
-	2, // 1: wayplatform.connect.tachograph.card.v1.BorderCrossings.Record.country_left:type_name -> wayplatform.connect.tachograph.dd.v1.NationNumeric
-	2, // 2: wayplatform.connect.tachograph.card.v1.BorderCrossings.Record.country_entered:type_name -> wayplatform.connect.tachograph.dd.v1.NationNumeric
-	3, // 3: wayplatform.connect.tachograph.card.v1.BorderCrossings.Record.gnss_place_auth_record:type_name -> wayplatform.connect.tachograph.dd.v1.GNSSPlaceAuthRecord
-	4, // [4:4] is the sub-list for method output_type
-	4, // [4:4] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	2, // 1: wayplatform.connect.tachograph.card.v1.BorderCrossings.authentication:type_name -> wayplatform.connect.tachograph.security.v1.Authentication
+	3, // 2: wayplatform.connect.tachograph.card.v1.BorderCrossings.Record.country_left:type_name -> wayplatform.connect.tachograph.dd.v1.NationNumeric
+	3, // 3: wayplatform.connect.tachograph.card.v1.BorderCrossings.Record.country_entered:type_name -> wayplatform.connect.tachograph.dd.v1.NationNumeric
+	4, // 4: wayplatform.connect.tachograph.card.v1.BorderCrossings.Record.gnss_place_auth_record:type_name -> wayplatform.connect.tachograph.dd.v1.GNSSPlaceAuthRecord
+	5, // [5:5] is the sub-list for method output_type
+	5, // [5:5] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_card_v1_border_crossings_proto_init() }

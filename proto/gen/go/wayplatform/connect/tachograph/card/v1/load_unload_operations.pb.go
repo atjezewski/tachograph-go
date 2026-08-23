@@ -7,7 +7,8 @@
 package cardv1
 
 import (
-	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
+	v11 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
+	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/security/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -41,6 +42,8 @@ type LoadUnloadOperations struct {
 	state                        protoimpl.MessageState          `protogen:"opaque.v1"`
 	xxx_hidden_NewestRecordIndex int32                           `protobuf:"varint,1,opt,name=newest_record_index,json=newestRecordIndex"`
 	xxx_hidden_Records           *[]*LoadUnloadOperations_Record `protobuf:"bytes,2,rep,name=records"`
+	xxx_hidden_Signature         []byte                          `protobuf:"bytes,3,opt,name=signature"`
+	xxx_hidden_Authentication    *v1.Authentication              `protobuf:"bytes,99,opt,name=authentication"`
 	XXX_raceDetectHookData       protoimpl.RaceDetectHookData
 	XXX_presence                 [1]uint32
 	unknownFields                protoimpl.UnknownFields
@@ -88,13 +91,39 @@ func (x *LoadUnloadOperations) GetRecords() []*LoadUnloadOperations_Record {
 	return nil
 }
 
+func (x *LoadUnloadOperations) GetSignature() []byte {
+	if x != nil {
+		return x.xxx_hidden_Signature
+	}
+	return nil
+}
+
+func (x *LoadUnloadOperations) GetAuthentication() *v1.Authentication {
+	if x != nil {
+		return x.xxx_hidden_Authentication
+	}
+	return nil
+}
+
 func (x *LoadUnloadOperations) SetNewestRecordIndex(v int32) {
 	x.xxx_hidden_NewestRecordIndex = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 2)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 4)
 }
 
 func (x *LoadUnloadOperations) SetRecords(v []*LoadUnloadOperations_Record) {
 	x.xxx_hidden_Records = &v
+}
+
+func (x *LoadUnloadOperations) SetSignature(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_Signature = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 4)
+}
+
+func (x *LoadUnloadOperations) SetAuthentication(v *v1.Authentication) {
+	x.xxx_hidden_Authentication = v
 }
 
 func (x *LoadUnloadOperations) HasNewestRecordIndex() bool {
@@ -104,9 +133,32 @@ func (x *LoadUnloadOperations) HasNewestRecordIndex() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
 }
 
+func (x *LoadUnloadOperations) HasSignature() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+}
+
+func (x *LoadUnloadOperations) HasAuthentication() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_Authentication != nil
+}
+
 func (x *LoadUnloadOperations) ClearNewestRecordIndex() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_NewestRecordIndex = 0
+}
+
+func (x *LoadUnloadOperations) ClearSignature() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	x.xxx_hidden_Signature = nil
+}
+
+func (x *LoadUnloadOperations) ClearAuthentication() {
+	x.xxx_hidden_Authentication = nil
 }
 
 type LoadUnloadOperations_builder struct {
@@ -123,6 +175,18 @@ type LoadUnloadOperations_builder struct {
 	// The set of load/unload records.
 	// Corresponds to `cardLoadUnloadRecords`.
 	Records []*LoadUnloadOperations_Record
+	// Signature data from the following file block, if tagged as a signature for
+	// this EF according to the card file format specification (Appendix 2).
+	//
+	// See Data Dictionary, Section 2.149, `Signature`.
+	//
+	// ASN.1 Definition (Gen2):
+	//
+	//	Signature ::= OCTET STRING (variable size, depends on elliptic curve)
+	Signature []byte
+	// Result of cryptographic signature authentication for this Elementary File.
+	// Present when signature verification has been performed.
+	Authentication *v1.Authentication
 }
 
 func (b0 LoadUnloadOperations_builder) Build() *LoadUnloadOperations {
@@ -130,10 +194,15 @@ func (b0 LoadUnloadOperations_builder) Build() *LoadUnloadOperations {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.NewestRecordIndex != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 2)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 4)
 		x.xxx_hidden_NewestRecordIndex = *b.NewestRecordIndex
 	}
 	x.xxx_hidden_Records = &b.Records
+	if b.Signature != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 4)
+		x.xxx_hidden_Signature = b.Signature
+	}
+	x.xxx_hidden_Authentication = b.Authentication
 	return m0
 }
 
@@ -150,15 +219,16 @@ func (b0 LoadUnloadOperations_builder) Build() *LoadUnloadOperations {
 //	    vehicleOdometerValue OdometerShort
 //	}
 type LoadUnloadOperations_Record struct {
-	state                          protoimpl.MessageState  `protogen:"opaque.v1"`
-	xxx_hidden_Timestamp           *timestamppb.Timestamp  `protobuf:"bytes,1,opt,name=timestamp"`
-	xxx_hidden_OperationType       v1.OperationType        `protobuf:"varint,2,opt,name=operation_type,json=operationType,enum=wayplatform.connect.tachograph.dd.v1.OperationType"`
-	xxx_hidden_GnssPlaceAuthRecord *v1.GNSSPlaceAuthRecord `protobuf:"bytes,3,opt,name=gnss_place_auth_record,json=gnssPlaceAuthRecord"`
-	xxx_hidden_VehicleOdometerKm   int32                   `protobuf:"varint,4,opt,name=vehicle_odometer_km,json=vehicleOdometerKm"`
-	XXX_raceDetectHookData         protoimpl.RaceDetectHookData
-	XXX_presence                   [1]uint32
-	unknownFields                  protoimpl.UnknownFields
-	sizeCache                      protoimpl.SizeCache
+	state                                protoimpl.MessageState   `protogen:"opaque.v1"`
+	xxx_hidden_Timestamp                 *timestamppb.Timestamp   `protobuf:"bytes,1,opt,name=timestamp"`
+	xxx_hidden_OperationType             v11.OperationType        `protobuf:"varint,2,opt,name=operation_type,json=operationType,enum=wayplatform.connect.tachograph.dd.v1.OperationType"`
+	xxx_hidden_UnrecognizedOperationType int32                    `protobuf:"varint,5,opt,name=unrecognized_operation_type,json=unrecognizedOperationType"`
+	xxx_hidden_GnssPlaceAuthRecord       *v11.GNSSPlaceAuthRecord `protobuf:"bytes,3,opt,name=gnss_place_auth_record,json=gnssPlaceAuthRecord"`
+	xxx_hidden_VehicleOdometerKm         int32                    `protobuf:"varint,4,opt,name=vehicle_odometer_km,json=vehicleOdometerKm"`
+	XXX_raceDetectHookData               protoimpl.RaceDetectHookData
+	XXX_presence                         [1]uint32
+	unknownFields                        protoimpl.UnknownFields
+	sizeCache                            protoimpl.SizeCache
 }
 
 func (x *LoadUnloadOperations_Record) Reset() {
@@ -193,16 +263,23 @@ func (x *LoadUnloadOperations_Record) GetTimestamp() *timestamppb.Timestamp {
 	return nil
 }
 
-func (x *LoadUnloadOperations_Record) GetOperationType() v1.OperationType {
+func (x *LoadUnloadOperations_Record) GetOperationType() v11.OperationType {
 	if x != nil {
 		if protoimpl.X.Present(&(x.XXX_presence[0]), 1) {
 			return x.xxx_hidden_OperationType
 		}
 	}
-	return v1.OperationType(0)
+	return v11.OperationType(0)
 }
 
-func (x *LoadUnloadOperations_Record) GetGnssPlaceAuthRecord() *v1.GNSSPlaceAuthRecord {
+func (x *LoadUnloadOperations_Record) GetUnrecognizedOperationType() int32 {
+	if x != nil {
+		return x.xxx_hidden_UnrecognizedOperationType
+	}
+	return 0
+}
+
+func (x *LoadUnloadOperations_Record) GetGnssPlaceAuthRecord() *v11.GNSSPlaceAuthRecord {
 	if x != nil {
 		return x.xxx_hidden_GnssPlaceAuthRecord
 	}
@@ -220,18 +297,23 @@ func (x *LoadUnloadOperations_Record) SetTimestamp(v *timestamppb.Timestamp) {
 	x.xxx_hidden_Timestamp = v
 }
 
-func (x *LoadUnloadOperations_Record) SetOperationType(v v1.OperationType) {
+func (x *LoadUnloadOperations_Record) SetOperationType(v v11.OperationType) {
 	x.xxx_hidden_OperationType = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 4)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 5)
 }
 
-func (x *LoadUnloadOperations_Record) SetGnssPlaceAuthRecord(v *v1.GNSSPlaceAuthRecord) {
+func (x *LoadUnloadOperations_Record) SetUnrecognizedOperationType(v int32) {
+	x.xxx_hidden_UnrecognizedOperationType = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 5)
+}
+
+func (x *LoadUnloadOperations_Record) SetGnssPlaceAuthRecord(v *v11.GNSSPlaceAuthRecord) {
 	x.xxx_hidden_GnssPlaceAuthRecord = v
 }
 
 func (x *LoadUnloadOperations_Record) SetVehicleOdometerKm(v int32) {
 	x.xxx_hidden_VehicleOdometerKm = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 4)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 5)
 }
 
 func (x *LoadUnloadOperations_Record) HasTimestamp() bool {
@@ -248,6 +330,13 @@ func (x *LoadUnloadOperations_Record) HasOperationType() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
 }
 
+func (x *LoadUnloadOperations_Record) HasUnrecognizedOperationType() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+}
+
 func (x *LoadUnloadOperations_Record) HasGnssPlaceAuthRecord() bool {
 	if x == nil {
 		return false
@@ -259,7 +348,7 @@ func (x *LoadUnloadOperations_Record) HasVehicleOdometerKm() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
 }
 
 func (x *LoadUnloadOperations_Record) ClearTimestamp() {
@@ -268,7 +357,12 @@ func (x *LoadUnloadOperations_Record) ClearTimestamp() {
 
 func (x *LoadUnloadOperations_Record) ClearOperationType() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
-	x.xxx_hidden_OperationType = v1.OperationType_OPERATION_TYPE_UNSPECIFIED
+	x.xxx_hidden_OperationType = v11.OperationType_OPERATION_TYPE_UNSPECIFIED
+}
+
+func (x *LoadUnloadOperations_Record) ClearUnrecognizedOperationType() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	x.xxx_hidden_UnrecognizedOperationType = 0
 }
 
 func (x *LoadUnloadOperations_Record) ClearGnssPlaceAuthRecord() {
@@ -276,7 +370,7 @@ func (x *LoadUnloadOperations_Record) ClearGnssPlaceAuthRecord() {
 }
 
 func (x *LoadUnloadOperations_Record) ClearVehicleOdometerKm() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
 	x.xxx_hidden_VehicleOdometerKm = 0
 }
 
@@ -291,11 +385,14 @@ type LoadUnloadOperations_Record_builder struct {
 	//	TimeReal ::= INTEGER (0..2^32-1)
 	Timestamp *timestamppb.Timestamp
 	// The type of operation performed.
-	OperationType *v1.OperationType
+	OperationType *v11.OperationType
+	// Preserved raw protocol value when operation_type is UNRECOGNIZED.
+	// Unused record slots carry '00'H, which the regulation reserves.
+	UnrecognizedOperationType *int32
 	// The authenticated position of the vehicle.
 	//
 	// See Data Dictionary, Section 2.79c, `GNSSPlaceAuthRecord`.
-	GnssPlaceAuthRecord *v1.GNSSPlaceAuthRecord
+	GnssPlaceAuthRecord *v11.GNSSPlaceAuthRecord
 	// The odometer value at the beginning of the operation in kilometers.
 	//
 	// See Data Dictionary, Section 2.113, `OdometerShort`.
@@ -311,12 +408,16 @@ func (b0 LoadUnloadOperations_Record_builder) Build() *LoadUnloadOperations_Reco
 	_, _ = b, x
 	x.xxx_hidden_Timestamp = b.Timestamp
 	if b.OperationType != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 4)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 5)
 		x.xxx_hidden_OperationType = *b.OperationType
+	}
+	if b.UnrecognizedOperationType != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 5)
+		x.xxx_hidden_UnrecognizedOperationType = *b.UnrecognizedOperationType
 	}
 	x.xxx_hidden_GnssPlaceAuthRecord = b.GnssPlaceAuthRecord
 	if b.VehicleOdometerKm != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 4)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 5)
 		x.xxx_hidden_VehicleOdometerKm = *b.VehicleOdometerKm
 	}
 	return m0
@@ -326,13 +427,16 @@ var File_wayplatform_connect_tachograph_card_v1_load_unload_operations_proto pro
 
 const file_wayplatform_connect_tachograph_card_v1_load_unload_operations_proto_rawDesc = "" +
 	"\n" +
-	"Cwayplatform/connect/tachograph/card/v1/load_unload_operations.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aAwayplatform/connect/tachograph/dd/v1/gnss_place_auth_record.proto\x1a9wayplatform/connect/tachograph/dd/v1/operation_type.proto\"\xe6\x03\n" +
+	"Cwayplatform/connect/tachograph/card/v1/load_unload_operations.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aAwayplatform/connect/tachograph/dd/v1/gnss_place_auth_record.proto\x1a9wayplatform/connect/tachograph/dd/v1/operation_type.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\"\xa8\x05\n" +
 	"\x14LoadUnloadOperations\x12.\n" +
 	"\x13newest_record_index\x18\x01 \x01(\x05R\x11newestRecordIndex\x12]\n" +
-	"\arecords\x18\x02 \x03(\v2C.wayplatform.connect.tachograph.card.v1.LoadUnloadOperations.RecordR\arecords\x1a\xbe\x02\n" +
+	"\arecords\x18\x02 \x03(\v2C.wayplatform.connect.tachograph.card.v1.LoadUnloadOperations.RecordR\arecords\x12\x1c\n" +
+	"\tsignature\x18\x03 \x01(\fR\tsignature\x12b\n" +
+	"\x0eauthentication\x18c \x01(\v2:.wayplatform.connect.tachograph.security.v1.AuthenticationR\x0eauthentication\x1a\xfe\x02\n" +
 	"\x06Record\x128\n" +
 	"\ttimestamp\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x12Z\n" +
-	"\x0eoperation_type\x18\x02 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.OperationTypeR\roperationType\x12n\n" +
+	"\x0eoperation_type\x18\x02 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.OperationTypeR\roperationType\x12>\n" +
+	"\x1bunrecognized_operation_type\x18\x05 \x01(\x05R\x19unrecognizedOperationType\x12n\n" +
 	"\x16gnss_place_auth_record\x18\x03 \x01(\v29.wayplatform.connect.tachograph.dd.v1.GNSSPlaceAuthRecordR\x13gnssPlaceAuthRecord\x12.\n" +
 	"\x13vehicle_odometer_km\x18\x04 \x01(\x05R\x11vehicleOdometerKmB\xe6\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x19LoadUnloadOperationsProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
@@ -341,20 +445,22 @@ var file_wayplatform_connect_tachograph_card_v1_load_unload_operations_proto_msg
 var file_wayplatform_connect_tachograph_card_v1_load_unload_operations_proto_goTypes = []any{
 	(*LoadUnloadOperations)(nil),        // 0: wayplatform.connect.tachograph.card.v1.LoadUnloadOperations
 	(*LoadUnloadOperations_Record)(nil), // 1: wayplatform.connect.tachograph.card.v1.LoadUnloadOperations.Record
-	(*timestamppb.Timestamp)(nil),       // 2: google.protobuf.Timestamp
-	(v1.OperationType)(0),               // 3: wayplatform.connect.tachograph.dd.v1.OperationType
-	(*v1.GNSSPlaceAuthRecord)(nil),      // 4: wayplatform.connect.tachograph.dd.v1.GNSSPlaceAuthRecord
+	(*v1.Authentication)(nil),           // 2: wayplatform.connect.tachograph.security.v1.Authentication
+	(*timestamppb.Timestamp)(nil),       // 3: google.protobuf.Timestamp
+	(v11.OperationType)(0),              // 4: wayplatform.connect.tachograph.dd.v1.OperationType
+	(*v11.GNSSPlaceAuthRecord)(nil),     // 5: wayplatform.connect.tachograph.dd.v1.GNSSPlaceAuthRecord
 }
 var file_wayplatform_connect_tachograph_card_v1_load_unload_operations_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.card.v1.LoadUnloadOperations.records:type_name -> wayplatform.connect.tachograph.card.v1.LoadUnloadOperations.Record
-	2, // 1: wayplatform.connect.tachograph.card.v1.LoadUnloadOperations.Record.timestamp:type_name -> google.protobuf.Timestamp
-	3, // 2: wayplatform.connect.tachograph.card.v1.LoadUnloadOperations.Record.operation_type:type_name -> wayplatform.connect.tachograph.dd.v1.OperationType
-	4, // 3: wayplatform.connect.tachograph.card.v1.LoadUnloadOperations.Record.gnss_place_auth_record:type_name -> wayplatform.connect.tachograph.dd.v1.GNSSPlaceAuthRecord
-	4, // [4:4] is the sub-list for method output_type
-	4, // [4:4] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	2, // 1: wayplatform.connect.tachograph.card.v1.LoadUnloadOperations.authentication:type_name -> wayplatform.connect.tachograph.security.v1.Authentication
+	3, // 2: wayplatform.connect.tachograph.card.v1.LoadUnloadOperations.Record.timestamp:type_name -> google.protobuf.Timestamp
+	4, // 3: wayplatform.connect.tachograph.card.v1.LoadUnloadOperations.Record.operation_type:type_name -> wayplatform.connect.tachograph.dd.v1.OperationType
+	5, // 4: wayplatform.connect.tachograph.card.v1.LoadUnloadOperations.Record.gnss_place_auth_record:type_name -> wayplatform.connect.tachograph.dd.v1.GNSSPlaceAuthRecord
+	5, // [5:5] is the sub-list for method output_type
+	5, // [5:5] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_card_v1_load_unload_operations_proto_init() }

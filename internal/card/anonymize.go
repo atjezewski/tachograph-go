@@ -122,6 +122,23 @@ func (opts AnonymizeOptions) AnonymizeDriverCardFile(file *cardv1.DriverCardFile
 		if gnssPlaces := tachographG2.GetGnssPlaces(); gnssPlaces != nil {
 			tachographG2.SetGnssPlaces(opts.anonymizeGnssPlaces(gnssPlaces))
 		}
+
+		// Anonymize Gen2v2-exclusive EFs
+		if placesAuth := tachographG2.GetPlacesAuthentication(); placesAuth != nil {
+			tachographG2.SetPlacesAuthentication(opts.anonymizePlacesAuthentication(placesAuth))
+		}
+		if gnssPlacesAuth := tachographG2.GetGnssPlacesAuthentication(); gnssPlacesAuth != nil {
+			tachographG2.SetGnssPlacesAuthentication(opts.anonymizeGnssPlacesAuthentication(gnssPlacesAuth))
+		}
+		if borderCrossings := tachographG2.GetBorderCrossings(); borderCrossings != nil {
+			tachographG2.SetBorderCrossings(opts.anonymizeBorderCrossings(borderCrossings))
+		}
+		if loadUnload := tachographG2.GetLoadUnloadOperations(); loadUnload != nil {
+			tachographG2.SetLoadUnloadOperations(opts.anonymizeLoadUnloadOperations(loadUnload))
+		}
+		if loadTypeEntries := tachographG2.GetLoadTypeEntries(); loadTypeEntries != nil {
+			tachographG2.SetLoadTypeEntries(opts.anonymizeLoadTypeEntries(loadTypeEntries))
+		}
 	}
 
 	return result, nil

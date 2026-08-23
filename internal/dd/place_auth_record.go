@@ -173,19 +173,29 @@ func (opts AnonymizeOptions) AnonymizePlaceAuthRecord(record *ddv1.PlaceAuthReco
 	result.SetDailyWorkPeriodRegion([]byte{0x01})
 	result.SetVehicleOdometerKm((record.GetVehicleOdometerKm() / 100) * 100)
 
-	if gnss := record.GetEntryGnssPlaceAuthRecord(); gnss != nil {
-		anonGNSS := &ddv1.GNSSPlaceAuthRecord{}
-		anonGNSS.SetTimestamp(gnss.GetTimestamp())
-		anonGNSS.SetGnssAccuracy(gnss.GetGnssAccuracy())
-		coords := &ddv1.GeoCoordinates{}
-		coords.SetLatitude(60100)
-		coords.SetLongitude(24560)
-		anonGNSS.SetGeoCoordinates(coords)
-		anonGNSS.SetAuthenticationStatus(gnss.GetAuthenticationStatus())
-		if gnss.HasUnrecognizedAuthenticationStatus() {
-			anonGNSS.SetUnrecognizedAuthenticationStatus(gnss.GetUnrecognizedAuthenticationStatus())
-		}
-		result.SetEntryGnssPlaceAuthRecord(anonGNSS)
+	result.SetEntryGnssPlaceAuthRecord(opts.AnonymizeGNSSPlaceAuthRecord(record.GetEntryGnssPlaceAuthRecord()))
+
+	return result
+}
+
+// AnonymizeGNSSPlaceAuthRecord creates an anonymized copy of a GNSSPlaceAuthRecord,
+// preserving the timestamp, accuracy and authentication result while replacing the
+// position that identifies where the vehicle was.
+func (opts AnonymizeOptions) AnonymizeGNSSPlaceAuthRecord(record *ddv1.GNSSPlaceAuthRecord) *ddv1.GNSSPlaceAuthRecord {
+	if record == nil {
+		return nil
+	}
+
+	result := &ddv1.GNSSPlaceAuthRecord{}
+	result.SetTimestamp(record.GetTimestamp())
+	result.SetGnssAccuracy(record.GetGnssAccuracy())
+	coords := &ddv1.GeoCoordinates{}
+	coords.SetLatitude(60100)  // 60°10.0'N
+	coords.SetLongitude(24560) // 24°56.0'E
+	result.SetGeoCoordinates(coords)
+	result.SetAuthenticationStatus(record.GetAuthenticationStatus())
+	if record.HasUnrecognizedAuthenticationStatus() {
+		result.SetUnrecognizedAuthenticationStatus(record.GetUnrecognizedAuthenticationStatus())
 	}
 
 	return result
