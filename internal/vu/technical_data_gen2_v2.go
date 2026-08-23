@@ -124,12 +124,12 @@ func (opts MarshalOptions) MarshalTechnicalDataGen2V2(td *vuv1.TechnicalDataGen2
 	var result []byte
 	marshalOpts := dd.MarshalOptions{}
 
-	// VuIdentificationRecordArray (1 record × 124 bytes)
+	// VuIdentificationRecordArray (1 record, 138 bytes for this version)
 	vuIdentData, err := marshalVuIdentificationGen2V2(marshalOpts, td.GetVuIdentification())
 	if err != nil {
 		return nil, fmt.Errorf("marshal VuIdentificationRecordArray: %w", err)
 	}
-	result = appendRecordArrayHeader(result, recordTypeVuIdentification, 124, 1)
+	result = appendRecordArrayHeader(result, recordTypeVuIdentification, uint16(len(vuIdentData)), 1)
 	result = append(result, vuIdentData...)
 
 	// SensorPairedRecordArray (N records × 28 bytes)
@@ -225,6 +225,18 @@ func (opts AnonymizeOptions) anonymizeTechnicalDataGen2V2(td *vuv1.TechnicalData
 		anon.SetSoftwareIdentification(vuIdent.GetSoftwareIdentification())
 		anon.SetManufacturingDate(vuIdent.GetManufacturingDate())
 		anon.SetApprovalNumber(dd.NewIa5StringValue(16, "TEST0001"))
+		if vuIdent.HasVuGeneration() {
+			anon.SetVuGeneration(vuIdent.GetVuGeneration())
+		}
+		if vuIdent.HasUnrecognizedVuGeneration() {
+			anon.SetUnrecognizedVuGeneration(vuIdent.GetUnrecognizedVuGeneration())
+		}
+		if vuIdent.HasSupportsGeneration_1Cards() {
+			anon.SetSupportsGeneration_1Cards(vuIdent.GetSupportsGeneration_1Cards())
+		}
+		if vuIdent.HasDigitalMapVersion() {
+			anon.SetDigitalMapVersion(vuIdent.GetDigitalMapVersion())
+		}
 		result.SetVuIdentification(anon)
 	}
 
@@ -691,6 +703,18 @@ func marshalVuIdentificationGen2V2(opts dd.MarshalOptions, ident *vuv1.Technical
 	ddIdent.SetSoftwareIdentification(ident.GetSoftwareIdentification())
 	ddIdent.SetManufacturingDate(ident.GetManufacturingDate())
 	ddIdent.SetApprovalNumber(ident.GetApprovalNumber())
+	if ident.HasVuGeneration() {
+		ddIdent.SetVuGeneration(ident.GetVuGeneration())
+	}
+	if ident.HasUnrecognizedVuGeneration() {
+		ddIdent.SetUnrecognizedVuGeneration(ident.GetUnrecognizedVuGeneration())
+	}
+	if ident.HasSupportsGeneration_1Cards() {
+		ddIdent.SetSupportsGeneration_1Cards(ident.GetSupportsGeneration_1Cards())
+	}
+	if ident.HasDigitalMapVersion() {
+		ddIdent.SetDigitalMapVersion(ident.GetDigitalMapVersion())
+	}
 	return opts.MarshalVuIdentification(ddIdent)
 }
 
@@ -928,6 +952,18 @@ func vuIdentToGen2V2(ddIdent *ddv1.VuIdentification) *vuv1.TechnicalDataGen2V2_V
 	ident.SetSoftwareIdentification(ddIdent.GetSoftwareIdentification())
 	ident.SetManufacturingDate(ddIdent.GetManufacturingDate())
 	ident.SetApprovalNumber(ddIdent.GetApprovalNumber())
+	if ddIdent.HasVuGeneration() {
+		ident.SetVuGeneration(ddIdent.GetVuGeneration())
+	}
+	if ddIdent.HasUnrecognizedVuGeneration() {
+		ident.SetUnrecognizedVuGeneration(ddIdent.GetUnrecognizedVuGeneration())
+	}
+	if ddIdent.HasSupportsGeneration_1Cards() {
+		ident.SetSupportsGeneration_1Cards(ddIdent.GetSupportsGeneration_1Cards())
+	}
+	if ddIdent.HasDigitalMapVersion() {
+		ident.SetDigitalMapVersion(ddIdent.GetDigitalMapVersion())
+	}
 	return ident
 }
 

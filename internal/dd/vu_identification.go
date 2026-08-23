@@ -21,12 +21,17 @@ import (
 //	    vuSerialNumber VuSerialNumber,                   -- 8 bytes (ExtendedSerialNumber)
 //	    vuSoftwareIdentification VuSoftwareIdentification,-- 8 bytes (4 IA5String + 4 TimeReal)
 //	    vuManufacturingDate VuManufacturingDate,         -- 4 bytes (TimeReal)
-//	    vuApprovalNumber VuApprovalNumber                -- 8 bytes (Gen1 IA5String), 16 bytes (Gen2)
+//	    vuApprovalNumber VuApprovalNumber,               -- 8 bytes (Gen1 IA5String), 16 bytes (Gen2)
+//	    vuGeneration Generation,                         -- 1 byte  (Gen2 only)
+//	    vuAbility VuAbility,                             -- 1 byte  (Gen2 only)
+//	    vuDigitalMapVersion VuDigitalMapVersion          -- 12 bytes (Gen2 version 2 only)
 //	}
 //
 // Binary Layout:
-//   - Generation 1: 116 bytes total (36+36+16+8+8+4+8)
-//   - Generation 2: varies (124+ bytes with 16-byte approval number, plus additional fields)
+//   - Generation 1: 116 bytes (36+36+16+8+8+4+8)
+//   - Generation 2 version 1: 126 bytes (the same with a 16-byte approval number,
+//     plus vuGeneration and vuAbility)
+//   - Generation 2 version 2: 138 bytes (plus vuDigitalMapVersion)
 func (opts UnmarshalOptions) UnmarshalVuIdentification(data []byte) (*ddv1.VuIdentification, error) {
 	// Minimum size check (Gen1)
 	const minLen = 116
@@ -56,6 +61,10 @@ func (opts UnmarshalOptions) UnmarshalVuIdentification(data []byte) (*ddv1.VuIde
 		idxManufacturingDate   = 104 // 96 + 8
 		lenManufacturingDate   = 4
 		idxApprovalNumber      = 108 // 104 + 4
+
+		lenVuGeneration      = 1
+		lenVuAbility         = 1
+		lenDigitalMapVersion = 12
 	)
 
 	// Parse VU manufacturer name (36 bytes)
@@ -135,6 +144,30 @@ func (opts UnmarshalOptions) UnmarshalVuIdentification(data []byte) (*ddv1.VuIde
 		return nil, fmt.Errorf("failed to parse approval number: %w", err)
 	}
 	vuIdent.SetApprovalNumber(approvalNumber)
+	offset := idxApprovalNumber + lenApprovalNumber
+
+	// Generation 2 appends the generation of the vehicle unit and its ability to
+	// use generation 1 cards; version 2 appends the digital map version on top.
+	if len(data) >= offset+lenVuGeneration+lenVuAbility {
+		generationByte := data[offset]
+		if generation, err := UnmarshalEnum[ddv1.Generation](generationByte); err == nil {
+			vuIdent.SetVuGeneration(generation)
+		} else {
+			// '00'H and '03'H..'FF'H are reserved for future use.
+			vuIdent.SetUnrecognizedVuGeneration(int32(generationByte))
+		}
+		// vuAbility is 'xxxxxxxa'B, where 'a' is '0'B when the vehicle unit
+		// supports generation 1 cards and '1'B when it does not.
+		vuIdent.SetSupportsGeneration_1Cards(data[offset+lenVuGeneration]&0x01 == 0)
+		offset += lenVuGeneration + lenVuAbility
+	}
+	if len(data) >= offset+lenDigitalMapVersion {
+		digitalMapVersion, err := opts.UnmarshalIa5StringValue(data[offset : offset+lenDigitalMapVersion])
+		if err != nil {
+			return nil, fmt.Errorf("failed to parse digital map version: %w", err)
+		}
+		vuIdent.SetDigitalMapVersion(digitalMapVersion)
+	}
 
 	return vuIdent, nil
 }
@@ -147,19 +180,31 @@ func (opts MarshalOptions) MarshalVuIdentification(vuIdent *ddv1.VuIdentificatio
 		return nil, fmt.Errorf("vuIdent cannot be nil")
 	}
 
-	// Determine size based on approval number length
+	// Determine size based on approval number length and the Generation 2 tail
+	const (
+		lenVuGeneration      = 1
+		lenVuAbility         = 1
+		lenDigitalMapVersion = 12
+	)
 	approvalNumberLen := int(vuIdent.GetApprovalNumber().GetLength())
 	var size int
 	switch approvalNumberLen {
 	case 8:
 		size = 116 // Gen1: 36+36+16+8+8+4+8
 	case 16:
-		size = 124 // Gen2 (without additional Gen2-specific fields): 36+36+16+8+8+4+16
+		size = 124 // Gen2 without the trailing components: 36+36+16+8+8+4+16
 	default:
 		return nil, fmt.Errorf(
 			"invalid approval number length: got %d, want 8 (Gen1) or 16 (Gen2)",
 			approvalNumberLen,
 		)
+	}
+	hasVuGeneration := vuIdent.HasVuGeneration() || vuIdent.HasUnrecognizedVuGeneration() || vuIdent.HasSupportsGeneration_1Cards()
+	if hasVuGeneration {
+		size += lenVuGeneration + lenVuAbility
+	}
+	if vuIdent.HasDigitalMapVersion() {
+		size += lenDigitalMapVersion
 	}
 
 	// Use raw data painting strategy
@@ -274,6 +319,42 @@ func (opts MarshalOptions) MarshalVuIdentification(vuIdent *ddv1.VuIdentificatio
 	}
 	copy(canvas[offset:offset+approvalNumberLen], approvalNumberBytes)
 	offset += approvalNumberLen
+
+	// Marshal the Generation 2 components (1 + 1 bytes)
+	if hasVuGeneration {
+		switch {
+		case vuIdent.HasUnrecognizedVuGeneration():
+			canvas[offset] = byte(vuIdent.GetUnrecognizedVuGeneration())
+		case vuIdent.HasVuGeneration():
+			canvas[offset], _ = MarshalEnum(vuIdent.GetVuGeneration())
+		}
+		// Only the lowest bit of vuAbility is defined; the rest are reserved and
+		// are left as they came in from raw_data.
+		if vuIdent.HasSupportsGeneration_1Cards() {
+			if vuIdent.GetSupportsGeneration_1Cards() {
+				canvas[offset+lenVuGeneration] &^= 0x01
+			} else {
+				canvas[offset+lenVuGeneration] |= 0x01
+			}
+		}
+		offset += lenVuGeneration + lenVuAbility
+	}
+
+	// Marshal the Generation 2 version 2 digital map version (12 bytes)
+	if vuIdent.HasDigitalMapVersion() {
+		digitalMapVersionBytes, err := opts.MarshalIa5StringValue(vuIdent.GetDigitalMapVersion())
+		if err != nil {
+			return nil, fmt.Errorf("failed to marshal digital map version: %w", err)
+		}
+		if len(digitalMapVersionBytes) != lenDigitalMapVersion {
+			return nil, fmt.Errorf(
+				"invalid digital map version length: got %d, want %d",
+				len(digitalMapVersionBytes), lenDigitalMapVersion,
+			)
+		}
+		copy(canvas[offset:offset+lenDigitalMapVersion], digitalMapVersionBytes)
+		offset += lenDigitalMapVersion
+	}
 
 	if offset != size {
 		return nil, fmt.Errorf(

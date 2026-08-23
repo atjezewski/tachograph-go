@@ -49,19 +49,23 @@ const (
 // Note: Generation 2 adds additional fields (vuGeneration, vuAbility, vuDigitalMapVersion)
 // and uses a 16-byte approval number, resulting in a different size.
 type VuIdentification struct {
-	state                             protoimpl.MessageState  `protogen:"opaque.v1"`
-	xxx_hidden_ManufacturerName       *StringValue            `protobuf:"bytes,1,opt,name=manufacturer_name,json=manufacturerName"`
-	xxx_hidden_ManufacturerAddress    *StringValue            `protobuf:"bytes,2,opt,name=manufacturer_address,json=manufacturerAddress"`
-	xxx_hidden_PartNumber             *Ia5StringValue         `protobuf:"bytes,3,opt,name=part_number,json=partNumber"`
-	xxx_hidden_SerialNumber           *ExtendedSerialNumber   `protobuf:"bytes,4,opt,name=serial_number,json=serialNumber"`
-	xxx_hidden_SoftwareIdentification *SoftwareIdentification `protobuf:"bytes,5,opt,name=software_identification,json=softwareIdentification"`
-	xxx_hidden_ManufacturingDate      *timestamppb.Timestamp  `protobuf:"bytes,6,opt,name=manufacturing_date,json=manufacturingDate"`
-	xxx_hidden_ApprovalNumber         *Ia5StringValue         `protobuf:"bytes,7,opt,name=approval_number,json=approvalNumber"`
-	xxx_hidden_RawData                []byte                  `protobuf:"bytes,99,opt,name=raw_data,json=rawData"`
-	XXX_raceDetectHookData            protoimpl.RaceDetectHookData
-	XXX_presence                      [1]uint32
-	unknownFields                     protoimpl.UnknownFields
-	sizeCache                         protoimpl.SizeCache
+	state                                protoimpl.MessageState  `protogen:"opaque.v1"`
+	xxx_hidden_ManufacturerName          *StringValue            `protobuf:"bytes,1,opt,name=manufacturer_name,json=manufacturerName"`
+	xxx_hidden_ManufacturerAddress       *StringValue            `protobuf:"bytes,2,opt,name=manufacturer_address,json=manufacturerAddress"`
+	xxx_hidden_PartNumber                *Ia5StringValue         `protobuf:"bytes,3,opt,name=part_number,json=partNumber"`
+	xxx_hidden_SerialNumber              *ExtendedSerialNumber   `protobuf:"bytes,4,opt,name=serial_number,json=serialNumber"`
+	xxx_hidden_SoftwareIdentification    *SoftwareIdentification `protobuf:"bytes,5,opt,name=software_identification,json=softwareIdentification"`
+	xxx_hidden_ManufacturingDate         *timestamppb.Timestamp  `protobuf:"bytes,6,opt,name=manufacturing_date,json=manufacturingDate"`
+	xxx_hidden_ApprovalNumber            *Ia5StringValue         `protobuf:"bytes,7,opt,name=approval_number,json=approvalNumber"`
+	xxx_hidden_VuGeneration              Generation              `protobuf:"varint,8,opt,name=vu_generation,json=vuGeneration,enum=wayplatform.connect.tachograph.dd.v1.Generation"`
+	xxx_hidden_UnrecognizedVuGeneration  int32                   `protobuf:"varint,9,opt,name=unrecognized_vu_generation,json=unrecognizedVuGeneration"`
+	xxx_hidden_SupportsGeneration_1Cards bool                    `protobuf:"varint,10,opt,name=supports_generation_1_cards,json=supportsGeneration1Cards"`
+	xxx_hidden_DigitalMapVersion         *Ia5StringValue         `protobuf:"bytes,11,opt,name=digital_map_version,json=digitalMapVersion"`
+	xxx_hidden_RawData                   []byte                  `protobuf:"bytes,99,opt,name=raw_data,json=rawData"`
+	XXX_raceDetectHookData               protoimpl.RaceDetectHookData
+	XXX_presence                         [1]uint32
+	unknownFields                        protoimpl.UnknownFields
+	sizeCache                            protoimpl.SizeCache
 }
 
 func (x *VuIdentification) Reset() {
@@ -138,6 +142,36 @@ func (x *VuIdentification) GetApprovalNumber() *Ia5StringValue {
 	return nil
 }
 
+func (x *VuIdentification) GetVuGeneration() Generation {
+	if x != nil {
+		if protoimpl.X.Present(&(x.XXX_presence[0]), 7) {
+			return x.xxx_hidden_VuGeneration
+		}
+	}
+	return Generation_GENERATION_UNSPECIFIED
+}
+
+func (x *VuIdentification) GetUnrecognizedVuGeneration() int32 {
+	if x != nil {
+		return x.xxx_hidden_UnrecognizedVuGeneration
+	}
+	return 0
+}
+
+func (x *VuIdentification) GetSupportsGeneration_1Cards() bool {
+	if x != nil {
+		return x.xxx_hidden_SupportsGeneration_1Cards
+	}
+	return false
+}
+
+func (x *VuIdentification) GetDigitalMapVersion() *Ia5StringValue {
+	if x != nil {
+		return x.xxx_hidden_DigitalMapVersion
+	}
+	return nil
+}
+
 func (x *VuIdentification) GetRawData() []byte {
 	if x != nil {
 		return x.xxx_hidden_RawData
@@ -173,12 +207,31 @@ func (x *VuIdentification) SetApprovalNumber(v *Ia5StringValue) {
 	x.xxx_hidden_ApprovalNumber = v
 }
 
+func (x *VuIdentification) SetVuGeneration(v Generation) {
+	x.xxx_hidden_VuGeneration = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 12)
+}
+
+func (x *VuIdentification) SetUnrecognizedVuGeneration(v int32) {
+	x.xxx_hidden_UnrecognizedVuGeneration = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 8, 12)
+}
+
+func (x *VuIdentification) SetSupportsGeneration_1Cards(v bool) {
+	x.xxx_hidden_SupportsGeneration_1Cards = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 9, 12)
+}
+
+func (x *VuIdentification) SetDigitalMapVersion(v *Ia5StringValue) {
+	x.xxx_hidden_DigitalMapVersion = v
+}
+
 func (x *VuIdentification) SetRawData(v []byte) {
 	if v == nil {
 		v = []byte{}
 	}
 	x.xxx_hidden_RawData = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 8)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 11, 12)
 }
 
 func (x *VuIdentification) HasManufacturerName() bool {
@@ -230,11 +283,39 @@ func (x *VuIdentification) HasApprovalNumber() bool {
 	return x.xxx_hidden_ApprovalNumber != nil
 }
 
-func (x *VuIdentification) HasRawData() bool {
+func (x *VuIdentification) HasVuGeneration() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 7)
+}
+
+func (x *VuIdentification) HasUnrecognizedVuGeneration() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 8)
+}
+
+func (x *VuIdentification) HasSupportsGeneration_1Cards() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 9)
+}
+
+func (x *VuIdentification) HasDigitalMapVersion() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_DigitalMapVersion != nil
+}
+
+func (x *VuIdentification) HasRawData() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 11)
 }
 
 func (x *VuIdentification) ClearManufacturerName() {
@@ -265,8 +346,27 @@ func (x *VuIdentification) ClearApprovalNumber() {
 	x.xxx_hidden_ApprovalNumber = nil
 }
 
-func (x *VuIdentification) ClearRawData() {
+func (x *VuIdentification) ClearVuGeneration() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 7)
+	x.xxx_hidden_VuGeneration = Generation_GENERATION_UNSPECIFIED
+}
+
+func (x *VuIdentification) ClearUnrecognizedVuGeneration() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 8)
+	x.xxx_hidden_UnrecognizedVuGeneration = 0
+}
+
+func (x *VuIdentification) ClearSupportsGeneration_1Cards() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 9)
+	x.xxx_hidden_SupportsGeneration_1Cards = false
+}
+
+func (x *VuIdentification) ClearDigitalMapVersion() {
+	x.xxx_hidden_DigitalMapVersion = nil
+}
+
+func (x *VuIdentification) ClearRawData() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 11)
 	x.xxx_hidden_RawData = nil
 }
 
@@ -342,6 +442,35 @@ type VuIdentification_builder struct {
 	//
 	// Note: Generation determines the size (8 bytes for Gen1, 16 bytes for Gen2).
 	ApprovalNumber *Ia5StringValue
+	// The generation of the vehicle unit. Generation 2 only.
+	//
+	// See Data Dictionary, Section 2.75, `Generation`.
+	//
+	// ASN.1 Specification:
+	//
+	//	Generation ::= INTEGER (0..255)
+	VuGeneration *Generation
+	// Preserved raw protocol value when vu_generation is UNRECOGNIZED.
+	UnrecognizedVuGeneration *int32
+	// Whether the vehicle unit can use generation 1 tachograph cards.
+	// Generation 2 only. Decoded from `vuAbility`, whose lowest bit is '0'B when
+	// generation 1 is supported and '1'B when it is not.
+	//
+	// See Data Dictionary, Section 2.170a, `VuAbility`.
+	//
+	// ASN.1 Specification:
+	//
+	//	VuAbility ::= OCTET STRING (SIZE (1))
+	SupportsGeneration_1Cards *bool
+	// The version of the digital map stored in the vehicle unit.
+	// Generation 2 version 2 only.
+	//
+	// See Data Dictionary, Section 2.203a, `VuDigitalMapVersion`.
+	//
+	// ASN.1 Specification:
+	//
+	//	VuDigitalMapVersion ::= IA5String(SIZE(12))
+	DigitalMapVersion *Ia5StringValue
 	// The raw binary data for this identification record (for round-trip fidelity).
 	// This preserves the exact bytes including any padding or reserved fields.
 	//
@@ -361,8 +490,21 @@ func (b0 VuIdentification_builder) Build() *VuIdentification {
 	x.xxx_hidden_SoftwareIdentification = b.SoftwareIdentification
 	x.xxx_hidden_ManufacturingDate = b.ManufacturingDate
 	x.xxx_hidden_ApprovalNumber = b.ApprovalNumber
+	if b.VuGeneration != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 12)
+		x.xxx_hidden_VuGeneration = *b.VuGeneration
+	}
+	if b.UnrecognizedVuGeneration != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 8, 12)
+		x.xxx_hidden_UnrecognizedVuGeneration = *b.UnrecognizedVuGeneration
+	}
+	if b.SupportsGeneration_1Cards != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 9, 12)
+		x.xxx_hidden_SupportsGeneration_1Cards = *b.SupportsGeneration_1Cards
+	}
+	x.xxx_hidden_DigitalMapVersion = b.DigitalMapVersion
 	if b.RawData != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 8)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 11, 12)
 		x.xxx_hidden_RawData = b.RawData
 	}
 	return m0
@@ -372,7 +514,7 @@ var File_wayplatform_connect_tachograph_dd_v1_vu_identification_proto protorefle
 
 const file_wayplatform_connect_tachograph_dd_v1_vu_identification_proto_rawDesc = "" +
 	"\n" +
-	"<wayplatform/connect/tachograph/dd/v1/vu_identification.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aAwayplatform/connect/tachograph/dd/v1/extended_serial_number.proto\x1a;wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto\x1aBwayplatform/connect/tachograph/dd/v1/software_identification.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\"\xcc\x05\n" +
+	"<wayplatform/connect/tachograph/dd/v1/vu_identification.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aAwayplatform/connect/tachograph/dd/v1/extended_serial_number.proto\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\x1a;wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto\x1aBwayplatform/connect/tachograph/dd/v1/software_identification.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\"\x86\b\n" +
 	"\x10VuIdentification\x12^\n" +
 	"\x11manufacturer_name\x18\x01 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x10manufacturerName\x12d\n" +
 	"\x14manufacturer_address\x18\x02 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x13manufacturerAddress\x12U\n" +
@@ -381,7 +523,12 @@ const file_wayplatform_connect_tachograph_dd_v1_vu_identification_proto_rawDesc 
 	"\rserial_number\x18\x04 \x01(\v2:.wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumberR\fserialNumber\x12u\n" +
 	"\x17software_identification\x18\x05 \x01(\v2<.wayplatform.connect.tachograph.dd.v1.SoftwareIdentificationR\x16softwareIdentification\x12I\n" +
 	"\x12manufacturing_date\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\x11manufacturingDate\x12]\n" +
-	"\x0fapproval_number\x18\a \x01(\v24.wayplatform.connect.tachograph.dd.v1.Ia5StringValueR\x0eapprovalNumber\x12\x19\n" +
+	"\x0fapproval_number\x18\a \x01(\v24.wayplatform.connect.tachograph.dd.v1.Ia5StringValueR\x0eapprovalNumber\x12U\n" +
+	"\rvu_generation\x18\b \x01(\x0e20.wayplatform.connect.tachograph.dd.v1.GenerationR\fvuGeneration\x12<\n" +
+	"\x1aunrecognized_vu_generation\x18\t \x01(\x05R\x18unrecognizedVuGeneration\x12=\n" +
+	"\x1bsupports_generation_1_cards\x18\n" +
+	" \x01(\bR\x18supportsGeneration1Cards\x12d\n" +
+	"\x13digital_map_version\x18\v \x01(\v24.wayplatform.connect.tachograph.dd.v1.Ia5StringValueR\x11digitalMapVersion\x12\x19\n" +
 	"\braw_data\x18c \x01(\fR\arawDataB\xd4\x02\n" +
 	"(com.wayplatform.connect.tachograph.dd.v1B\x15VuIdentificationProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\beditionsp\xe8\a"
 
@@ -393,6 +540,7 @@ var file_wayplatform_connect_tachograph_dd_v1_vu_identification_proto_goTypes = 
 	(*ExtendedSerialNumber)(nil),   // 3: wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumber
 	(*SoftwareIdentification)(nil), // 4: wayplatform.connect.tachograph.dd.v1.SoftwareIdentification
 	(*timestamppb.Timestamp)(nil),  // 5: google.protobuf.Timestamp
+	(Generation)(0),                // 6: wayplatform.connect.tachograph.dd.v1.Generation
 }
 var file_wayplatform_connect_tachograph_dd_v1_vu_identification_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.dd.v1.VuIdentification.manufacturer_name:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
@@ -402,11 +550,13 @@ var file_wayplatform_connect_tachograph_dd_v1_vu_identification_proto_depIdxs = 
 	4, // 4: wayplatform.connect.tachograph.dd.v1.VuIdentification.software_identification:type_name -> wayplatform.connect.tachograph.dd.v1.SoftwareIdentification
 	5, // 5: wayplatform.connect.tachograph.dd.v1.VuIdentification.manufacturing_date:type_name -> google.protobuf.Timestamp
 	2, // 6: wayplatform.connect.tachograph.dd.v1.VuIdentification.approval_number:type_name -> wayplatform.connect.tachograph.dd.v1.Ia5StringValue
-	7, // [7:7] is the sub-list for method output_type
-	7, // [7:7] is the sub-list for method input_type
-	7, // [7:7] is the sub-list for extension type_name
-	7, // [7:7] is the sub-list for extension extendee
-	0, // [0:7] is the sub-list for field type_name
+	6, // 7: wayplatform.connect.tachograph.dd.v1.VuIdentification.vu_generation:type_name -> wayplatform.connect.tachograph.dd.v1.Generation
+	2, // 8: wayplatform.connect.tachograph.dd.v1.VuIdentification.digital_map_version:type_name -> wayplatform.connect.tachograph.dd.v1.Ia5StringValue
+	9, // [9:9] is the sub-list for method output_type
+	9, // [9:9] is the sub-list for method input_type
+	9, // [9:9] is the sub-list for extension type_name
+	9, // [9:9] is the sub-list for extension extendee
+	0, // [0:9] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_dd_v1_vu_identification_proto_init() }
@@ -415,6 +565,7 @@ func file_wayplatform_connect_tachograph_dd_v1_vu_identification_proto_init() {
 		return
 	}
 	file_wayplatform_connect_tachograph_dd_v1_extended_serial_number_proto_init()
+	file_wayplatform_connect_tachograph_dd_v1_generation_proto_init()
 	file_wayplatform_connect_tachograph_dd_v1_ia5_string_value_proto_init()
 	file_wayplatform_connect_tachograph_dd_v1_software_identification_proto_init()
 	file_wayplatform_connect_tachograph_dd_v1_string_value_proto_init()

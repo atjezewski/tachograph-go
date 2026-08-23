@@ -13,6 +13,7 @@ import "wayplatform/connect/tachograph/dd/v1/event_fault_type.proto";
 import "wayplatform/connect/tachograph/dd/v1/extended_serial_number.proto";
 import "wayplatform/connect/tachograph/dd/v1/full_card_number.proto";
 import "wayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto";
+import "wayplatform/connect/tachograph/dd/v1/generation.proto";
 import "wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto";
 import "wayplatform/connect/tachograph/dd/v1/nation_numeric.proto";
 import "wayplatform/connect/tachograph/dd/v1/owner_identification.proto";
@@ -76,6 +77,22 @@ message TechnicalDataGen2V2 {
     //
     // See Data Dictionary, Section 2.172, `VuApprovalNumber`.
     wayplatform.connect.tachograph.dd.v1.Ia5StringValue approval_number = 7;
+
+    // The generation of the vehicle unit.
+    // See Data Dictionary, Section 2.75, `Generation`.
+    dd.v1.Generation vu_generation = 8;
+
+    // Preserved raw protocol value when vu_generation is UNRECOGNIZED.
+    int32 unrecognized_vu_generation = 9;
+
+    // Whether the vehicle unit can use generation 1 tachograph cards.
+    // Decoded from `vuAbility`, whose lowest bit is '0'B when generation 1 is
+    // supported and '1'B when it is not.
+    // See Data Dictionary, Section 2.170a, `VuAbility`.
+    bool supports_generation_1_cards = 10;
+    // The version of the digital map stored in the vehicle unit.
+    // See Data Dictionary, Section 2.203a, `VuDigitalMapVersion`.
+    wayplatform.connect.tachograph.dd.v1.Ia5StringValue digital_map_version = 11;
   }
 
   // Represents a paired motion sensor record.

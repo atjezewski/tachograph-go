@@ -4,6 +4,7 @@ package wayplatform.connect.tachograph.dd.v1;
 
 import "google/protobuf/timestamp.proto";
 import "wayplatform/connect/tachograph/dd/v1/extended_serial_number.proto";
+import "wayplatform/connect/tachograph/dd/v1/generation.proto";
 import "wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto";
 import "wayplatform/connect/tachograph/dd/v1/software_identification.proto";
 import "wayplatform/connect/tachograph/dd/v1/string_value.proto";
@@ -111,6 +112,39 @@ message VuIdentification {
   //
   // Note: Generation determines the size (8 bytes for Gen1, 16 bytes for Gen2).
   Ia5StringValue approval_number = 7;
+
+  // The generation of the vehicle unit. Generation 2 only.
+  //
+  // See Data Dictionary, Section 2.75, `Generation`.
+  //
+  // ASN.1 Specification:
+  //
+  //     Generation ::= INTEGER (0..255)
+  Generation vu_generation = 8;
+
+  // Preserved raw protocol value when vu_generation is UNRECOGNIZED.
+  int32 unrecognized_vu_generation = 9;
+
+  // Whether the vehicle unit can use generation 1 tachograph cards.
+  // Generation 2 only. Decoded from `vuAbility`, whose lowest bit is '0'B when
+  // generation 1 is supported and '1'B when it is not.
+  //
+  // See Data Dictionary, Section 2.170a, `VuAbility`.
+  //
+  // ASN.1 Specification:
+  //
+  //     VuAbility ::= OCTET STRING (SIZE (1))
+  bool supports_generation_1_cards = 10;
+
+  // The version of the digital map stored in the vehicle unit.
+  // Generation 2 version 2 only.
+  //
+  // See Data Dictionary, Section 2.203a, `VuDigitalMapVersion`.
+  //
+  // ASN.1 Specification:
+  //
+  //     VuDigitalMapVersion ::= IA5String(SIZE(12))
+  Ia5StringValue digital_map_version = 11;
 
   // The raw binary data for this identification record (for round-trip fidelity).
   // This preserves the exact bytes including any padding or reserved fields.
