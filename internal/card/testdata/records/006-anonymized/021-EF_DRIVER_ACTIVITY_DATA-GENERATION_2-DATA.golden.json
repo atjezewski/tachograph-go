@@ -27194,6 +27194,13 @@
           "inserted": true,
           "activity": "DRIVING",
           "timeOfChangeMinutes": 480
+        },
+        {
+          "slot": "DRIVER_SLOT",
+          "crew": false,
+          "inserted": true,
+          "activity": "BREAK_REST",
+          "timeOfChangeMinutes": 0
         }
       ]
     },
@@ -34850,6 +34857,13 @@
           "inserted": true,
           "activity": "DRIVING",
           "timeOfChangeMinutes": 630
+        },
+        {
+          "slot": "DRIVER_SLOT",
+          "crew": false,
+          "inserted": true,
+          "activity": "BREAK_REST",
+          "timeOfChangeMinutes": 0
         }
       ]
     },

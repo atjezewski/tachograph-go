@@ -1532,6 +1532,13 @@
           "slot": "DRIVER_SLOT",
           "crew": false,
           "inserted": true,
+          "activity": "BREAK_REST",
+          "timeOfChangeMinutes": 0
+        },
+        {
+          "slot": "DRIVER_SLOT",
+          "crew": false,
+          "inserted": true,
           "activity": "WORK",
           "timeOfChangeMinutes": 30
         },
@@ -2112,6 +2119,13 @@
           "slot": "DRIVER_SLOT",
           "crew": false,
           "inserted": true,
+          "activity": "BREAK_REST",
+          "timeOfChangeMinutes": 0
+        },
+        {
+          "slot": "DRIVER_SLOT",
+          "crew": false,
+          "inserted": true,
           "activity": "WORK",
           "timeOfChangeMinutes": 30
         },
@@ -2638,6 +2652,13 @@
           "inserted": true,
           "activity": "DRIVING",
           "timeOfChangeMinutes": 1410
+        },
+        {
+          "slot": "DRIVER_SLOT",
+          "crew": false,
+          "inserted": true,
+          "activity": "BREAK_REST",
+          "timeOfChangeMinutes": 0
         },
         {
           "slot": "DRIVER_SLOT",
@@ -4632,6 +4653,13 @@
           "slot": "DRIVER_SLOT",
           "crew": false,
           "inserted": true,
+          "activity": "BREAK_REST",
+          "timeOfChangeMinutes": 0
+        },
+        {
+          "slot": "DRIVER_SLOT",
+          "crew": false,
+          "inserted": true,
           "activity": "DRIVING",
           "timeOfChangeMinutes": 30
         },
@@ -5645,6 +5673,13 @@
           "inserted": true,
           "activity": "DRIVING",
           "timeOfChangeMinutes": 1410
+        },
+        {
+          "slot": "DRIVER_SLOT",
+          "crew": false,
+          "inserted": true,
+          "activity": "BREAK_REST",
+          "timeOfChangeMinutes": 0
         },
         {
           "slot": "DRIVER_SLOT",
@@ -7071,6 +7106,13 @@
           "inserted": true,
           "activity": "DRIVING",
           "timeOfChangeMinutes": 1410
+        },
+        {
+          "slot": "DRIVER_SLOT",
+          "crew": false,
+          "inserted": true,
+          "activity": "BREAK_REST",
+          "timeOfChangeMinutes": 0
         },
         {
           "slot": "DRIVER_SLOT",
@@ -9056,6 +9098,13 @@
           "slot": "DRIVER_SLOT",
           "crew": false,
           "inserted": true,
+          "activity": "BREAK_REST",
+          "timeOfChangeMinutes": 0
+        },
+        {
+          "slot": "DRIVER_SLOT",
+          "crew": false,
+          "inserted": true,
           "activity": "WORK",
           "timeOfChangeMinutes": 30
         },
@@ -9414,6 +9463,13 @@
           "inserted": true,
           "activity": "DRIVING",
           "timeOfChangeMinutes": 1410
+        },
+        {
+          "slot": "DRIVER_SLOT",
+          "crew": false,
+          "inserted": true,
+          "activity": "BREAK_REST",
+          "timeOfChangeMinutes": 0
         },
         {
           "slot": "DRIVER_SLOT",
@@ -12276,6 +12332,13 @@
           "slot": "DRIVER_SLOT",
           "crew": false,
           "inserted": true,
+          "activity": "BREAK_REST",
+          "timeOfChangeMinutes": 0
+        },
+        {
+          "slot": "DRIVER_SLOT",
+          "crew": false,
+          "inserted": true,
           "activity": "DRIVING",
           "timeOfChangeMinutes": 30
         },
@@ -13336,6 +13399,13 @@
           "slot": "DRIVER_SLOT",
           "crew": false,
           "inserted": true,
+          "activity": "BREAK_REST",
+          "timeOfChangeMinutes": 0
+        },
+        {
+          "slot": "DRIVER_SLOT",
+          "crew": false,
+          "inserted": true,
           "activity": "DRIVING",
           "timeOfChangeMinutes": 30
         },
@@ -13660,6 +13730,13 @@
           "inserted": true,
           "activity": "DRIVING",
           "timeOfChangeMinutes": 1410
+        },
+        {
+          "slot": "DRIVER_SLOT",
+          "crew": false,
+          "inserted": true,
+          "activity": "BREAK_REST",
+          "timeOfChangeMinutes": 0
         },
         {
           "slot": "DRIVER_SLOT",
@@ -15435,6 +15512,13 @@
           "inserted": true,
           "activity": "DRIVING",
           "timeOfChangeMinutes": 1410
+        },
+        {
+          "slot": "DRIVER_SLOT",
+          "crew": false,
+          "inserted": true,
+          "activity": "BREAK_REST",
+          "timeOfChangeMinutes": 0
         },
         {
           "slot": "DRIVER_SLOT",
@@ -18173,6 +18257,13 @@
           "inserted": false,
           "activity": "BREAK_REST",
           "timeOfChangeMinutes": 690
+        },
+        {
+          "slot": "DRIVER_SLOT",
+          "crew": false,
+          "inserted": true,
+          "activity": "BREAK_REST",
+          "timeOfChangeMinutes": 0
         }
       ]
     },
@@ -18522,6 +18613,13 @@
           "inserted": true,
           "activity": "DRIVING",
           "timeOfChangeMinutes": 1410
+        },
+        {
+          "slot": "DRIVER_SLOT",
+          "crew": false,
+          "inserted": true,
+          "activity": "BREAK_REST",
+          "timeOfChangeMinutes": 0
         },
         {
           "slot": "DRIVER_SLOT",
@@ -19629,6 +19727,13 @@
           "slot": "DRIVER_SLOT",
           "crew": false,
           "inserted": true,
+          "activity": "BREAK_REST",
+          "timeOfChangeMinutes": 0
+        },
+        {
+          "slot": "DRIVER_SLOT",
+          "crew": false,
+          "inserted": true,
           "activity": "DRIVING",
           "timeOfChangeMinutes": 30
         },
@@ -20593,6 +20698,13 @@
           "slot": "DRIVER_SLOT",
           "crew": false,
           "inserted": true,
+          "activity": "BREAK_REST",
+          "timeOfChangeMinutes": 0
+        },
+        {
+          "slot": "DRIVER_SLOT",
+          "crew": false,
+          "inserted": true,
           "activity": "DRIVING",
           "timeOfChangeMinutes": 30
         },
@@ -20672,6 +20784,13 @@
           "inserted": false,
           "activity": "BREAK_REST",
           "timeOfChangeMinutes": 360
+        },
+        {
+          "slot": "DRIVER_SLOT",
+          "crew": false,
+          "inserted": true,
+          "activity": "BREAK_REST",
+          "timeOfChangeMinutes": 0
         }
       ]
     },
@@ -21021,6 +21140,13 @@
           "inserted": true,
           "activity": "DRIVING",
           "timeOfChangeMinutes": 1410
+        },
+        {
+          "slot": "DRIVER_SLOT",
+          "crew": false,
+          "inserted": true,
+          "activity": "BREAK_REST",
+          "timeOfChangeMinutes": 0
         },
         {
           "slot": "DRIVER_SLOT",
@@ -22528,6 +22654,13 @@
           "inserted": true,
           "activity": "DRIVING",
           "timeOfChangeMinutes": 1410
+        },
+        {
+          "slot": "DRIVER_SLOT",
+          "crew": false,
+          "inserted": true,
+          "activity": "BREAK_REST",
+          "timeOfChangeMinutes": 0
         },
         {
           "slot": "DRIVER_SLOT",
@@ -24273,6 +24406,13 @@
           "slot": "DRIVER_SLOT",
           "crew": false,
           "inserted": true,
+          "activity": "BREAK_REST",
+          "timeOfChangeMinutes": 0
+        },
+        {
+          "slot": "DRIVER_SLOT",
+          "crew": false,
+          "inserted": true,
           "activity": "WORK",
           "timeOfChangeMinutes": 30
         },
@@ -24823,6 +24963,13 @@
           "slot": "DRIVER_SLOT",
           "crew": false,
           "inserted": true,
+          "activity": "BREAK_REST",
+          "timeOfChangeMinutes": 0
+        },
+        {
+          "slot": "DRIVER_SLOT",
+          "crew": false,
+          "inserted": true,
           "activity": "DRIVING",
           "timeOfChangeMinutes": 30
         },
@@ -25342,6 +25489,13 @@
           "inserted": true,
           "activity": "WORK",
           "timeOfChangeMinutes": 1410
+        },
+        {
+          "slot": "DRIVER_SLOT",
+          "crew": false,
+          "inserted": true,
+          "activity": "BREAK_REST",
+          "timeOfChangeMinutes": 0
         },
         {
           "slot": "DRIVER_SLOT",
@@ -28030,6 +28184,13 @@
           "inserted": true,
           "activity": "DRIVING",
           "timeOfChangeMinutes": 1410
+        },
+        {
+          "slot": "DRIVER_SLOT",
+          "crew": false,
+          "inserted": true,
+          "activity": "BREAK_REST",
+          "timeOfChangeMinutes": 0
         },
         {
           "slot": "DRIVER_SLOT",
@@ -31206,6 +31367,13 @@
           "slot": "DRIVER_SLOT",
           "crew": false,
           "inserted": true,
+          "activity": "BREAK_REST",
+          "timeOfChangeMinutes": 0
+        },
+        {
+          "slot": "DRIVER_SLOT",
+          "crew": false,
+          "inserted": true,
           "activity": "DRIVING",
           "timeOfChangeMinutes": 30
         },
@@ -32983,6 +33151,13 @@
           "inserted": true,
           "activity": "DRIVING",
           "timeOfChangeMinutes": 1410
+        },
+        {
+          "slot": "DRIVER_SLOT",
+          "crew": false,
+          "inserted": true,
+          "activity": "BREAK_REST",
+          "timeOfChangeMinutes": 0
         },
         {
           "slot": "DRIVER_SLOT",
@@ -34821,6 +34996,13 @@
           "inserted": true,
           "activity": "WORK",
           "timeOfChangeMinutes": 1410
+        },
+        {
+          "slot": "DRIVER_SLOT",
+          "crew": false,
+          "inserted": true,
+          "activity": "BREAK_REST",
+          "timeOfChangeMinutes": 0
         },
         {
           "slot": "DRIVER_SLOT",
@@ -37701,6 +37883,13 @@
           "slot": "DRIVER_SLOT",
           "crew": false,
           "inserted": true,
+          "activity": "BREAK_REST",
+          "timeOfChangeMinutes": 0
+        },
+        {
+          "slot": "DRIVER_SLOT",
+          "crew": false,
+          "inserted": true,
           "activity": "WORK",
           "timeOfChangeMinutes": 30
         },
@@ -39509,6 +39698,13 @@
           "slot": "DRIVER_SLOT",
           "crew": false,
           "inserted": true,
+          "activity": "BREAK_REST",
+          "timeOfChangeMinutes": 0
+        },
+        {
+          "slot": "DRIVER_SLOT",
+          "crew": false,
+          "inserted": true,
           "activity": "DRIVING",
           "timeOfChangeMinutes": 30
         },
@@ -40773,6 +40969,13 @@
           "inserted": true,
           "activity": "DRIVING",
           "timeOfChangeMinutes": 1410
+        },
+        {
+          "slot": "DRIVER_SLOT",
+          "crew": false,
+          "inserted": true,
+          "activity": "BREAK_REST",
+          "timeOfChangeMinutes": 0
         },
         {
           "slot": "DRIVER_SLOT",
@@ -42224,6 +42427,13 @@
           "slot": "DRIVER_SLOT",
           "crew": false,
           "inserted": true,
+          "activity": "BREAK_REST",
+          "timeOfChangeMinutes": 0
+        },
+        {
+          "slot": "DRIVER_SLOT",
+          "crew": false,
+          "inserted": true,
           "activity": "DRIVING",
           "timeOfChangeMinutes": 30
         },
@@ -42694,6 +42904,13 @@
           "inserted": true,
           "activity": "DRIVING",
           "timeOfChangeMinutes": 1410
+        },
+        {
+          "slot": "DRIVER_SLOT",
+          "crew": false,
+          "inserted": true,
+          "activity": "BREAK_REST",
+          "timeOfChangeMinutes": 0
         },
         {
           "slot": "DRIVER_SLOT",

@@ -174,17 +174,16 @@ func (opts UnmarshalOptions) parseSingleActivityDailyRecord(data []byte) (*cardv
 	record.SetActivityDayDistance(int32(dayDistance))
 	offset += 2
 
-	// Parse activity change info - loop through remainder in 2-byte chunks
+	// Parse activity change info - loop through remainder in 2-byte chunks.
+	//
+	// Every remaining pair of bytes is a change: a daily record is exactly
+	// activityRecordLength bytes long and carries no padding, so there is
+	// nothing here to filter out. In particular '0000'H is a real record —
+	// driver slot, single crew, card inserted, break/rest at 00:00 — and not an
+	// empty slot.
 	var activityChanges []*ddv1.ActivityChangeInfo
 
 	for offset+2 <= len(data) {
-		// Check for invalid entries before parsing (all zeros or all ones)
-		changeData := binary.BigEndian.Uint16(data[offset : offset+2])
-		if changeData == 0 || changeData == 0xFFFF {
-			offset += 2
-			continue
-		}
-
 		// Parse ActivityChangeInfo using centralized helper
 		activityChange, err := opts.UnmarshalActivityChangeInfo(data[offset : offset+2])
 		if err != nil {

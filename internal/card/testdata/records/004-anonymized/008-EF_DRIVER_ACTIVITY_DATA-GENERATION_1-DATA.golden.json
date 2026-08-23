@@ -19740,6 +19740,13 @@
           "slot": "DRIVER_SLOT",
           "crew": false,
           "inserted": true,
+          "activity": "BREAK_REST",
+          "timeOfChangeMinutes": 0
+        },
+        {
+          "slot": "DRIVER_SLOT",
+          "crew": false,
+          "inserted": true,
           "activity": "DRIVING",
           "timeOfChangeMinutes": 30
         },
@@ -23908,6 +23915,13 @@
           "inserted": true,
           "activity": "DRIVING",
           "timeOfChangeMinutes": 1410
+        },
+        {
+          "slot": "DRIVER_SLOT",
+          "crew": false,
+          "inserted": true,
+          "activity": "BREAK_REST",
+          "timeOfChangeMinutes": 0
         },
         {
           "slot": "DRIVER_SLOT",
@@ -31987,6 +32001,13 @@
           "inserted": false,
           "activity": "BREAK_REST",
           "timeOfChangeMinutes": 450
+        },
+        {
+          "slot": "DRIVER_SLOT",
+          "crew": false,
+          "inserted": true,
+          "activity": "BREAK_REST",
+          "timeOfChangeMinutes": 0
         }
       ]
     },
@@ -34232,6 +34253,13 @@
           "inserted": true,
           "activity": "WORK",
           "timeOfChangeMinutes": 1410
+        },
+        {
+          "slot": "DRIVER_SLOT",
+          "crew": false,
+          "inserted": true,
+          "activity": "BREAK_REST",
+          "timeOfChangeMinutes": 0
         },
         {
           "slot": "DRIVER_SLOT",
@@ -39736,7 +39764,16 @@
         "value": 826,
         "length": 2
       },
-      "activityDayDistance": 0
+      "activityDayDistance": 0,
+      "activityChangeInfo": [
+        {
+          "slot": "DRIVER_SLOT",
+          "crew": false,
+          "inserted": true,
+          "activity": "BREAK_REST",
+          "timeOfChangeMinutes": 0
+        }
+      ]
     },
     {
       "valid": true,
@@ -40021,6 +40058,13 @@
           "inserted": false,
           "activity": "BREAK_REST",
           "timeOfChangeMinutes": 1140
+        },
+        {
+          "slot": "DRIVER_SLOT",
+          "crew": false,
+          "inserted": true,
+          "activity": "BREAK_REST",
+          "timeOfChangeMinutes": 0
         }
       ]
     },

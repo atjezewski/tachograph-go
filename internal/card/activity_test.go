@@ -223,3 +223,64 @@ func writeWrappedActivityRecord(buffer []byte, pos int, record []byte) {
 		buffer[(pos+i)%len(buffer)] = b
 	}
 }
+
+// TestActivity_ZeroValuedChangeIsARecord covers a daily record whose first
+// activity change is '0000'H.
+//
+// That value decodes to driver slot, single crew, card inserted, break/rest at
+// 00:00 — the ordinary way a day opens, and every daily set must carry the
+// status at midnight. Treating it as an empty slot drops a real activity
+// transition and leaves the parsed record disagreeing with its own
+// activityRecordLength.
+func TestActivity_ZeroValuedChangeIsARecord(t *testing.T) {
+	const (
+		breakRestAtMidnight = 0x0000
+		drivingAt0800       = 0x19E0
+	)
+
+	record := activityDailyRecordBytes(0, time.Date(2025, time.January, 1, 0, 0, 0, 0, time.UTC),
+		0x0001, 42, breakRestAtMidnight, drivingAt0800)
+	data := binary.BigEndian.AppendUint16(nil, 0) // oldest record pointer
+	data = binary.BigEndian.AppendUint16(data, 0) // newest record pointer
+	data = append(data, record...)
+
+	opts := UnmarshalOptions{}
+	activity, err := opts.unmarshalDriverActivityData(data)
+	if err != nil {
+		t.Fatalf("unmarshal driver activity data: %v", err)
+	}
+	records := activity.GetDailyRecords()
+	if len(records) != 1 {
+		t.Fatalf("got %d daily records, want 1", len(records))
+	}
+
+	changes := records[0].GetActivityChangeInfo()
+	if want := int(records[0].GetActivityRecordLength()-12) / 2; len(changes) != want {
+		t.Fatalf("got %d activity changes, want %d: the record length accounts for every change", len(changes), want)
+	}
+	midnight := changes[0]
+	if got := midnight.GetSlot(); got != ddv1.CardSlotNumber_DRIVER_SLOT {
+		t.Errorf("slot = %v, want DRIVER_SLOT", got)
+	}
+	if midnight.GetCrew() {
+		t.Error("crew = true, want false")
+	}
+	if !midnight.GetInserted() {
+		t.Error("inserted = false, want true")
+	}
+	if got := midnight.GetActivity(); got != ddv1.DriverActivityValue_BREAK_REST {
+		t.Errorf("activity = %v, want BREAK_REST", got)
+	}
+	if got := midnight.GetTimeOfChangeMinutes(); got != 0 {
+		t.Errorf("time of change = %d, want 0", got)
+	}
+
+	marshalOpts := MarshalOptions{}
+	marshaled, err := marshalOpts.MarshalDriverActivity(activity)
+	if err != nil {
+		t.Fatalf("marshal driver activity: %v", err)
+	}
+	if diff := cmp.Diff(data, marshaled); diff != "" {
+		t.Errorf("binary round-trip mismatch (-want +got):\n%s", diff)
+	}
+}
