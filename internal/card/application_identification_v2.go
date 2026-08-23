@@ -1,7 +1,6 @@
 package card
 
 import (
-	"bytes"
 	"encoding/binary"
 	"fmt"
 
@@ -10,59 +9,55 @@ import (
 
 // unmarshalApplicationIdentificationV2 parses the binary data for an EF_ApplicationIdentificationV2 record.
 //
-// The data type `ApplicationIdentificationV2` is specified in the Data Dictionary, Section 2.2.
+// The data type `DriverCardApplicationIdentificationV2` is specified in the Data Dictionary, Section 2.61a.
 //
 // ASN.1 Definition:
 //
-//	ApplicationIdentificationV2 ::= SEQUENCE {
-//	    noOfBorderCrossingRecords    INTEGER(0..255),
-//	    noOfLoadUnloadRecords        INTEGER(0..255),
-//	    noOfLoadTypeEntryRecords     INTEGER(0..255),
-//	    vuConfigurationLengthRange   INTEGER(0..255)
+//	DriverCardApplicationIdentificationV2 ::= SEQUENCE {
+//	    lengthOfFollowingData        LengthOfFollowingData,
+//	    noOfBorderCrossingRecords    NoOfBorderCrossingRecords,
+//	    noOfLoadUnloadRecords        NoOfLoadUnloadRecords,
+//	    noOfLoadTypeEntryRecords     NoOfLoadTypeEntryRecords,
+//	    vuConfigurationLengthRange   VuConfigurationLengthRange
 //	}
+//
+// Binary Layout (fixed length, 10 bytes): every component is a two-byte
+// INTEGER(0..2^16-1). The record counts are the sizes of the ring buffers in
+// EF_Border_Crossings, EF_Load_Unload_Operations and EF_Load_Type_Entries, so
+// they do not fit in a byte: a driver card holds 1120, 1624 and 336 records
+// respectively.
+//
+//   - Bytes 0-1: lengthOfFollowingData
+//   - Bytes 2-3: noOfBorderCrossingRecords
+//   - Bytes 4-5: noOfLoadUnloadRecords
+//   - Bytes 6-7: noOfLoadTypeEntryRecords
+//   - Bytes 8-9: vuConfigurationLengthRange
 func (opts UnmarshalOptions) unmarshalApplicationIdentificationV2(data []byte) (*cardv1.ApplicationIdentificationV2, error) {
 	const (
-		lenEfApplicationIdentificationV2 = 4 // EF_ApplicationIdentificationV2 record size
+		idxLengthOfFollowingData       = 0
+		idxBorderCrossingRecords       = 2
+		idxLoadUnloadRecords           = 4
+		idxLoadTypeEntryRecords        = 6
+		idxVuConfigurationLengthRange  = 8
+		lenApplicationIdentificationV2 = 10
 	)
 
-	if len(data) < lenEfApplicationIdentificationV2 {
-		return nil, fmt.Errorf("insufficient data for application identification V2: got %d bytes, need %d", len(data), lenEfApplicationIdentificationV2)
+	if len(data) != lenApplicationIdentificationV2 {
+		return nil, fmt.Errorf(
+			"invalid data length for DriverCardApplicationIdentificationV2: got %d bytes, want %d",
+			len(data), lenApplicationIdentificationV2,
+		)
 	}
+
 	var target cardv1.ApplicationIdentificationV2
-	r := bytes.NewReader(data)
 
-	// For now, assume this is a driver card and create the driver data
 	driver := &cardv1.ApplicationIdentificationV2_Driver{}
+	driver.SetLengthOfFollowingData(int32(binary.BigEndian.Uint16(data[idxLengthOfFollowingData:])))
+	driver.SetBorderCrossingRecordsCount(int32(binary.BigEndian.Uint16(data[idxBorderCrossingRecords:])))
+	driver.SetLoadUnloadRecordsCount(int32(binary.BigEndian.Uint16(data[idxLoadUnloadRecords:])))
+	driver.SetLoadTypeEntryRecordsCount(int32(binary.BigEndian.Uint16(data[idxLoadTypeEntryRecords:])))
+	driver.SetVuConfigurationLengthRange(int32(binary.BigEndian.Uint16(data[idxVuConfigurationLengthRange:])))
 
-	// Read border crossing records count (1 byte)
-	var borderCrossingCount byte
-	if err := binary.Read(r, binary.BigEndian, &borderCrossingCount); err != nil {
-		return nil, fmt.Errorf("failed to read border crossing records count: %w", err)
-	}
-	driver.SetBorderCrossingRecordsCount(int32(borderCrossingCount))
-
-	// Read load/unload records count (1 byte)
-	var loadUnloadCount byte
-	if err := binary.Read(r, binary.BigEndian, &loadUnloadCount); err != nil {
-		return nil, fmt.Errorf("failed to read load/unload records count: %w", err)
-	}
-	driver.SetLoadUnloadRecordsCount(int32(loadUnloadCount))
-
-	// Read load type entry records count (1 byte)
-	var loadTypeCount byte
-	if err := binary.Read(r, binary.BigEndian, &loadTypeCount); err != nil {
-		return nil, fmt.Errorf("failed to read load type entry records count: %w", err)
-	}
-	driver.SetLoadTypeEntryRecordsCount(int32(loadTypeCount))
-
-	// Read VU configuration length range (1 byte)
-	var vuConfigRange byte
-	if err := binary.Read(r, binary.BigEndian, &vuConfigRange); err != nil {
-		return nil, fmt.Errorf("failed to read VU configuration length range: %w", err)
-	}
-	driver.SetVuConfigurationLengthRange(int32(vuConfigRange))
-
-	// Set the driver data and card type
 	target.SetDriver(driver)
 	target.SetCardType(cardv1.CardType_DRIVER_CARD)
 
@@ -71,62 +66,48 @@ func (opts UnmarshalOptions) unmarshalApplicationIdentificationV2(data []byte) (
 
 // MarshalCardApplicationIdentificationV2 marshals application identification V2 data.
 //
-// The data type `ApplicationIdentificationV2` is specified in the Data Dictionary, Section 2.2.
-//
-// ASN.1 Definition:
-//
-//	ApplicationIdentificationV2 ::= SEQUENCE {
-//	    noOfBorderCrossingRecords    INTEGER(0..255),
-//	    noOfLoadUnloadRecords        INTEGER(0..255),
-//	    noOfLoadTypeEntryRecords     INTEGER(0..255),
-//	    vuConfigurationLengthRange   INTEGER(0..255)
-//	}
+// The data type `DriverCardApplicationIdentificationV2` is specified in the Data Dictionary, Section 2.61a.
+// Driver and workshop cards carry five two-byte components; company and control
+// cards carry only the length and the VU configuration length range.
 func (opts MarshalOptions) MarshalCardApplicationIdentificationV2(appIdV2 *cardv1.ApplicationIdentificationV2) ([]byte, error) {
 	if appIdV2 == nil {
 		return nil, nil
 	}
 
-	// Get the appropriate nested message based on card type
-	var borderCrossingRecords, loadUnloadRecords, loadTypeEntryRecords, vuConfigLength int32
-
 	switch appIdV2.GetCardType() {
 	case cardv1.CardType_DRIVER_CARD:
-		if driver := appIdV2.GetDriver(); driver != nil {
-			borderCrossingRecords = driver.GetBorderCrossingRecordsCount()
-			loadUnloadRecords = driver.GetLoadUnloadRecordsCount()
-			loadTypeEntryRecords = driver.GetLoadTypeEntryRecordsCount()
-			vuConfigLength = driver.GetVuConfigurationLengthRange()
-		}
+		driver := appIdV2.GetDriver()
+		return appendRecordCounts(driver.GetLengthOfFollowingData(),
+			driver.GetBorderCrossingRecordsCount(),
+			driver.GetLoadUnloadRecordsCount(),
+			driver.GetLoadTypeEntryRecordsCount(),
+			driver.GetVuConfigurationLengthRange()), nil
 	case cardv1.CardType_WORKSHOP_CARD:
-		if workshop := appIdV2.GetWorkshop(); workshop != nil {
-			borderCrossingRecords = workshop.GetBorderCrossingRecordsCount()
-			loadUnloadRecords = workshop.GetLoadUnloadRecordsCount()
-			loadTypeEntryRecords = workshop.GetLoadTypeEntryRecordsCount()
-			vuConfigLength = workshop.GetVuConfigurationLengthRange()
-		}
+		workshop := appIdV2.GetWorkshop()
+		return appendRecordCounts(workshop.GetLengthOfFollowingData(),
+			workshop.GetBorderCrossingRecordsCount(),
+			workshop.GetLoadUnloadRecordsCount(),
+			workshop.GetLoadTypeEntryRecordsCount(),
+			workshop.GetVuConfigurationLengthRange()), nil
 	case cardv1.CardType_COMPANY_CARD:
-		if company := appIdV2.GetCompany(); company != nil {
-			vuConfigLength = company.GetVuConfigurationLengthRange()
-		}
+		company := appIdV2.GetCompany()
+		return appendRecordCounts(company.GetLengthOfFollowingData(),
+			company.GetVuConfigurationLengthRange()), nil
 	case cardv1.CardType_CONTROL_CARD:
-		if control := appIdV2.GetControl(); control != nil {
-			vuConfigLength = control.GetVuConfigurationLengthRange()
-		}
+		control := appIdV2.GetControl()
+		return appendRecordCounts(control.GetLengthOfFollowingData(),
+			control.GetVuConfigurationLengthRange()), nil
+	default:
+		return nil, fmt.Errorf("unsupported card type for ApplicationIdentificationV2: %v", appIdV2.GetCardType())
 	}
+}
 
-	var data []byte
-
-	// Border crossing records count (1 byte)
-	data = append(data, byte(borderCrossingRecords))
-
-	// Load/unload records count (1 byte)
-	data = append(data, byte(loadUnloadRecords))
-
-	// Load type entry records count (1 byte)
-	data = append(data, byte(loadTypeEntryRecords))
-
-	// VU configuration length range (1 byte)
-	data = append(data, byte(vuConfigLength))
-
-	return data, nil
+// appendRecordCounts encodes the components of an ApplicationIdentificationV2
+// record, each a two-byte INTEGER(0..2^16-1).
+func appendRecordCounts(values ...int32) []byte {
+	dst := make([]byte, 0, len(values)*2)
+	for _, value := range values {
+		dst = binary.BigEndian.AppendUint16(dst, uint16(value))
+	}
+	return dst
 }

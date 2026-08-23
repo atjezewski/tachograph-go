@@ -453,6 +453,17 @@ func UnparseDriverCardFile(file *cardv1.DriverCardFile) (*cardv1.RawCardFile, er
 			}
 		}
 
+		// EF_APPLICATION_IDENTIFICATION_V2 (Gen2v2 only)
+		if appIdV2 := tachographG2.GetApplicationIdentificationV2(); appIdV2 != nil {
+			dataBytes, err := marshalOpts.MarshalCardApplicationIdentificationV2(appIdV2)
+			if err != nil {
+				return nil, fmt.Errorf("failed to marshal EF_APPLICATION_IDENTIFICATION_V2: %w", err)
+			}
+			if err := appendRecord(cardv1.ElementaryFileType_EF_APPLICATION_IDENTIFICATION_V2, ddv1.Generation_GENERATION_2, dataBytes, appIdV2.GetSignature()); err != nil {
+				return nil, err
+			}
+		}
+
 		// EF_PLACES_AUTHENTICATION (Gen2v2 only)
 		if placesAuth := tachographG2.GetPlacesAuthentication(); placesAuth != nil {
 			dataBytes, err := marshalOpts.MarshalPlacesAuthentication(placesAuth)
