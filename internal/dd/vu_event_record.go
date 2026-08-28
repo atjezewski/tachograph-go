@@ -154,10 +154,18 @@ func (opts MarshalOptions) MarshalVuEventRecord(record *ddv1.VuEventRecord) ([]b
 	)
 
 	// Marshal eventType (1 byte)
-	canvas[idxEventType] = opts.marshalEventFaultType(record.GetEventType(), record.GetUnrecognizedEventType())
+	eventType, err := opts.marshalEventFaultType(record.GetEventType(), record.GetUnrecognizedEventType())
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal event type: %w", err)
+	}
+	canvas[idxEventType] = eventType
 
 	// Marshal eventRecordPurpose (1 byte)
-	canvas[idxEventRecordPurpose] = opts.marshalEventFaultRecordPurpose(record.GetRecordPurpose(), record.GetUnrecognizedRecordPurpose())
+	recordPurpose, err := opts.marshalEventFaultRecordPurpose(record.GetRecordPurpose(), record.GetUnrecognizedRecordPurpose())
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal event record purpose: %w", err)
+	}
+	canvas[idxEventRecordPurpose] = recordPurpose
 
 	// Marshal eventBeginTime (4 bytes)
 	beginTime, err := opts.MarshalTimeReal(record.GetBeginTime())
