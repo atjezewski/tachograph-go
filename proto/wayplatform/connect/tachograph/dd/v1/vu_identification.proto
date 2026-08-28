@@ -25,12 +25,12 @@ import "wayplatform/connect/tachograph/dd/v1/string_value.proto";
 //         vuApprovalNumber VuApprovalNumber
 //     }
 //
-// Binary Layout (Generation 1, fixed length: 147 bytes):
+// Binary Layout (Generation 1, fixed length: 116 bytes):
 //   - VU Manufacturer Name (36 bytes): StringValue (1 byte code page + 35 bytes data)
 //   - VU Manufacturer Address (36 bytes): StringValue (1 byte code page + 35 bytes data)
-//   - VU Part Number (36 bytes): StringValue (1 byte code page + 35 bytes data)
+//   - VU Part Number (16 bytes): IA5String
 //   - VU Serial Number (8 bytes): ExtendedSerialNumber
-//   - VU Software Identification (16 bytes): SoftwareIdentification
+//   - VU Software Identification (8 bytes): SoftwareIdentification
 //   - VU Manufacturing Date (4 bytes): TimeReal
 //   - VU Approval Number (8 bytes Gen1, 16 bytes Gen2): IA5String
 //
@@ -149,7 +149,7 @@ message VuIdentification {
   // The raw binary data for this identification record (for round-trip fidelity).
   // This preserves the exact bytes including any padding or reserved fields.
   //
-  // For Generation 1: 147 bytes
-  // For Generation 2: varies (includes additional fields)
+  // For Generation 1: 116 bytes
+  // For Generation 2: 126 bytes (version 1) or 138 bytes (version 2)
   bytes raw_data = 99;
 }

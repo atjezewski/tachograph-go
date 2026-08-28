@@ -13,7 +13,7 @@ import (
 // records whether the position stored for each entry in EF_Places was
 // authenticated by the GNSS receiver.
 //
-// The data type `CardPlaceAuthDailyWorkPeriod` is specified in the Data Dictionary, Section 2.27a.
+// The data type `CardPlaceAuthDailyWorkPeriod` is specified in the Data Dictionary, Section 2.26a.
 //
 // ASN.1 Definition:
 //
@@ -57,7 +57,7 @@ func (opts UnmarshalOptions) unmarshalPlacesAuthentication(data []byte) (*cardv1
 
 // unmarshalPlaceAuthStatusRecord parses a single PlaceAuthStatusRecord.
 //
-// The data type `PlaceAuthStatusRecord` is specified in the Data Dictionary, Section 2.117b.
+// The data type `PlaceAuthStatusRecord` is specified in the Data Dictionary, Section 2.116b.
 //
 // ASN.1 Definition:
 //

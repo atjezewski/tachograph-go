@@ -11,7 +11,7 @@ import (
 
 // unmarshalLoadTypeEntries parses the EF_Load_Type_Entries file.
 //
-// The data type `CardLoadTypeEntries` is specified in the Data Dictionary, Section 2.24c.
+// The data type `CardLoadTypeEntries` is specified in the Data Dictionary, Section 2.24a.
 //
 // ASN.1 Definition:
 //
@@ -55,7 +55,7 @@ func (opts UnmarshalOptions) unmarshalLoadTypeEntries(data []byte) (*cardv1.Load
 
 // unmarshalLoadTypeEntryRecord parses a single CardLoadTypeEntryRecord.
 //
-// The data type `CardLoadTypeEntryRecord` is specified in the Data Dictionary, Section 2.24d.
+// The data type `CardLoadTypeEntryRecord` is specified in the Data Dictionary, Section 2.24b.
 //
 // ASN.1 Definition:
 //

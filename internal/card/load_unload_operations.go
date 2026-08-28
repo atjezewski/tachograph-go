@@ -11,7 +11,7 @@ import (
 
 // unmarshalLoadUnloadOperations parses the EF_Load_Unload_Operations file.
 //
-// The data type `CardLoadUnloadOperations` is specified in the Data Dictionary, Section 2.24a.
+// The data type `CardLoadUnloadOperations` is specified in the Data Dictionary, Section 2.24c.
 //
 // ASN.1 Definition:
 //
@@ -55,7 +55,7 @@ func (opts UnmarshalOptions) unmarshalLoadUnloadOperations(data []byte) (*cardv1
 
 // unmarshalLoadUnloadRecord parses a single CardLoadUnloadRecord.
 //
-// The data type `CardLoadUnloadRecord` is specified in the Data Dictionary, Section 2.24b.
+// The data type `CardLoadUnloadRecord` is specified in the Data Dictionary, Section 2.24d.
 //
 // ASN.1 Definition:
 //

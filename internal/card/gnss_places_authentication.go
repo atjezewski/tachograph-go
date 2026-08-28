@@ -13,7 +13,7 @@ import (
 // file, which records whether each position in EF_GNSS_Places was authenticated
 // by the GNSS receiver.
 //
-// The data type `GNSSAuthAccumulatedDriving` is specified in the Data Dictionary, Section 2.79b.
+// The data type `GNSSAuthAccumulatedDriving` is specified in the Data Dictionary, Section 2.79a.
 //
 // ASN.1 Definition:
 //
@@ -57,7 +57,7 @@ func (opts UnmarshalOptions) unmarshalGnssPlacesAuthentication(data []byte) (*ca
 
 // unmarshalGnssAuthStatusADRecord parses a single GNSSAuthStatusADRecord.
 //
-// The data type `GNSSAuthStatusADRecord` is specified in the Data Dictionary, Section 2.79a.
+// The data type `GNSSAuthStatusADRecord` is specified in the Data Dictionary, Section 2.79b.
 //
 // ASN.1 Definition:
 //

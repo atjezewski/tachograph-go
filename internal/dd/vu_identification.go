@@ -122,7 +122,7 @@ func (opts UnmarshalOptions) UnmarshalVuIdentification(data []byte) (*ddv1.VuIde
 	vuIdent.SetManufacturingDate(manufacturingDate)
 
 	// Determine approval number length based on total data length
-	// Gen1: 8 bytes (total 147), Gen2: 16 bytes (total 155+)
+	// Gen1: 8 bytes (total 116), Gen2: 16 bytes (total 126+)
 	remainingBytes := len(data) - idxApprovalNumber
 	var lenApprovalNumber int
 	if remainingBytes >= 16 {
