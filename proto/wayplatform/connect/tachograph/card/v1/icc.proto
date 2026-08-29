@@ -48,13 +48,19 @@ message Icc {
     //     IA5String(SIZE(2))
     wayplatform.connect.tachograph.dd.v1.Ia5StringValue country_code = 1;
 
-    // 2-character code identifying the module embedder.
+    // 2-character compatibility view of the module embedder code.
     //
     // See Data Dictionary, Section 2.65, `moduleEmbedder`.
     // ASN.1 Definition:
     //
     //     IA5String(SIZE(2))
-    wayplatform.connect.tachograph.dd.v1.Ia5StringValue module_embedder = 2;
+    //
+    // Some cards carry non-printable values despite the declared IA5String
+    // type. Use module_embedder_raw when the exact bytes are required.
+    wayplatform.connect.tachograph.dd.v1.Ia5StringValue module_embedder = 2 [deprecated = true];
+
+    // Exact two-byte module embedder code as carried by the card.
+    bytes module_embedder_raw = 4;
 
     // Manufacturer-specific information.
     //

@@ -371,6 +371,7 @@ type Icc_EmbedderIcAssemblerId struct {
 	state                              protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_CountryCode             *v1.Ia5StringValue     `protobuf:"bytes,1,opt,name=country_code,json=countryCode"`
 	xxx_hidden_ModuleEmbedder          *v1.Ia5StringValue     `protobuf:"bytes,2,opt,name=module_embedder,json=moduleEmbedder"`
+	xxx_hidden_ModuleEmbedderRaw       []byte                 `protobuf:"bytes,4,opt,name=module_embedder_raw,json=moduleEmbedderRaw"`
 	xxx_hidden_ManufacturerInformation int32                  `protobuf:"varint,3,opt,name=manufacturer_information,json=manufacturerInformation"`
 	XXX_raceDetectHookData             protoimpl.RaceDetectHookData
 	XXX_presence                       [1]uint32
@@ -410,9 +411,17 @@ func (x *Icc_EmbedderIcAssemblerId) GetCountryCode() *v1.Ia5StringValue {
 	return nil
 }
 
+// Deprecated: Marked as deprecated in wayplatform/connect/tachograph/card/v1/icc.proto.
 func (x *Icc_EmbedderIcAssemblerId) GetModuleEmbedder() *v1.Ia5StringValue {
 	if x != nil {
 		return x.xxx_hidden_ModuleEmbedder
+	}
+	return nil
+}
+
+func (x *Icc_EmbedderIcAssemblerId) GetModuleEmbedderRaw() []byte {
+	if x != nil {
+		return x.xxx_hidden_ModuleEmbedderRaw
 	}
 	return nil
 }
@@ -428,13 +437,22 @@ func (x *Icc_EmbedderIcAssemblerId) SetCountryCode(v *v1.Ia5StringValue) {
 	x.xxx_hidden_CountryCode = v
 }
 
+// Deprecated: Marked as deprecated in wayplatform/connect/tachograph/card/v1/icc.proto.
 func (x *Icc_EmbedderIcAssemblerId) SetModuleEmbedder(v *v1.Ia5StringValue) {
 	x.xxx_hidden_ModuleEmbedder = v
 }
 
+func (x *Icc_EmbedderIcAssemblerId) SetModuleEmbedderRaw(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_ModuleEmbedderRaw = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 4)
+}
+
 func (x *Icc_EmbedderIcAssemblerId) SetManufacturerInformation(v int32) {
 	x.xxx_hidden_ManufacturerInformation = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 4)
 }
 
 func (x *Icc_EmbedderIcAssemblerId) HasCountryCode() bool {
@@ -444,6 +462,7 @@ func (x *Icc_EmbedderIcAssemblerId) HasCountryCode() bool {
 	return x.xxx_hidden_CountryCode != nil
 }
 
+// Deprecated: Marked as deprecated in wayplatform/connect/tachograph/card/v1/icc.proto.
 func (x *Icc_EmbedderIcAssemblerId) HasModuleEmbedder() bool {
 	if x == nil {
 		return false
@@ -451,23 +470,36 @@ func (x *Icc_EmbedderIcAssemblerId) HasModuleEmbedder() bool {
 	return x.xxx_hidden_ModuleEmbedder != nil
 }
 
-func (x *Icc_EmbedderIcAssemblerId) HasManufacturerInformation() bool {
+func (x *Icc_EmbedderIcAssemblerId) HasModuleEmbedderRaw() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
 }
 
+func (x *Icc_EmbedderIcAssemblerId) HasManufacturerInformation() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
+}
+
 func (x *Icc_EmbedderIcAssemblerId) ClearCountryCode() {
 	x.xxx_hidden_CountryCode = nil
 }
 
+// Deprecated: Marked as deprecated in wayplatform/connect/tachograph/card/v1/icc.proto.
 func (x *Icc_EmbedderIcAssemblerId) ClearModuleEmbedder() {
 	x.xxx_hidden_ModuleEmbedder = nil
 }
 
-func (x *Icc_EmbedderIcAssemblerId) ClearManufacturerInformation() {
+func (x *Icc_EmbedderIcAssemblerId) ClearModuleEmbedderRaw() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	x.xxx_hidden_ModuleEmbedderRaw = nil
+}
+
+func (x *Icc_EmbedderIcAssemblerId) ClearManufacturerInformation() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
 	x.xxx_hidden_ManufacturerInformation = 0
 }
 
@@ -481,13 +513,20 @@ type Icc_EmbedderIcAssemblerId_builder struct {
 	//
 	//	IA5String(SIZE(2))
 	CountryCode *v1.Ia5StringValue
-	// 2-character code identifying the module embedder.
+	// 2-character compatibility view of the module embedder code.
 	//
 	// See Data Dictionary, Section 2.65, `moduleEmbedder`.
 	// ASN.1 Definition:
 	//
 	//	IA5String(SIZE(2))
+	//
+	// Some cards carry non-printable values despite the declared IA5String
+	// type. Use module_embedder_raw when the exact bytes are required.
+	//
+	// Deprecated: Marked as deprecated in wayplatform/connect/tachograph/card/v1/icc.proto.
 	ModuleEmbedder *v1.Ia5StringValue
+	// Exact two-byte module embedder code as carried by the card.
+	ModuleEmbedderRaw []byte
 	// Manufacturer-specific information.
 	//
 	// See Data Dictionary, Section 2.65, `manufacturerInformation`.
@@ -503,8 +542,12 @@ func (b0 Icc_EmbedderIcAssemblerId_builder) Build() *Icc_EmbedderIcAssemblerId {
 	_, _ = b, x
 	x.xxx_hidden_CountryCode = b.CountryCode
 	x.xxx_hidden_ModuleEmbedder = b.ModuleEmbedder
+	if b.ModuleEmbedderRaw != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 4)
+		x.xxx_hidden_ModuleEmbedderRaw = b.ModuleEmbedderRaw
+	}
 	if b.ManufacturerInformation != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 4)
 		x.xxx_hidden_ManufacturerInformation = *b.ManufacturerInformation
 	}
 	return m0
@@ -514,7 +557,7 @@ var File_wayplatform_connect_tachograph_card_v1_icc_proto protoreflect.FileDescr
 
 const file_wayplatform_connect_tachograph_card_v1_icc_proto_rawDesc = "" +
 	"\n" +
-	"0wayplatform/connect/tachograph/card/v1/icc.proto\x12&wayplatform.connect.tachograph.card.v1\x1a:wayplatform/connect/tachograph/dd/v1/clock_stop_mode.proto\x1aAwayplatform/connect/tachograph/dd/v1/extended_serial_number.proto\x1a;wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\"\x9e\a\n" +
+	"0wayplatform/connect/tachograph/card/v1/icc.proto\x12&wayplatform.connect.tachograph.card.v1\x1a:wayplatform/connect/tachograph/dd/v1/clock_stop_mode.proto\x1aAwayplatform/connect/tachograph/dd/v1/extended_serial_number.proto\x1a;wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\"\xd2\a\n" +
 	"\x03Icc\x12R\n" +
 	"\n" +
 	"clock_stop\x18\x01 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.ClockStopModeR\tclockStop\x12y\n" +
@@ -524,10 +567,11 @@ const file_wayplatform_connect_tachograph_card_v1_icc_proto_rawDesc = "" +
 	"\x18embedder_ic_assembler_id\x18\x05 \x01(\v2A.wayplatform.connect.tachograph.card.v1.Icc.EmbedderIcAssemblerIdR\x15embedderIcAssemblerId\x12#\n" +
 	"\ric_identifier\x18\x06 \x01(\fR\ficIdentifier\x12\x1c\n" +
 	"\tsignature\x18\a \x01(\fR\tsignature\x12b\n" +
-	"\x0eauthentication\x18c \x01(\v2:.wayplatform.connect.tachograph.security.v1.AuthenticationR\x0eauthentication\x1a\x8a\x02\n" +
+	"\x0eauthentication\x18c \x01(\v2:.wayplatform.connect.tachograph.security.v1.AuthenticationR\x0eauthentication\x1a\xbe\x02\n" +
 	"\x15EmbedderIcAssemblerId\x12W\n" +
-	"\fcountry_code\x18\x01 \x01(\v24.wayplatform.connect.tachograph.dd.v1.Ia5StringValueR\vcountryCode\x12]\n" +
-	"\x0fmodule_embedder\x18\x02 \x01(\v24.wayplatform.connect.tachograph.dd.v1.Ia5StringValueR\x0emoduleEmbedder\x129\n" +
+	"\fcountry_code\x18\x01 \x01(\v24.wayplatform.connect.tachograph.dd.v1.Ia5StringValueR\vcountryCode\x12a\n" +
+	"\x0fmodule_embedder\x18\x02 \x01(\v24.wayplatform.connect.tachograph.dd.v1.Ia5StringValueB\x02\x18\x01R\x0emoduleEmbedder\x12.\n" +
+	"\x13module_embedder_raw\x18\x04 \x01(\fR\x11moduleEmbedderRaw\x129\n" +
 	"\x18manufacturer_information\x18\x03 \x01(\x05R\x17manufacturerInformationB\xd5\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\bIccProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 

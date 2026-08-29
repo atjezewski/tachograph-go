@@ -1,6 +1,7 @@
 package card
 
 import (
+	"bytes"
 	"encoding/binary"
 	"errors"
 	"fmt"
@@ -127,7 +128,9 @@ func (opts UnmarshalOptions) unmarshalIcc(data []byte) (*cardv1.Icc, error) {
 		}
 		eia.SetCountryCode(countryCode)
 
-		// Module embedder (2 bytes, IA5String)
+		// Preserve the exact bytes. Keep populating the original IA5String field
+		// as a compatibility view for callers compiled against the public API.
+		eia.SetModuleEmbedderRaw(bytes.Clone(embedder[2:4]))
 		moduleEmbedder, err := opts.UnmarshalIa5StringValue(embedder[2:4])
 		if err != nil {
 			return nil, fmt.Errorf("failed to unmarshal module embedder: %w", err)
@@ -213,7 +216,10 @@ func (opts MarshalOptions) MarshalIcc(icc *cardv1.Icc) ([]byte, error) {
 
 // MarshalEmbedderIcAssemblerId marshals an EmbedderIcAssemblerId structure (5 bytes total)
 func (opts MarshalOptions) MarshalEmbedderIcAssemblerId(eia *cardv1.Icc_EmbedderIcAssemblerId) ([]byte, error) {
-	const lenEmbedderIcAssemblerId = 5
+	const (
+		lenEmbedderIcAssemblerId = 5
+		lenModuleEmbedder        = 2
+	)
 
 	if eia == nil {
 		// Return default values: 5 zero bytes
@@ -229,12 +235,20 @@ func (opts MarshalOptions) MarshalEmbedderIcAssemblerId(eia *cardv1.Icc_Embedder
 	}
 	dst = append(dst, countryCodeBytes...)
 
-	// Append module embedder (2 bytes, IA5String)
-	moduleEmbedderBytes, err := opts.MarshalIa5StringValue(eia.GetModuleEmbedder())
-	if err != nil {
-		return nil, fmt.Errorf("failed to marshal module embedder: %w", err)
+	// Prefer the exact bytes when available, with the original IA5String field
+	// retained as a compatibility fallback.
+	if raw := eia.GetModuleEmbedderRaw(); len(raw) > 0 {
+		if len(raw) != lenModuleEmbedder {
+			return nil, fmt.Errorf("module embedder raw length must be %d bytes, got %d", lenModuleEmbedder, len(raw))
+		}
+		dst = append(dst, raw...)
+	} else {
+		moduleEmbedder, err := opts.MarshalIa5StringValue(eia.GetModuleEmbedder())
+		if err != nil {
+			return nil, fmt.Errorf("failed to marshal module embedder: %w", err)
+		}
+		dst = append(dst, moduleEmbedder...)
 	}
-	dst = append(dst, moduleEmbedderBytes...)
 
 	// Append manufacturer information (1 byte)
 	dst = append(dst, byte(eia.GetManufacturerInformation()))
@@ -299,7 +313,8 @@ func (opts AnonymizeOptions) anonymizeIcc(icc *cardv1.Icc) *cardv1.Icc {
 			anonymizedEIA.SetCountryCode(ddOpts.AnonymizeIa5StringValue(eia.GetCountryCode()))
 		}
 
-		// Anonymize module embedder
+		// Keep the compatibility and exact-byte views consistent.
+		anonymizedEIA.SetModuleEmbedderRaw([]byte{'*', '*'})
 		if eia.GetModuleEmbedder() != nil {
 			anonymizedEIA.SetModuleEmbedder(ddOpts.AnonymizeIa5StringValue(eia.GetModuleEmbedder()))
 		}
