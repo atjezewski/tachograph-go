@@ -9,7 +9,6 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
-	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
 // UnmarshalVuCalibrationRecord parses the VuCalibrationRecord structure.
@@ -91,15 +90,15 @@ func (opts UnmarshalOptions) UnmarshalVuCalibrationRecord(data []byte) (*ddv1.Vu
 		lenNextCalibrationDate     = 4
 	)
 
-	// Parse calibration purpose (1 byte)
-	calibrationPurposeValue := int32(data[idxCalibrationPurpose])
-	calibrationPurpose := ddv1.CalibrationPurpose(calibrationPurposeValue)
-	valueDesc := calibrationPurpose.Descriptor().Values().ByNumber(protoreflect.EnumNumber(calibrationPurposeValue))
-	if valueDesc == nil {
-		record.SetUnrecognizedPurpose(calibrationPurposeValue)
-		calibrationPurpose = ddv1.CalibrationPurpose_CALIBRATION_PURPOSE_UNSPECIFIED
+	// Parse calibration purpose (1 byte). '07'H..'7F'H are reserved and
+	// '80'H..'FF'H are manufacturer specific, so an unmapped byte is expected
+	// and is preserved rather than rejected.
+	if calibrationPurpose, err := UnmarshalEnum[ddv1.CalibrationPurpose](data[idxCalibrationPurpose]); err == nil {
+		record.SetPurpose(calibrationPurpose)
+	} else {
+		record.SetPurpose(ddv1.CalibrationPurpose_CALIBRATION_PURPOSE_UNRECOGNIZED)
+		record.SetUnrecognizedPurpose(int32(data[idxCalibrationPurpose]))
 	}
-	record.SetPurpose(calibrationPurpose)
 
 	// Parse workshop name (36 bytes)
 	workshopName, err := opts.UnmarshalStringValue(
@@ -249,13 +248,15 @@ func (opts MarshalOptions) MarshalVuCalibrationRecord(record *ddv1.VuCalibration
 	offset := 0
 
 	// Marshal calibration purpose (1 byte)
-	var purposeValue int32
-	if record.GetUnrecognizedPurpose() != 0 {
-		purposeValue = record.GetUnrecognizedPurpose()
+	if record.GetPurpose() == ddv1.CalibrationPurpose_CALIBRATION_PURPOSE_UNRECOGNIZED {
+		canvas[offset] = byte(record.GetUnrecognizedPurpose())
 	} else {
-		purposeValue = int32(record.GetPurpose())
+		purposeValue, err := MarshalEnum(record.GetPurpose())
+		if err != nil {
+			return nil, fmt.Errorf("failed to marshal calibration purpose: %w", err)
+		}
+		canvas[offset] = purposeValue
 	}
-	canvas[offset] = byte(purposeValue)
 	offset += 1
 
 	// Marshal workshop name (36 bytes)

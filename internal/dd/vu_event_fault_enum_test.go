@@ -89,3 +89,67 @@ func TestVuOverspeedEventRecordEnumRoundTrip(t *testing.T) {
 		t.Errorf("round trip mismatch:\n got %x\nwant %x", marshaled, data)
 	}
 }
+
+// TestVuCalibrationRecordPurposeUsesProtocolValues covers the calibration
+// purpose byte, which shares the defect the tests above cover for events and
+// faults: the protobuf enum reserves numbers 0 and 1, so casting the protocol
+// byte to an enum number shifts every purpose by two and reports a periodic
+// inspection as a first installation.
+//
+// See Data Dictionary, Section 2.8, `CalibrationPurpose`.
+func TestVuCalibrationRecordPurposeUsesProtocolValues(t *testing.T) {
+	for _, tt := range []struct {
+		name         string
+		protocolByte byte
+		want         ddv1.CalibrationPurpose
+		unrecognized int32
+	}{
+		{name: "reserved", protocolByte: 0x00, want: ddv1.CalibrationPurpose_CALIBRATION_PURPOSE_RESERVED},
+		{name: "activation", protocolByte: 0x01, want: ddv1.CalibrationPurpose_ACTIVATION},
+		{name: "first installation", protocolByte: 0x02, want: ddv1.CalibrationPurpose_FIRST_INSTALLATION},
+		{name: "installation", protocolByte: 0x03, want: ddv1.CalibrationPurpose_INSTALLATION},
+		{name: "periodic inspection", protocolByte: 0x04, want: ddv1.CalibrationPurpose_PERIODIC_INSPECTION},
+		{name: "VRN entry by company", protocolByte: 0x05, want: ddv1.CalibrationPurpose_VRN_ENTRY_BY_COMPANY},
+		{name: "time adjustment", protocolByte: 0x06, want: ddv1.CalibrationPurpose_TIME_ADJUSTMENT},
+		{
+			// '07'H..'7F'H are reserved for future use.
+			name:         "reserved for future use",
+			protocolByte: 0x40,
+			want:         ddv1.CalibrationPurpose_CALIBRATION_PURPOSE_UNRECOGNIZED,
+			unrecognized: 0x40,
+		},
+		{
+			// '80'H..'FF'H are manufacturer specific.
+			name:         "manufacturer specific",
+			protocolByte: 0x9a,
+			want:         ddv1.CalibrationPurpose_CALIBRATION_PURPOSE_UNRECOGNIZED,
+			unrecognized: 0x9a,
+		},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			data := make([]byte, 167)
+			data[0] = tt.protocolByte
+
+			opts := UnmarshalOptions{PreserveRawData: true}
+			record, err := opts.UnmarshalVuCalibrationRecord(data)
+			if err != nil {
+				t.Fatalf("unmarshal calibration record: %v", err)
+			}
+			if got := record.GetPurpose(); got != tt.want {
+				t.Errorf("purpose for protocol byte %#02x = %v, want %v", tt.protocolByte, got, tt.want)
+			}
+			if got := record.GetUnrecognizedPurpose(); got != tt.unrecognized {
+				t.Errorf("unrecognized purpose = %#02x, want %#02x", got, tt.unrecognized)
+			}
+
+			marshalOpts := MarshalOptions{}
+			marshaled, err := marshalOpts.MarshalVuCalibrationRecord(record)
+			if err != nil {
+				t.Fatalf("marshal calibration record: %v", err)
+			}
+			if marshaled[0] != tt.protocolByte {
+				t.Errorf("marshalled purpose byte = %#02x, want %#02x", marshaled[0], tt.protocolByte)
+			}
+		})
+	}
+}

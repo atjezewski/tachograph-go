@@ -60,7 +60,7 @@
   },
   "calibrationRecords": [
     {
-      "purpose": "CALIBRATION_PURPOSE_UNRECOGNIZED",
+      "purpose": "ACTIVATION",
       "workshopName": {
         "encoding": "ISO_8859_1",
         "length": 35,
@@ -132,7 +132,7 @@
       "rawData": "AQEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgIAKioqKioqKioqKioqKioqKmlVuP8qKioqKioqKioqKioqKioqKgABKioqKioqKioqKioqKh1HHUdegDMxNS82MCBSMjIuNSAgIFoAAAD//yheC+EAXgvhAF4L4QA="
     },
     {
-      "purpose": "CALIBRATION_PURPOSE_RESERVED",
+      "purpose": "FIRST_INSTALLATION",
       "workshopName": {
         "encoding": "ISO_8859_1",
         "length": 35,
@@ -204,7 +204,7 @@
       "rawData": "AgEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgIAKioqKioqKioqKioqKioqKmlVuP8qKioqKioqKioqKioqKioqKhIBKioqKioqKioqKioqKh3OHc5egDMxNS82MCBSMjIuNSAgIFoAAAD//yheC+EAXgvhAF4L4QA="
     },
     {
-      "purpose": "ACTIVATION",
+      "purpose": "INSTALLATION",
       "workshopName": {
         "encoding": "ISO_8859_1",
         "length": 35,
@@ -276,7 +276,7 @@
       "rawData": "AwEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgIAKioqKioqKioqKioqKioqKmlVuP8qKioqKioqKioqKioqKioqKhIBKioqKioqKioqKioqKh3OHc5egDMxNS82MCBSMjIuNSAgIFoAAAD//yheC+EAXgvhAF4L4QA="
     },
     {
-      "purpose": "FIRST_INSTALLATION",
+      "purpose": "PERIODIC_INSPECTION",
       "workshopName": {
         "encoding": "ISO_8859_1",
         "length": 35,
@@ -348,7 +348,7 @@
       "rawData": "BAEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgIAKioqKioqKioqKioqKioqKmlVuP8qKioqKioqKioqKioqKioqKhIBKioqKioqKioqKioqKh3OHc5egDMxNS82MCBSMjIuNSAgIFoAAAD//yheC+EAXgvhAF4L4QA="
     },
     {
-      "purpose": "FIRST_INSTALLATION",
+      "purpose": "PERIODIC_INSPECTION",
       "workshopName": {
         "encoding": "ISO_8859_1",
         "length": 35,
@@ -420,7 +420,7 @@
       "rawData": "BAEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgIAKioqKioqKioqKioqKioqKmlVuP8qKioqKioqKioqKioqKioqKhIBKioqKioqKioqKioqKh5NHk1eYDMxNS82MCBSMjIuNSAgIFoDkhD//yheC+EAXgvhAF4L4QA="
     },
     {
-      "purpose": "FIRST_INSTALLATION",
+      "purpose": "PERIODIC_INSPECTION",
       "workshopName": {
         "encoding": "ISO_8859_1",
         "length": 35,
@@ -492,7 +492,7 @@
       "rawData": "BAEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgEqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgIAKioqKioqKioqKioqKioqKmlVuP8qKioqKioqKioqKioqKioqKhIBKioqKioqKioqKioqKh4kHiRcEDMxNS82MCBSMjIuNSAgIFoG9UD//yheC+EAXgvhAF4L4QA="
     },
     {
-      "purpose": "FIRST_INSTALLATION",
+      "purpose": "PERIODIC_INSPECTION",
       "workshopName": {
         "encoding": "ISO_8859_1",
         "length": 35,
