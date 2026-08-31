@@ -53,8 +53,8 @@ func (opts UnmarshalOptions) UnmarshalExtendedSerialNumber(data []byte) (*ddv1.E
 	if equipmentType, err := UnmarshalEnum[ddv1.EquipmentType](data[6]); err == nil {
 		esn.SetType(equipmentType)
 	} else {
-		// Return UNRECOGNIZED for unknown values
 		esn.SetType(ddv1.EquipmentType_EQUIPMENT_TYPE_UNRECOGNIZED)
+		esn.SetUnrecognizedType(int32(data[6]))
 	}
 
 	// Parse manufacturer code (1 byte)
@@ -101,9 +101,13 @@ func (opts MarshalOptions) MarshalExtendedSerialNumber(esn *ddv1.ExtendedSerialN
 	}
 	dst = append(dst, monthYearBytes...)
 
-	// Marshal equipment type (1 byte); unknown wire values stored as UNRECOGNIZED emit 0x00.
+	// Marshal equipment type (1 byte).
 	if esn.GetType() == ddv1.EquipmentType_EQUIPMENT_TYPE_UNRECOGNIZED {
-		dst = append(dst, 0x00)
+		unrecognized := esn.GetUnrecognizedType()
+		if unrecognized < 0 || unrecognized > 255 {
+			return nil, fmt.Errorf("unrecognized equipment type %d is outside the protocol range", unrecognized)
+		}
+		dst = append(dst, byte(unrecognized))
 	} else {
 		equipmentTypeByte, err := MarshalEnum(esn.GetType())
 		if err != nil {

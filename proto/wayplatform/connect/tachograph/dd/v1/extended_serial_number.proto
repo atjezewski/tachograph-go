@@ -38,6 +38,9 @@ message ExtendedSerialNumber {
   //     EquipmentType ::= INTEGER (0..255)
   EquipmentType type = 4;
 
+  // Raw protocol value when `type` is not recognized.
+  int32 unrecognized_type = 3;
+
   // The numerical code of the manufacturer.
   //
   // ASN.1 Specification:

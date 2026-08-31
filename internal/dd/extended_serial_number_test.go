@@ -16,6 +16,7 @@ func TestUnmarshalExtendedSerialNumber(t *testing.T) {
 		wantMonth            int32
 		wantYear             int32
 		wantEquipmentType    ddv1.EquipmentType
+		wantUnrecognizedType int32
 		wantManufacturerCode int32
 		wantErr              bool
 	}{
@@ -54,6 +55,16 @@ func TestUnmarshalExtendedSerialNumber(t *testing.T) {
 			wantYear:             2099,
 			wantEquipmentType:    ddv1.EquipmentType_WORKSHOP_CARD,
 			wantManufacturerCode: 255,
+		},
+		{
+			name:                 "manufacturer-specific type",
+			input:                []byte{0x03, 0x10, 0x4D, 0xEE, 0x10, 0x18, 0x90, 0x89},
+			wantSerialNumber:     51400174,
+			wantMonth:            10,
+			wantYear:             2018,
+			wantEquipmentType:    ddv1.EquipmentType_EQUIPMENT_TYPE_UNRECOGNIZED,
+			wantUnrecognizedType: 0x90,
+			wantManufacturerCode: 137,
 		},
 		{
 			name:    "insufficient data",
@@ -97,6 +108,9 @@ func TestUnmarshalExtendedSerialNumber(t *testing.T) {
 			}
 			if got.GetType() != tt.wantEquipmentType {
 				t.Errorf("GetType() = %v, want %v", got.GetType(), tt.wantEquipmentType)
+			}
+			if got.GetUnrecognizedType() != tt.wantUnrecognizedType {
+				t.Errorf("GetUnrecognizedType() = %v, want %v", got.GetUnrecognizedType(), tt.wantUnrecognizedType)
 			}
 			if got.GetManufacturerCode() != tt.wantManufacturerCode {
 				t.Errorf("GetManufacturerCode() = %v, want %v", got.GetManufacturerCode(), tt.wantManufacturerCode)
@@ -202,6 +216,10 @@ func TestExtendedSerialNumberRoundTrip(t *testing.T) {
 		{
 			name:  "maximum values",
 			input: []byte{0xFF, 0xFF, 0xFF, 0xFF, 0x12, 0x99, 0x07, 0xFF},
+		},
+		{
+			name:  "manufacturer-specific type",
+			input: []byte{0x03, 0x10, 0x4D, 0xEE, 0x10, 0x18, 0x90, 0x89},
 		},
 	}
 
